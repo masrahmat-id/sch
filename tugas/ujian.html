@@ -7,15 +7,23 @@
     <style>
         body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; background-color: #eef2f7; color: #333; }
         
-        /* Header */
+        /* Header Modern */
         .header-ujian { 
-            background: #1565c0; color: white; padding: 15px 20px; position: fixed; 
-            top: 0; width: 100%; display: flex; justify-content: space-between; 
+            background: #1565c0; color: white; padding: 12px 20px; position: fixed; 
+            top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center;
             z-index: 10; box-sizing: border-box; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
+        /* Badge Kelas & Nama */
+        .user-profile { display: flex; align-items: center; gap: 10px; }
+        .badge-kelas { 
+            background: rgba(255, 255, 255, 0.2); padding: 4px 12px; 
+            border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid rgba(255,255,255,0.4);
+        }
+        .user-name { font-weight: 600; font-size: 14px; text-transform: uppercase; }
+
         .container { 
-            max-width: 800px; margin: 100px auto 40px; background: white; 
+            max-width: 800px; margin: 90px auto 40px; background: white; 
             border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); padding: 30px; 
         }
 
@@ -43,9 +51,9 @@
             background: white; transition: 0.2s;
         }
         .kotak-nomor.sudah { background: #28a745; color: white; border-color: #218838; }
-        .kotak-nomor.aktif { border: 2px solid #1e88e5; color: #1e88e5; transform: scale(1.1); }
+        .kotak-nomor.aktif { border: 2px solid #1e88e5; color: #1e88e5; transform: scale(1.1); box-shadow: 0 0 8px rgba(30,136,229,0.3); }
 
-        /* Modal & CSS Icons */
+        /* Modal Custom CSS Icons */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); display: none; justify-content: center;
@@ -58,7 +66,6 @@
         }
         @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        /* Custom CSS Icons */
         .icon-circle { width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; border: 4px solid currentColor; }
         .icon-warn { color: #ffa000; }
         .icon-error { color: #d32f2f; }
@@ -88,14 +95,16 @@
         </div>
         <h3 id="modalTitle" style="margin: 0 0 10px;">Judul</h3>
         <p id="modalMessage" style="color: #666; margin-bottom: 0;">Pesan di sini.</p>
-        <div id="modalButtons" class="btn-modal-group">
-            </div>
+        <div id="modalButtons" class="btn-modal-group"></div>
     </div>
 </div>
 
 <div class="header-ujian">
-    <div id="info-user">Memuat...</div>
-    <div style="font-weight: 800; letter-spacing: 1px;">INFORMATIKA</div>
+    <div class="user-profile">
+        <span class="badge-kelas" id="badge-kelas">KELAS</span>
+        <span class="user-name" id="user-name">NAMA SISWA</span>
+    </div>
+    <div style="font-weight: 800; letter-spacing: 1px; font-size: 14px;">INFORMATIKA</div>
 </div>
 
 <div class="container">
@@ -112,7 +121,7 @@
 
 <script>
     let dataSoal = [];
-    let jawabanUser = JSON.parse(localStorage.getItem('drafJawaban')) || {}; // Ambil draf dari storage
+    let jawabanUser = JSON.parse(localStorage.getItem('drafJawaban')) || {}; 
     let indexSekarang = 0;
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyY528MhAel09tDGjpEeXaGNkzf0BCOc8rUJhoW7-F0c8wQ4alSA1L5KZxLy7uT_OQ6/exec';
     
@@ -122,32 +131,25 @@
     if (!hasPermission || !userData) {
         window.location.href = 'index.html';
     } else {
-        document.getElementById('info-user').innerText = userData.nama;
+        // TAMPILKAN NAMA DAN KELAS DI HEADER
+        document.getElementById('user-name').innerText = userData.nama;
+        document.getElementById('badge-kelas').innerText = "KELAS " + userData.kelas;
         muatSoal();
     }
 
-    // FUNGSI NOTIFIKASI CUSTOM
     function showNotif(type, title, msg, onConfirm = null) {
         const modal = document.getElementById('customModal');
         const iconContainer = document.getElementById('modalIconContainer');
         const innerIcon = document.getElementById('innerIcon');
         const btnArea = document.getElementById('modalButtons');
 
-        // Reset
         iconContainer.className = 'icon-circle';
         innerIcon.className = '';
         btnArea.innerHTML = '';
 
-        if(type === 'warn') {
-            iconContainer.classList.add('icon-warn');
-            innerIcon.className = 'warn-mark';
-        } else if(type === 'error') {
-            iconContainer.classList.add('icon-error');
-            innerIcon.className = 'cross-mark';
-        } else {
-            iconContainer.classList.add('icon-success');
-            innerIcon.className = 'check-mark';
-        }
+        if(type === 'warn') { iconContainer.classList.add('icon-warn'); innerIcon.className = 'warn-mark'; } 
+        else if(type === 'error') { iconContainer.classList.add('icon-error'); innerIcon.className = 'cross-mark'; } 
+        else { iconContainer.classList.add('icon-success'); innerIcon.className = 'check-mark'; }
 
         document.getElementById('modalTitle').innerText = title;
         document.getElementById('modalMessage').innerText = msg;
@@ -161,7 +163,6 @@
         } else {
             btnArea.innerHTML = `<button class="btn-modal" style="background:#1e88e5; color:white; width:100%" onclick="closeModal()">MENGERTI</button>`;
         }
-        
         modal.style.display = 'flex';
     }
 
@@ -179,7 +180,7 @@
         let html = '';
         dataSoal.forEach((s, i) => {
             html += `<div class="soal-card ${i === indexSekarang ? 'active' : ''}">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px">
+                <div style="margin-bottom:15px">
                     <span style="font-weight:bold; color:#1e88e5; font-size:18px">SOAL NO. ${i + 1}</span>
                 </div>
                 <p style="font-size:18px; line-height:1.6; margin-bottom:25px">${s.pertanyaan}</p>
@@ -196,7 +197,7 @@
 
     function pilih(s, p) { 
         jawabanUser[s] = p; 
-        localStorage.setItem('drafJawaban', JSON.stringify(jawabanUser)); // Simpan tiap klik
+        localStorage.setItem('drafJawaban', JSON.stringify(jawabanUser)); 
         renderNav(); 
     }
 
@@ -243,7 +244,7 @@
 
         try {
             await fetch(`${SCRIPT_URL}?${params.toString()}`, { method: 'GET', mode: 'no-cors' });
-            localStorage.removeItem('drafJawaban'); // Hapus draf karena sudah sukses
+            localStorage.removeItem('drafJawaban'); 
             sessionStorage.clear();
             showNotif('success', 'Berhasil!', 'Jawaban terkirim. Anda akan keluar...');
             setTimeout(() => { window.location.href = 'index.html'; }, 3000);
