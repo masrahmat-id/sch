@@ -119,17 +119,46 @@
         if(terjawab < dataSoal.length) showNotif('error', 'Belum Lengkap', 'Lengkapi semua jawaban!');
         else showNotif('warn', 'Konfirmasi', 'Kirim jawaban sekarang?', kirimJawaban);
     }
-    async function kirimJawaban() {
-        const btn = document.getElementById('btnSubmit'); btn.innerHTML = 'MENGIRIM JAWABAN <span class="moving-dots"></span>';
-        btn.className = 'btn btn-sending'; btn.disabled = true;
-        let benar = 0; dataSoal.forEach((s, i) => { if(jawabanUser[i] == s.jawaban) benar++; });
+   async function kirimJawaban() {
+        const btn = document.getElementById('btnSubmit'); 
+        btn.innerHTML = 'MENGIRIM JAWABAN <span class="moving-dots"></span>';
+        btn.className = 'btn btn-sending'; 
+        btn.disabled = true;
+
+        let benar = 0; 
+        let detailJawaban = [];
+        
+        dataSoal.forEach((s, i) => { 
+            // Hitung Skor
+            if(jawabanUser[i] == s.jawaban) benar++; 
+            // Simpan detail jawaban (A, B, C, atau D)
+            let opsi = ["A", "B", "C", "D"];
+            detailJawaban.push(`No${i+1}:${opsi[jawabanUser[i]] || '-'}`);
+        });
+
+        let salah = dataSoal.length - benar;
+        let jawabanString = detailJawaban.join(", ");
+
         try {
-            await fetch(`${SCRIPT_URL}?nama=${userData.nama}&kelas=${userData.kelas}&benar=${benar}`, { mode: 'no-cors' });
+            // URL disesuaikan dengan parameter di Google Script:
+            // p.nama, p.kelas, p.mapel, p.benar, p.salah, p.jawabanUser
+            const mapel = "INFORMATIKA"; // Bisa diganti sesuai mapel ujian
+            const finalURL = `${SCRIPT_URL}?nama=${encodeURIComponent(userData.nama)}&kelas=${userData.kelas}&mapel=${encodeURIComponent(mapel)}&benar=${benar}&salah=${salah}&jawabanUser=${encodeURIComponent(jawabanString)}`;
+
+            await fetch(finalURL, { mode: 'no-cors' });
+
             document.getElementById('konten-ujian').style.display = 'none';
             document.getElementById('hasil-akhir').style.display = 'block';
             document.getElementById('skor-tampil').innerText = benar;
-            localStorage.removeItem('drafJawaban'); sessionStorage.clear();
-        } catch (e) { btn.innerHTML = "SELESAI UJIAN"; btn.className = 'btn btn-finish'; btn.disabled = false; }
+            
+            localStorage.removeItem('drafJawaban'); 
+            // Penting: Jangan hapus session di sini agar tidak error saat reload hasil akhir
+        } catch (e) { 
+            btn.innerHTML = "SELESAI UJIAN"; 
+            btn.className = 'btn btn-finish'; 
+            btn.disabled = false; 
+            alert("Gagal mengirim! Periksa koneksi internet.");
+        }
     }
 </script>
 </body>
