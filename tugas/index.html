@@ -6,18 +6,22 @@
     <title>Sistem Ujian ANBK Lite</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #e9ecef; margin: 0; padding: 20px; }
-        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .header { border-bottom: 2px solid #007bff; margin-bottom: 20px; padding-bottom: 10px; color: #007bff; }
-        .identitas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .header { border-bottom: 2px solid #007bff; margin-bottom: 20px; padding-bottom: 10px; color: #007bff; text-align: center; }
+        .logo { width: 100px; margin-bottom: 15px; }
+        .login-box { max-width: 400px; margin: auto; text-align: center; }
+        .identitas-grid { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; text-align: left; }
+        label { font-weight: bold; font-size: 14px; margin-bottom: -10px; color: #555; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 16px; }
+        input:read-only { background-color: #f0f0f0; cursor: not-allowed; }
         .soal-card { display: none; }
         .soal-card.active { display: block; }
         .pilihan-label { display: block; background: #f8f9fa; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; transition: 0.3s; }
         .pilihan-label:hover { background: #e2e6ea; }
         .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; }
         button { padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-next { background: #007bff; color: white; width: 100%; }
         .btn-prev { background: #6c757d; color: white; }
-        .btn-next { background: #007bff; color: white; }
         .btn-submit { background: #28a745; color: white; display: none; }
         .nomor-navigasi { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 25px; border-top: 1px solid #eee; padding-top: 20px; }
         .kotak-nomor { width: 35px; height: 35px; border: 1px solid #007bff; text-align: center; line-height: 35px; cursor: pointer; border-radius: 4px; font-size: 14px; }
@@ -28,27 +32,44 @@
 <body>
 
 <div class="container">
-    <div class="header"><h2>SIMULASI ANBK 2026</h2></div>
+    <div class="header">
+        <img src="https://github.com/masrahmat-id/absensi-barcode-online-smp-smk-azzahro/raw/main/logo-smp-azzahro.png" class="logo" alt="Logo">
+        <h2>SIMULASI ANBK 2026</h2>
+    </div>
 
-    <div id="view-login">
+    <div id="view-login" class="login-box">
         <h3>Konfirmasi Data Peserta</h3>
         <div class="identitas-grid">
-            <input type="text" id="nama" placeholder="Nama Lengkap">
-            <input type="text" id="kelas" placeholder="Kelas (Contoh: 9A)">
-            <input type="text" id="mapel" placeholder="Mata Pelajaran">
+            <label>Nama Lengkap</label>
+            <input type="text" id="nama" placeholder="Masukkan Nama Lengkap">
+            
+            <label>Kelas</label>
+            <select id="kelas">
+                <option value="">-- Pilih Kelas --</option>
+                <option value="7A">Kelas 7A</option>
+                <option value="7B">Kelas 7B</option>
+                <option value="8A">Kelas 8A</option>
+                <option value="8B">Kelas 8B</option>
+                <option value="9A">Kelas 9A</option>
+                <option value="9B">Kelas 9B</option>
+            </select>
+
+            <label>Mata Pelajaran</label>
+            <input type="text" id="mapel" value="INFORMATIKA" readonly>
+
+            <label>Token Ujian</label>
+            <input type="text" id="tokenInput" placeholder="Masukkan Token">
         </div>
-        <button class="btn-next" style="width:100%" onclick="mulaiUjian()">Mulai Ujian Sekarang</button>
+        <button class="btn-next" onclick="mulaiUjian()">LOGIN & MULAI</button>
     </div>
 
     <div id="view-ujian" style="display:none;">
         <div id="konten-soal"></div>
-        
         <div class="nav-buttons">
             <button class="btn-prev" id="btnPrev" onclick="navigasi(-1)">SEBELUMNYA</button>
-            <button class="btn-next" id="btnNext" onclick="navigasi(1)">BERIKUTNYA</button>
+            <button class="btn-next" id="btnNext" style="width:auto" onclick="navigasi(1)">BERIKUTNYA</button>
             <button class="btn-submit" id="btnSubmit" onclick="konfirmasiSelesai()">SELESAI & KIRIM</button>
         </div>
-
         <div class="nomor-navigasi" id="navigasiNomor"></div>
     </div>
 </div>
@@ -57,18 +78,26 @@
     let dataSoal = [];
     let jawabanUser = {};
     let indexSekarang = 0;
+    let tokenValid = "";
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyuRnTMO6jx38ZGpun-tkKRgp_PBTrXQ-ugfak6818HGt30HX4yFUFFyavG0ubN8Cg/exec';
 
-    // Ambil soal dari file soal.json
-    fetch('soal.json')
-        .then(res => res.json())
-        .then(data => { 
-            dataSoal = data; 
-        })
-        .catch(err => alert("Gagal memuat soal. Pastikan soal.json ada."));
+    // 1. Ambil Data Soal & Token
+    Promise.all([
+        fetch('soal.json').then(res => res.json()),
+        fetch('token.json').then(res => res.json())
+    ]).then(([soal, token]) => {
+        dataSoal = soal;
+        tokenValid = token.token_aktif;
+    }).catch(err => alert("Gagal memuat konfigurasi."));
 
     function mulaiUjian() {
-        if(!document.getElementById('nama').value) return alert("Isi nama dulu!");
+        const nama = document.getElementById('nama').value;
+        const kelas = document.getElementById('kelas').value;
+        const tokenInput = document.getElementById('tokenInput').value;
+
+        if(!nama || !kelas) return alert("Lengkapi Nama dan Kelas!");
+        if(tokenInput !== tokenValid) return alert("Token Salah! Silakan hubungi pengawas.");
+
         document.getElementById('view-login').style.display = 'none';
         document.getElementById('view-ujian').style.display = 'block';
         renderUjian();
@@ -95,7 +124,7 @@
 
     function pilihJawaban(soalIdx, pIdx) {
         jawabanUser[soalIdx] = pIdx;
-        renderNavigasi(); // Update warna kotak nomor
+        renderNavigasi();
     }
 
     function renderNavigasi() {
@@ -106,7 +135,6 @@
         });
         document.getElementById('navigasiNomor').innerHTML = html;
 
-        // Atur tombol
         document.getElementById('btnPrev').style.visibility = indexSekarang === 0 ? 'hidden' : 'visible';
         if (indexSekarang === dataSoal.length - 1) {
             document.getElementById('btnNext').style.display = 'none';
@@ -117,15 +145,8 @@
         }
     }
 
-    function navigasi(n) {
-        indexSekarang += n;
-        renderUjian();
-    }
-
-    function lompat(i) {
-        indexSekarang = i;
-        renderUjian();
-    }
+    function navigasi(n) { indexSekarang += n; renderUjian(); }
+    function lompat(i) { indexSekarang = i; renderUjian(); }
 
     async function konfirmasiSelesai() {
         if(confirm("Apakah Anda yakin ingin mengakhiri ujian?")) {
@@ -141,19 +162,17 @@
                 salah: dataSoal.length - benar
             });
 
-            // Tampilkan loading sederhana
-            document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;'>Mengirim Jawaban... Mohon Tunggu.</h2>";
+            document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;'>Mengirim Jawaban...</h2>";
 
             try {
                 await fetch(`${SCRIPT_URL}?${params.toString()}`, { method: 'GET', mode: 'no-cors' });
-                alert("Berhasil! Jawaban Anda telah tersimpan.");
+                alert("Berhasil! Jawaban tersimpan.");
                 location.reload();
             } catch (e) {
-                alert("Gagal mengirim ke Google Sheets. Cek koneksi.");
+                alert("Gagal mengirim.");
             }
         }
     }
 </script>
-
 </body>
 </html>
