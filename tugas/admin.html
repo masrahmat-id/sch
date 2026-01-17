@@ -17,6 +17,7 @@
         @keyframes blink { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
         .btn-refresh { margin-top: 25px; background: #f9a825; color: #0d124a; border: none; padding: 12px 25px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.3s; }
         .btn-refresh:active { transform: scale(0.95); }
+        .last-update { font-size: 10px; margin-top: 10px; opacity: 0.5; }
     </style>
 </head>
 <body>
@@ -32,36 +33,53 @@
 
     <div class="status-area">
         <div class="dot"></div>
-        Terhubung ke Server (Update per 5 Menit)
+        Sinkronisasi Otomatis (10 Detik)
     </div>
+    <div id="timer-update" class="last-update">Memperbarui...</div>
 
-    <button class="btn-refresh" onclick="muatToken()">PERBARUI SEKARANG</button>
+    <button class="btn-refresh" id="btnRefresh" onclick="muatToken()">PERBARUI SEKARANG</button>
     <p style="font-size: 10px; margin-top: 20px; opacity: 0.4;">&copy; 2026 SMP Azzahro - Private Access Only</p>
 </div>
 
 <script>
-    // MASUKKAN URL SCRIPT ANDA DI SINI
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyY528MhAel09tDGjpEeXaGNkzf0BCOc8rUJhoW7-F0c8wQ4alSA1L5KZxLy7uT_OQ6/exec';
 
     async function muatToken() {
         const display = document.getElementById('token-aktif');
+        const timerText = document.getElementById('timer-update');
+        const btn = document.getElementById('btnRefresh');
+        
         display.style.opacity = "0.3";
+        btn.disabled = true;
+        btn.innerText = "MENGAMBIL...";
+
         try {
-            const res = await fetch(`${SCRIPT_URL}?action=getToken`);
+            // Kita tambahkan timestamp unik agar browser tidak mengambil data cache lama
+            const res = await fetch(`${SCRIPT_URL}?action=getToken&t=${new Date().getTime()}`);
             const data = await res.json();
-            display.innerText = data.token_aktif;
+            
+            if (data.token_aktif) {
+                display.innerText = data.token_aktif;
+                const sekarang = new Date();
+                timerText.innerText = "Terakhir diperbarui: " + sekarang.getHours() + ":" + sekarang.getMinutes().toString().padStart(2, '0') + ":" + sekarang.getSeconds().toString().padStart(2, '0');
+            } else {
+                display.innerText = "EMPTY";
+            }
         } catch (e) {
             display.innerText = "ERR";
-            console.error("Gagal mengambil token");
+            timerText.innerText = "Koneksi Terputus!";
         }
+        
         display.style.opacity = "1";
+        btn.disabled = false;
+        btn.innerText = "PERBARUI SEKARANG";
     }
 
-    // Ambil token saat halaman dibuka
+    // Jalankan pertama kali
     muatToken();
 
-    // Update otomatis setiap 1 menit agar admin selalu sinkron
-    setInterval(muatToken, 60000);
+    // GANTI DISINI: Update otomatis setiap 10.000 ms (10 detik)
+    setInterval(muatToken, 10000);
 </script>
 
 </body>
