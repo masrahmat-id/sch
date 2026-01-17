@@ -1,14 +1,62 @@
 [
   {
     "id": 1,
-    "pertanyaan": "Apa ibukota Indonesia?",
-    "pilihan": ["Jakarta", "Bandung", "Surabaya", "Medan"],
-    "jawaban": 0
+    "pertanyaan": "Apa ibukota negara Indonesia?",
+    "pilihan": ["Bandung", "Jakarta", "Surabaya", "Nusantara"],
+    "jawaban": 1
   },
   {
     "id": 2,
-    "pertanyaan": "Berapakah hasil dari 5 + 5?",
-    "pilihan": ["5", "10", "15", "20"],
+    "pertanyaan": "Siapakah presiden pertama Republik Indonesia?",
+    "pilihan": ["Moh. Hatta", "Soeharto", "Soekarno", "B.J. Habibie"],
+    "jawaban": 2
+  },
+  {
+    "id": 3,
+    "pertanyaan": "Berapakah hasil dari 15 dikali 3?",
+    "pilihan": ["30", "45", "60", "75"],
     "jawaban": 1
+  },
+  {
+    "id": 4,
+    "pertanyaan": "Lambang negara Indonesia adalah...",
+    "pilihan": ["Burung Garuda", "Harimau", "Pohon Beringin", "Bintang"],
+    "jawaban": 0
+  },
+  {
+    "id": 5,
+    "pertanyaan": "Benua terkecil di dunia adalah...",
+    "pilihan": ["Asia", "Eropa", "Afrika", "Australia"],
+    "jawaban": 3
+  },
+  {
+    "id": 6,
+    "pertanyaan": "Planet yang dikenal sebagai Planet Merah adalah...",
+    "pilihan": ["Venus", "Mars", "Jupiter", "Saturnus"],
+    "jawaban": 1
+  },
+  {
+    "id": 7,
+    "pertanyaan": "Lagu kebangsaan Indonesia adalah...",
+    "pilihan": ["Indonesia Raya", "Garuda Pancasila", "Halo-Halo Bandung", "Maju Tak Gentar"],
+    "jawaban": 0
+  },
+  {
+    "id": 8,
+    "pertanyaan": "Alat pernapasan pada ikan disebut...",
+    "pilihan": ["Paru-paru", "Trakea", "Insang", "Kulit"],
+    "jawaban": 2
+  },
+  {
+    "id": 9,
+    "pertanyaan": "Samudra terluas di dunia adalah...",
+    "pilihan": ["Hindia", "Atlantik", "Arktik", "Pasifik"],
+    "jawaban": 3
+  },
+  {
+    "id": 10,
+    "pertanyaan": "Warna bendera negara Indonesia adalah...",
+    "pilihan": ["Merah Putih", "Putih Merah", "Biru Putih", "Merah Kuning"],
+    "jawaban": 0
   }
 ]
