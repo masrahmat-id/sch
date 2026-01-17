@@ -9,26 +9,14 @@
         
         /* Header Fixed */
         .header-ujian { 
-            background: #1565c0; 
-            color: white; 
-            padding: 15px 20px; 
-            position: fixed; 
-            top: 0; 
-            width: 100%; 
-            display: flex; 
-            justify-content: space-between; 
-            z-index: 10; 
-            box-sizing: border-box;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            background: #1565c0; color: white; padding: 15px 20px; position: fixed; 
+            top: 0; width: 100%; display: flex; justify-content: space-between; 
+            z-index: 10; box-sizing: border-box; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .container { 
-            max-width: 800px; 
-            margin: 100px auto 40px; 
-            background: white; 
-            border-radius: 12px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
-            padding: 25px; 
+            max-width: 800px; margin: 100px auto 40px; background: white; 
+            border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); padding: 25px; 
         }
 
         /* Soal Styling */
@@ -37,67 +25,70 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .pilihan-label { 
-            display: block; 
-            background: #f8f9fa; 
-            padding: 15px; 
-            margin: 10px 0; 
-            border: 1px solid #ddd; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            transition: 0.2s;
+            display: block; background: #f8f9fa; padding: 15px; margin: 10px 0; 
+            border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: 0.2s;
         }
         .pilihan-label:hover { background: #f0f7ff; border-color: #1e88e5; }
-        .pilihan-label input { margin-right: 10px; transform: scale(1.2); }
 
         /* Navigasi Nomor */
         .nomor-navigasi { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 8px; 
-            margin-top: 40px; 
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            justify-content: center; 
+            display: flex; flex-wrap: wrap; gap: 8px; margin-top: 40px; 
+            padding-top: 20px; border-top: 1px solid #eee; justify-content: center; 
         }
         .kotak-nomor { 
-            width: 35px; 
-            height: 35px; 
-            border: 1px solid #ddd; 
-            text-align: center; 
-            line-height: 35px; 
-            cursor: pointer; 
-            border-radius: 6px; 
-            font-size: 13px;
-            background: white;
+            width: 35px; height: 35px; border: 1px solid #ddd; text-align: center; 
+            line-height: 35px; cursor: pointer; border-radius: 6px; font-size: 13px;
         }
         .kotak-nomor.sudah { background: #28a745; color: white; border-color: #218838; }
         .kotak-nomor.aktif { border: 2px solid #1e88e5; font-weight: bold; color: #1e88e5; }
 
-        /* Buttons */
+        /* Custom Modal Notifikasi */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none; justify-content: center;
+            align-items: center; z-index: 1000;
+        }
+        .modal-box {
+            background: white; padding: 30px; border-radius: 15px; max-width: 400px;
+            width: 85%; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .modal-box h3 { margin-top: 0; color: #d32f2f; }
+        .modal-box p { color: #555; line-height: 1.5; }
+        .btn-modal { 
+            background: #1e88e5; color: white; border: none; padding: 10px 25px; 
+            border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 15px;
+        }
+
         .btn-group { display: flex; justify-content: space-between; margin-top: 30px; }
-        .btn { padding: 12px 25px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-prev { background: #6c757d; color: white; }
-        .btn-next { background: #1e88e5; color: white; }
-        .btn-submit { background: #28a745; color: white; }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn { padding: 12px 25px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
+<div id="customModal" class="modal-overlay">
+    <div class="modal-box">
+        <div id="modalIcon" style="font-size: 50px; margin-bottom: 10px;">⚠️</div>
+        <h3 id="modalTitle">Peringatan</h3>
+        <p id="modalMessage">Pesan notifikasi di sini.</p>
+        <button class="btn-modal" onclick="closeModal()">SAYA MENGERTI</button>
+    </div>
+</div>
+
 <div class="header-ujian">
     <div id="info-user">Memuat Data...</div>
-    <div id="info-mapel">MAPEL: INFORMATIKA</div>
+    <div>MAPEL: INFORMATIKA</div>
 </div>
 
 <div class="container">
-    <div id="konten-soal">
-        <p style="text-align: center;">Mengambil data soal...</p>
-    </div>
+    <div id="konten-soal">Memuat soal...</div>
     
     <div class="btn-group">
-        <button class="btn btn-prev" onclick="navigasi(-1)">Kembali</button>
-        <button class="btn btn-next" id="btnNext" onclick="navigasi(1)">Berikutnya</button>
-        <button class="btn btn-submit" id="btnSubmit" style="display:none;" onclick="konfirmasiSelesai()">Selesai & Kirim</button>
+        <button class="btn" style="background:#6c757d; color:white;" onclick="navigasi(-1)">Kembali</button>
+        <button class="btn" style="background:#1e88e5; color:white;" id="btnNext" onclick="navigasi(1)">Berikutnya</button>
+        <button class="btn" style="background:#28a745; color:white; display:none;" id="btnSubmit" onclick="konfirmasiSelesai()">Selesai & Kirim</button>
     </div>
 
     <div class="nomor-navigasi" id="navigasiNomor"></div>
@@ -109,16 +100,26 @@
     let indexSekarang = 0;
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyuRnTMO6jx38ZGpun-tkKRgp_PBTrXQ-ugfak6818HGt30HX4yFUFFyavG0ubN8Cg/exec';
     
-    // 1. CEK PERMISSION (Penting!)
     const hasPermission = sessionStorage.getItem('Screen1.Has Permission');
     const userData = JSON.parse(sessionStorage.getItem('userCBT'));
 
     if (!hasPermission || !userData) {
-        // Jika tidak ada izin, paksa kembali ke login
         window.location.href = 'index.html';
     } else {
         document.getElementById('info-user').innerText = `${userData.nama} (${userData.kelas})`;
         muatSoal();
+    }
+
+    // FUNGSI MODAL CUSTOM
+    function showModal(title, message, icon = '⚠️') {
+        document.getElementById('modalTitle').innerText = title;
+        document.getElementById('modalMessage').innerText = message;
+        document.getElementById('modalIcon').innerText = icon;
+        document.getElementById('customModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('customModal').style.display = 'none';
     }
 
     async function muatSoal() {
@@ -126,24 +127,18 @@
             const res = await fetch('soal.json');
             dataSoal = await res.json();
             renderUjian();
-        } catch (e) {
-            document.getElementById('konten-soal').innerHTML = "<p style='color:red'>Gagal memuat file soal. Pastikan soal.json tersedia.</p>";
-        }
+        } catch (e) { console.error("Gagal muat soal"); }
     }
 
     function renderUjian() {
-        if(dataSoal.length === 0) return;
-
         let html = '';
         dataSoal.forEach((s, i) => {
             html += `<div class="soal-card ${i === indexSekarang ? 'active' : ''}">
-                <h3 style="color:#1565c0; margin-bottom: 5px;">Soal No. ${i + 1}</h3>
-                <hr style="border:0; border-top:1px solid #eee; margin-bottom: 20px;">
-                <p style="font-size:17px; line-height:1.6; color: #333;">${s.pertanyaan}</p>
+                <h3 style="color:#1565c0">Soal No. ${i + 1}</h3>
+                <p style="font-size:17px; line-height:1.6;">${s.pertanyaan}</p>
                 ${s.pilihan.map((p, pIdx) => `
                     <label class="pilihan-label">
-                        <input type="radio" name="soal${i}" ${jawabanUser[i] === pIdx ? 'checked' : ''} 
-                        onclick="pilih(${i},${pIdx})"> ${p}
+                        <input type="radio" name="soal${i}" ${jawabanUser[i] === pIdx ? 'checked' : ''} onclick="pilih(${i},${pIdx})"> ${p}
                     </label>
                 `).join('')}
             </div>`;
@@ -152,87 +147,54 @@
         renderNav();
     }
 
-    function pilih(s, p) {
-        jawabanUser[s] = p;
-        renderNav();
-    }
+    function pilih(s, p) { jawabanUser[s] = p; renderNav(); }
 
     function renderNav() {
         let html = '';
         dataSoal.forEach((_, i) => {
             let cls = (i === indexSekarang) ? 'aktif' : '';
             if (jawabanUser[i] !== undefined) cls += ' sudah';
-            html += `<div class="kotak-nomor ${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            html += `<div class="kotak-nomor ${cls}" onclick="indexSekarang=${i}; renderUjian();">${i+1}</div>`;
         });
         document.getElementById('navigasiNomor').innerHTML = html;
-
-        // Atur tombol Next vs Submit
-        if (indexSekarang === dataSoal.length - 1) {
-            document.getElementById('btnNext').style.display = 'none';
-            document.getElementById('btnSubmit').style.display = 'block';
-        } else {
-            document.getElementById('btnNext').style.display = 'block';
-            document.getElementById('btnSubmit').style.display = 'none';
-        }
+        document.getElementById('btnNext').style.display = indexSekarang === dataSoal.length - 1 ? 'none' : 'block';
+        document.getElementById('btnSubmit').style.display = indexSekarang === dataSoal.length - 1 ? 'block' : 'none';
     }
 
-    function navigasi(n) {
-        let baru = indexSekarang + n;
-        if (baru >= 0 && baru < dataSoal.length) {
-            indexSekarang = baru;
-            renderUjian();
-        }
-    }
-
-    function goTo(i) {
-        indexSekarang = i;
-        renderUjian();
-    }
+    function navigasi(n) { indexSekarang += n; renderUjian(); }
 
     async function konfirmasiSelesai() {
-        // VALIDASI: CEK APAKAH SEMUA SOAL SUDAH TERISI
-        let jumlahTerjawab = Object.keys(jawabanUser).length;
-        let totalSoal = dataSoal.length;
-
-        if (jumlahTerjawab < totalSoal) {
-            let sisa = totalSoal - jumlahTerjawab;
-            alert("MAAF! Anda belum bisa mengirim jawaban.\n\nMasih ada " + sisa + " soal yang belum dikerjakan. Silakan periksa kembali nomor yang masih berwarna putih.");
-            return; // Gagalkan pengiriman
+        let terjawab = Object.keys(jawabanUser).length;
+        
+        // JIKA BELUM LENGKAP
+        if (terjawab < dataSoal.length) {
+            let sisa = dataSoal.length - terjawab;
+            showModal("Belum Lengkap", `Anda belum menjawab ${sisa} soal lagi. Silakan periksa kembali semua nomor sebelum mengirim!`, "❌");
+            return;
         }
 
-        // Jika semua sudah terisi
-        if(!confirm("Yakin ingin mengirim semua jawaban? Anda tidak bisa mengulang ujian ini kembali.")) return;
+        // KONFIRMASI AKHIR
+        if(!confirm("Semua soal sudah dijawab. Kirim sekarang?")) return;
         
-        // Ganti tombol jadi loading
-        const btn = document.getElementById('btnSubmit');
-        btn.innerText = "Mengirim...";
-        btn.disabled = true;
+        document.getElementById('btnSubmit').innerText = "Mengirim...";
+        document.getElementById('btnSubmit').disabled = true;
 
         let benar = 0;
         dataSoal.forEach((s, i) => { if(jawabanUser[i] === s.jawaban) benar++; });
         
         const params = new URLSearchParams({
-            nama: userData.nama,
-            kelas: userData.kelas,
-            mapel: "INFORMATIKA",
-            jawabanUser: JSON.stringify(jawabanUser),
-            benar: benar,
-            salah: dataSoal.length - benar
+            nama: userData.nama, kelas: userData.kelas, mapel: "INFORMATIKA",
+            jawabanUser: JSON.stringify(jawabanUser), benar: benar, salah: dataSoal.length - benar
         });
 
         try {
-            // Kirim data
             await fetch(`${SCRIPT_URL}?${params.toString()}`, { method: 'GET', mode: 'no-cors' });
-            
-            // Hapus Izin & Sesi (PENTING!)
             sessionStorage.clear();
-            
-            alert("JAWABAN BERHASIL TERKIRIM!\nTerima kasih sudah mengikuti ujian.");
-            window.location.href = 'index.html'; // Kembali ke login
+            showModal("Berhasil!", "Jawaban Anda telah tersimpan. Anda akan diarahkan ke halaman awal.", "✅");
+            setTimeout(() => { window.location.href = 'index.html'; }, 3000);
         } catch (e) {
-            alert("Terjadi kesalahan koneksi. Silakan coba klik Kirim lagi.");
-            btn.innerText = "Selesai & Kirim";
-            btn.disabled = false;
+            alert("Koneksi bermasalah. Silakan coba lagi.");
+            document.getElementById('btnSubmit').disabled = false;
         }
     }
 </script>
