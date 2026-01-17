@@ -1,109 +1,159 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Sistem ANBK Lite</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Ujian ANBK Lite</title>
     <style>
-        body { font-family: Arial; padding: 20px; background: #f4f4f4; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .soal-container { margin-bottom: 20px; display: none; }
-        .active { display: block; }
-        button { padding: 10px 20px; cursor: pointer; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #e9ecef; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .header { border-bottom: 2px solid #007bff; margin-bottom: 20px; padding-bottom: 10px; color: #007bff; }
+        .identitas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .soal-card { display: none; }
+        .soal-card.active { display: block; }
+        .pilihan-label { display: block; background: #f8f9fa; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; transition: 0.3s; }
+        .pilihan-label:hover { background: #e2e6ea; }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; }
+        button { padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-prev { background: #6c757d; color: white; }
+        .btn-next { background: #007bff; color: white; }
+        .btn-submit { background: #28a745; color: white; display: none; }
+        .nomor-navigasi { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 25px; border-top: 1px solid #eee; padding-top: 20px; }
+        .kotak-nomor { width: 35px; height: 35px; border: 1px solid #007bff; text-align: center; line-height: 35px; cursor: pointer; border-radius: 4px; font-size: 14px; }
+        .kotak-nomor.sudah { background: #28a745; color: white; border-color: #28a745; }
+        .kotak-nomor.aktif { background: #007bff; color: white; box-shadow: 0 0 8px rgba(0,123,255,0.5); }
     </style>
 </head>
 <body>
-    <div class="card" id="app">
-        <div id="form-identitas">
-            <h3>Data Peserta</h3>
-            <input type="text" id="nama" placeholder="Nama Lengkap"><br><br>
-            <input type="text" id="kelas" placeholder="Kelas"><br><br>
-            <input type="text" id="mapel" placeholder="Mata Pelajaran"><br><br>
-            <button onclick="mulaiUjian()">Mulai Ujian</button>
-        </div>
 
-        <div id="ujian-container" style="display:none;">
-            <div id="soal-list"></div>
-            <button id="prevBtn" onclick="geserSoal(-1)">Kembali</button>
-            <button id="nextBtn" onclick="geserSoal(1)">Lanjut</button>
-            <button id="submitBtn" style="display:none; background: green; color: white;" onclick="selesaiUjian()">Kirim Jawaban</button>
+<div class="container">
+    <div class="header"><h2>SIMULASI ANBK 2026</h2></div>
+
+    <div id="view-login">
+        <h3>Konfirmasi Data Peserta</h3>
+        <div class="identitas-grid">
+            <input type="text" id="nama" placeholder="Nama Lengkap">
+            <input type="text" id="kelas" placeholder="Kelas (Contoh: 9A)">
+            <input type="text" id="mapel" placeholder="Mata Pelajaran">
         </div>
+        <button class="btn-next" style="width:100%" onclick="mulaiUjian()">Mulai Ujian Sekarang</button>
     </div>
 
-    <script>
-        let dataSoal = [];
-        let jawabanUser = {};
-        let indexSekarang = 0;
+    <div id="view-ujian" style="display:none;">
+        <div id="konten-soal"></div>
+        
+        <div class="nav-buttons">
+            <button class="btn-prev" id="btnPrev" onclick="navigasi(-1)">SEBELUMNYA</button>
+            <button class="btn-next" id="btnNext" onclick="navigasi(1)">BERIKUTNYA</button>
+            <button class="btn-submit" id="btnSubmit" onclick="konfirmasiSelesai()">SELESAI & KIRIM</button>
+        </div>
 
-        // 1. Ambil soal dari file JSON
-        fetch('soal.json')
-            .then(res => res.json())
-            .then(data => { dataSoal = data; });
+        <div class="nomor-navigasi" id="navigasiNomor"></div>
+    </div>
+</div>
 
-        function mulaiUjian() {
-            document.getElementById('form-identitas').style.display = 'none';
-            document.getElementById('ujian-container').style.display = 'block';
-            tampilkanSoal();
-        }
+<script>
+    let dataSoal = [];
+    let jawabanUser = {};
+    let indexSekarang = 0;
+    const SCRIPT_URL = 'PASTE_URL_WEB_APP_GOOGLE_SCRIPT_DI_SINI';
 
-        function tampilkanSoal() {
-            let html = '';
-            dataSoal.forEach((s, i) => {
-                html += `<div class="soal-container ${i === indexSekarang ? 'active' : ''}">
-                    <h4>Soal ${i + 1}</h4>
+    // Ambil soal dari file soal.json
+    fetch('soal.json')
+        .then(res => res.json())
+        .then(data => { 
+            dataSoal = data; 
+        })
+        .catch(err => alert("Gagal memuat soal. Pastikan soal.json ada."));
+
+    function mulaiUjian() {
+        if(!document.getElementById('nama').value) return alert("Isi nama dulu!");
+        document.getElementById('view-login').style.display = 'none';
+        document.getElementById('view-ujian').style.display = 'block';
+        renderUjian();
+    }
+
+    function renderUjian() {
+        let html = '';
+        dataSoal.forEach((s, i) => {
+            html += `
+                <div class="soal-card ${i === indexSekarang ? 'active' : ''}">
+                    <p><strong>Soal Nomor ${i + 1}</strong></p>
                     <p>${s.pertanyaan}</p>
-                    ${s.pilihan.map((p, j) => `
-                        <input type="radio" name="soal${i}" onclick="simpanJawaban(${i}, ${j})"> ${p}<br>
+                    ${s.pilihan.map((p, pIdx) => `
+                        <label class="pilihan-label">
+                            <input type="radio" name="soal${i}" ${jawabanUser[i] === pIdx ? 'checked' : ''} 
+                                   onclick="pilihJawaban(${i}, ${pIdx})"> ${p}
+                        </label>
                     `).join('')}
                 </div>`;
-            });
-            document.getElementById('soal-list').innerHTML = html;
-            updateNavigasi();
-        }
+        });
+        document.getElementById('konten-soal').innerHTML = html;
+        renderNavigasi();
+    }
 
-        function simpanJawaban(soalIdx, jawabanIdx) {
-            jawabanUser[soalIdx] = jawabanIdx;
-        }
+    function pilihJawaban(soalIdx, pIdx) {
+        jawabanUser[soalIdx] = pIdx;
+        renderNavigasi(); // Update warna kotak nomor
+    }
 
-        function geserSoal(n) {
-            indexSekarang += n;
-            tampilkanSoal();
-        }
+    function renderNavigasi() {
+        let html = '';
+        dataSoal.forEach((_, i) => {
+            let status = (i === indexSekarang) ? 'aktif' : (jawabanUser[i] !== undefined ? 'sudah' : '');
+            html += `<div class="kotak-nomor ${status}" onclick="lompat(${i})">${i+1}</div>`;
+        });
+        document.getElementById('navigasiNomor').innerHTML = html;
 
-        function updateNavigasi() {
-            document.getElementById('prevBtn').disabled = (indexSekarang === 0);
-            if (indexSekarang === dataSoal.length - 1) {
-                document.getElementById('nextBtn').style.display = 'none';
-                document.getElementById('submitBtn').style.display = 'inline-block';
-            } else {
-                document.getElementById('nextBtn').style.display = 'inline-block';
-                document.getElementById('submitBtn').style.display = 'none';
-            }
+        // Atur tombol
+        document.getElementById('btnPrev').style.visibility = indexSekarang === 0 ? 'hidden' : 'visible';
+        if (indexSekarang === dataSoal.length - 1) {
+            document.getElementById('btnNext').style.display = 'none';
+            document.getElementById('btnSubmit').style.display = 'block';
+        } else {
+            document.getElementById('btnNext').style.display = 'block';
+            document.getElementById('btnSubmit').style.display = 'none';
         }
+    }
 
-        async function selesaiUjian() {
+    function navigasi(n) {
+        indexSekarang += n;
+        renderUjian();
+    }
+
+    function lompat(i) {
+        indexSekarang = i;
+        renderUjian();
+    }
+
+    async function konfirmasiSelesai() {
+        if(confirm("Apakah Anda yakin ingin mengakhiri ujian?")) {
             let benar = 0;
-            dataSoal.forEach((s, i) => {
-                if (jawabanUser[i] === s.jawaban) benar++;
-            });
+            dataSoal.forEach((s, i) => { if(jawabanUser[i] === s.jawaban) benar++; });
 
-            const hasil = {
+            const params = new URLSearchParams({
                 nama: document.getElementById('nama').value,
                 kelas: document.getElementById('kelas').value,
                 mapel: document.getElementById('mapel').value,
-                jawabanUser: jawabanUser,
+                jawabanUser: JSON.stringify(jawabanUser),
                 benar: benar,
                 salah: dataSoal.length - benar
-            };
-
-            // Kirim ke Google Sheets
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbyY528MhAel09tDGjpEeXaGNkzf0BCOc8rUJhoW7-F0c8wQ4alSA1L5KZxLy7uT_OQ6/exec';
-            await fetch(scriptURL, {
-                method: 'POST',
-                body: JSON.stringify(hasil)
             });
 
-            alert('Ujian Selesai! Jawaban terkirim.');
-            location.reload();
+            // Tampilkan loading sederhana
+            document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;'>Mengirim Jawaban... Mohon Tunggu.</h2>";
+
+            try {
+                await fetch(`${SCRIPT_URL}?${params.toString()}`, { method: 'GET', mode: 'no-cors' });
+                alert("Berhasil! Jawaban Anda telah tersimpan.");
+                location.reload();
+            } catch (e) {
+                alert("Gagal mengirim ke Google Sheets. Cek koneksi.");
+            }
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
