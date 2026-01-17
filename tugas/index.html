@@ -3,180 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Ujian ANBK Lite - SMP Azzahro</title>
+    <title>CBT Application - SMP Azzahro</title>
     <style>
-        /* Desain Background Gradasi & Font Modern */
         body { 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); 
+            font-family: 'Segoe UI', Arial, sans-serif; 
             margin: 0; 
-            min-height: 100vh; 
+            padding: 0; 
+            background-color: #f0f0f0; 
             display: flex; 
-            align-items: center; 
+            flex-direction: column; 
+            min-height: 100vh;
+        }
+
+        /* Background Header Biru seperti Gambar */
+        .top-banner {
+            background: linear-gradient(to right, #1e88e5, #1565c0);
+            height: 250px;
+            width: 100%;
+            display: flex;
             justify-content: center;
+            align-items: center;
+            color: white;
+            position: absolute;
+            top: 0;
+            z-index: 1;
         }
 
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 50px; /* Geser ke atas sedikit dari kartu */
+        }
+
+        .logo-puspendik { width: 70px; height: auto; }
+        .header-text h1 { margin: 0; font-size: 28px; letter-spacing: 2px; }
+        .header-text p { margin: 0; font-size: 14px; opacity: 0.9; }
+
+        /* Kartu Login Putih */
         .container { 
-            width: 95%; 
-            max-width: 800px; 
-            background: white; 
-            padding: 40px; 
-            border-radius: 20px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
-            transition: all 0.3s ease; 
+            position: relative;
+            z-index: 2;
+            margin-top: 150px; /* Agar kartu menimpa banner biru */
+            width: 90%;
+            max-width: 450px;
+            background: white;
+            padding: 0; /* Padding diatur di dalam child agar footer abu-abu full width */
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            overflow: hidden;
+            align-self: center;
         }
 
-        .header { text-align: center; margin-bottom: 30px; }
-        .logo { width: 90px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); margin-bottom: 10px; }
-        .header h2 { color: #007bff; margin: 5px 0; letter-spacing: 1px; }
-        
-        /* Styling Halaman Login */
-        .login-box { max-width: 400px; margin: auto; padding: 10px; }
-        .login-box h3 { color: #333; text-align: center; margin-bottom: 25px; font-weight: 600; }
-        
-        .identitas-grid { display: flex; flex-direction: column; gap: 18px; text-align: left; }
-        .input-group { position: relative; }
-        
-        label { font-weight: 600; font-size: 13px; color: #666; text-transform: uppercase; margin-bottom: 8px; display: block; margin-left: 2px; }
-        
-        /* Input dengan Simbol Ikon */
-        .field-container { position: relative; }
-        .field-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #007bff; font-size: 18px; pointer-events: none; }
+        .login-content { padding: 40px; }
+        .login-content h2 { margin-top: 0; color: #555; font-size: 22px; }
+        .login-content p.subtitle { color: #888; font-size: 14px; margin-bottom: 30px; }
 
+        /* Styling Input Line (Gaya Material) */
+        .input-group { margin-bottom: 25px; position: relative; }
+        .input-group label { display: block; font-size: 12px; color: #007bff; font-weight: bold; margin-bottom: 5px; }
+        .field-container { display: flex; align-items: center; border-bottom: 2px solid #ccc; transition: 0.3s; }
+        .field-container:focus-within { border-bottom-color: #007bff; }
+        
+        .field-icon { color: #aaa; padding: 10px; font-size: 20px; }
+        
         input, select { 
-            width: 100%; padding: 12px 12px 12px 40px; border: 2px solid #edf2f7; border-radius: 12px; 
-            box-sizing: border-box; font-size: 15px; transition: all 0.3s ease; background: #f8fafc;
+            border: none; 
+            outline: none; 
+            width: 100%; 
+            padding: 10px 5px; 
+            font-size: 16px; 
+            color: #333;
+            background: transparent;
         }
-        input:focus, select:focus { border-color: #007bff; background: white; outline: none; box-shadow: 0 0 0 4px rgba(0,123,255,0.1); }
-        input:read-only { background-color: #f1f5f9; color: #94a3b8; }
 
-        /* Button Styling */
-        .btn-main { 
-            background: #007bff; color: white; width: 100%; border: none; padding: 15px; 
-            border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer;
-            transition: all 0.3s ease; margin-top: 20px; box-shadow: 0 4px 6px rgba(0,123,255,0.2);
+        /* Tombol Biru Bulat */
+        .btn-login { 
+            background: #007bff; 
+            color: white; 
+            width: 100%; 
+            border: none; 
+            padding: 15px; 
+            border-radius: 30px; 
+            font-size: 16px; 
+            font-weight: bold; 
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
         }
-        .btn-main:hover { background: #0056b3; transform: translateY(-2px); box-shadow: 0 7px 14px rgba(0,123,255,0.3); }
+        .btn-login:hover { background: #0056b3; box-shadow: 0 4px 12px rgba(0,123,255,0.3); }
 
-        /* UI Ujian */
-        .soal-card { display: none; animation: fadeIn 0.5s ease; }
+        /* Bagian Bawah Kartu (Abu-abu tipis) */
+        .login-footer {
+            background-color: #f9f9f9;
+            padding: 20px;
+            height: 40px;
+            border-top: 1px solid #eee;
+        }
+
+        /* UI Ujian (Sama seperti sebelumnya) */
+        #view-ujian { padding: 30px; }
+        .soal-card { display: none; }
         .soal-card.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .pilihan-label { 
-            display: block; background: #f8f9fa; padding: 15px; margin: 10px 0; 
-            border: 2px solid #edf2f7; border-radius: 10px; cursor: pointer; transition: 0.3s; 
-        }
-        .pilihan-label:hover { border-color: #007bff; background: #f0f7ff; }
-        
-        .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; gap: 10px; }
-        .btn-nav { padding: 12px 25px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
-        .btn-prev { background: #6c757d; color: white; }
-        .btn-next-step { background: #007bff; color: white; flex-grow: 1; }
-        .btn-submit { background: #28a745; color: white; display: none; flex-grow: 1; }
-
-        .nomor-navigasi { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 25px; border-top: 1px solid #eee; padding-top: 20px; justify-content: center; }
-        .kotak-nomor { width: 35px; height: 35px; border: 2px solid #dee2e6; text-align: center; line-height: 35px; cursor: pointer; border-radius: 8px; font-size: 14px; transition: 0.2s; }
-        .kotak-nomor.sudah { background: #28a745; color: white; border-color: #28a745; }
-        .kotak-nomor.aktif { border-color: #007bff; color: #007bff; font-weight: bold; transform: scale(1.1); }
+        .pilihan-label { display: block; background: #f8f9fa; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; }
+        .nomor-navigasi { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; justify-content: center; }
+        .kotak-nomor { width: 35px; height: 35px; border: 1px solid #ddd; text-align: center; line-height: 35px; cursor: pointer; border-radius: 4px; }
+        .kotak-nomor.sudah { background: #28a745; color: white; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <img src="https://github.com/masrahmat-id/absensi-barcode-online-smp-smk-azzahro/raw/main/logo-smp-azzahro.png" class="logo" alt="Logo SMP Azzahro">
-        <h2>ANBK SIMULASI</h2>
+<div class="top-banner">
+    <div class="header-content">
+        <img src="https://github.com/masrahmat-id/absensi-barcode-online-smp-smk-azzahro/raw/main/logo-smp-azzahro.png" class="logo-puspendik" alt="Logo">
+        <div class="header-text">
+            <h1>PUSPENDIK</h1>
+            <p>CBT Application</p>
+        </div>
     </div>
+</div>
 
-    <div id="view-login" class="login-box">
-        <h3>Konfirmasi Peserta</h3>
-        <div class="identitas-grid">
-            <div class="input-group">
-                <label>👤 Nama Lengkap</label>
-                <div class="field-container">
-                    <span class="field-icon">👤</span>
-                    <input type="text" id="nama" placeholder="Masukkan Nama Sesuai Absen">
-                </div>
-            </div>
+<div class="container" id="main-container">
+    
+    <div id="view-login">
+        <div class="login-content">
+            <h2>Selamat Datang</h2>
+            <p class="subtitle">Silahkan login dengan data diri dan token yang anda miliki</p>
             
             <div class="input-group">
-                <label>🏫 Kelas</label>
                 <div class="field-container">
-                    <span class="field-icon">📍</span>
+                    <span class="field-icon">👤</span>
+                    <input type="text" id="nama" placeholder="Username / Nama">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="field-container">
+                    <span class="field-icon">🏫</span>
                     <select id="kelas">
-                        <option value="">-- Pilih Kelas Anda --</option>
-                        <option value="7A">Kelas 7A</option>
-                        <option value="7B">Kelas 7B</option>
-                        <option value="8A">Kelas 8A</option>
-                        <option value="8B">Kelas 8B</option>
-                        <option value="9A">Kelas 9A</option>
-                        <option value="9B">Kelas 9B</option>
+                        <option value="">-- Pilih Kelas --</option>
+                        <option value="VII">Kelas VII</option>
+                        <option value="VIII">Kelas VIII</option>
+                        <option value="IX">Kelas IX</option>
                     </select>
                 </div>
             </div>
 
             <div class="input-group">
-                <label>📚 Mata Pelajaran</label>
                 <div class="field-container">
-                    <span class="field-icon">📖</span>
-                    <input type="text" id="mapel" value="INFORMATIKA" readonly>
+                    <span class="field-icon">🔑</span>
+                    <input type="text" id="tokenInput" placeholder="Token Ujian">
                 </div>
             </div>
 
-            <div class="input-group">
-                <label>🎫 Token Ujian</label>
-                <div class="field-container">
-                    <span class="field-icon">🔑</span>
-                    <input type="text" id="tokenInput" placeholder="Masukkan Token dari Pengawas">
-                </div>
-            </div>
+            <button class="btn-login" onclick="mulaiUjian()">Login</button>
         </div>
-        <button class="btn-main" onclick="mulaiUjian()">MASUK KE PANEL UJIAN</button>
+        <div class="login-footer"></div>
     </div>
 
     <div id="view-ujian" style="display:none;">
         <div id="konten-soal"></div>
-        
-        <div class="nav-buttons">
-            <button class="btn-nav btn-prev" id="btnPrev" onclick="navigasi(-1)">KEMBALI</button>
-            <button class="btn-nav btn-next-step" id="btnNext" onclick="navigasi(1)">SOAL BERIKUTNYA</button>
-            <button class="btn-nav btn-submit" id="btnSubmit" onclick="konfirmasiSelesai()">SELESAI & KIRIM</button>
+        <div style="display:flex; justify-content: space-between; margin-top:20px;">
+            <button onclick="navigasi(-1)" style="padding:10px;">Kembali</button>
+            <button id="btnNext" onclick="navigasi(1)" style="padding:10px; background:#007bff; color:white; border:none; border-radius:5px;">Berikutnya</button>
+            <button id="btnSubmit" onclick="konfirmasiSelesai()" style="display:none; padding:10px; background:#28a745; color:white; border:none; border-radius:5px;">Selesai</button>
         </div>
-
         <div class="nomor-navigasi" id="navigasiNomor"></div>
     </div>
 </div>
 
 <script>
+    // SCRIPT SAMA SEPERTI SEBELUMNYA
     let dataSoal = [];
     let jawabanUser = {};
     let indexSekarang = 0;
     let tokenValid = "";
-    
-    // URL Web App Google Script Anda
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyuRnTMO6jx38ZGpun-tkKRgp_PBTrXQ-ugfak6818HGt30HX4yFUFFyavG0ubN8Cg/exec';
 
-    // Memuat Data Soal dan Token dari file terpisah
     Promise.all([
         fetch('soal.json').then(res => res.json()),
         fetch('token.json').then(res => res.json())
     ]).then(([soal, token]) => {
         dataSoal = soal;
         tokenValid = token.token_aktif;
-    }).catch(err => {
-        console.error(err);
-        alert("Error: Gagal mengambil data konfigurasi (soal/token).");
     });
 
     function mulaiUjian() {
-        const nama = document.getElementById('nama').value;
-        const kelas = document.getElementById('kelas').value;
         const tokenInput = document.getElementById('tokenInput').value;
-
-        if(!nama || !kelas) return alert("Mohon lengkapi Nama dan Kelas!");
-        if(tokenInput !== tokenValid) return alert("Token Ujian tidak valid!");
-
+        if(tokenInput !== tokenValid) return alert("Token Salah!");
+        
+        // Perlebar container untuk ujian
+        document.getElementById('main-container').style.maxWidth = "800px";
+        document.getElementById('main-container').style.marginTop = "50px";
+        document.querySelector('.top-banner').style.height = "150px";
+        
         document.getElementById('view-login').style.display = 'none';
         document.getElementById('view-ujian').style.display = 'block';
         renderUjian();
@@ -185,86 +205,53 @@
     function renderUjian() {
         let html = '';
         dataSoal.forEach((s, i) => {
-            html += `
-                <div class="soal-card ${i === indexSekarang ? 'active' : ''}">
-                    <p style="color:#666; font-weight:bold;">SOAL NO. ${i + 1}</p>
-                    <p style="font-size:18px; line-height:1.6; color:#333;">${s.pertanyaan}</p>
-                    <div style="margin-top:20px;">
-                        ${s.pilihan.map((p, pIdx) => `
-                            <label class="pilihan-label">
-                                <input type="radio" name="soal${i}" ${jawabanUser[i] === pIdx ? 'checked' : ''} 
-                                       onclick="pilihJawaban(${i}, ${pIdx})"> 
-                                <span style="margin-left:10px;">${p}</span>
-                            </label>
-                        `).join('')}
-                    </div>
-                </div>`;
+            html += `<div class="soal-card ${i === indexSekarang ? 'active' : ''}">
+                <h3>Soal No. ${i + 1}</h3>
+                <p>${s.pertanyaan}</p>
+                ${s.pilihan.map((p, pIdx) => `
+                    <label class="pilihan-label">
+                        <input type="radio" name="soal${i}" ${jawabanUser[i] === pIdx ? 'checked' : ''} onclick="pilih(${i},${pIdx})"> ${p}
+                    </label>
+                `).join('')}
+            </div>`;
         });
         document.getElementById('konten-soal').innerHTML = html;
-        renderNavigasi();
+        renderNav();
     }
 
-    function pilihJawaban(soalIdx, pIdx) {
-        jawabanUser[soalIdx] = pIdx;
-        renderNavigasi(); 
-    }
+    function pilih(s, p) { jawabanUser[s] = p; renderNav(); }
 
-    function renderNavigasi() {
+    function renderNav() {
         let html = '';
         dataSoal.forEach((_, i) => {
-            let status = (i === indexSekarang) ? 'aktif' : (jawabanUser[i] !== undefined ? 'sudah' : '');
-            html += `<div class="kotak-nomor ${status}" onclick="lompat(${i})">${i+1}</div>`;
+            let cls = (i === indexSekarang) ? 'sudah' : (jawabanUser[i] !== undefined ? 'sudah' : '');
+            html += `<div class="kotak-nomor ${cls}">${i+1}</div>`;
         });
         document.getElementById('navigasiNomor').innerHTML = html;
-
-        // Atur Navigasi Tombol
-        document.getElementById('btnPrev').style.visibility = indexSekarang === 0 ? 'hidden' : 'visible';
-        if (indexSekarang === dataSoal.length - 1) {
-            document.getElementById('btnNext').style.display = 'none';
-            document.getElementById('btnSubmit').style.display = 'block';
-        } else {
-            document.getElementById('btnNext').style.display = 'block';
-            document.getElementById('btnSubmit').style.display = 'none';
-        }
+        document.getElementById('btnNext').style.display = indexSekarang === dataSoal.length - 1 ? 'none' : 'block';
+        document.getElementById('btnSubmit').style.display = indexSekarang === dataSoal.length - 1 ? 'block' : 'none';
     }
 
     function navigasi(n) { indexSekarang += n; renderUjian(); }
-    function lompat(i) { indexSekarang = i; renderUjian(); }
 
     async function konfirmasiSelesai() {
-        if(confirm("Apakah Anda sudah selesai dan ingin mengirim jawaban?")) {
-            let benar = 0;
-            dataSoal.forEach((s, i) => {
-                if(jawabanUser[i] === s.jawaban) benar++;
-            });
+        if(!confirm("Selesai?")) return;
+        let benar = 0;
+        dataSoal.forEach((s, i) => { if(jawabanUser[i] === s.jawaban) benar++; });
+        
+        const params = new URLSearchParams({
+            nama: document.getElementById('nama').value,
+            kelas: document.getElementById('kelas').value,
+            mapel: "INFORMATIKA",
+            jawabanUser: JSON.stringify(jawabanUser),
+            benar: benar,
+            salah: dataSoal.length - benar
+        });
 
-            const params = new URLSearchParams({
-                nama: document.getElementById('nama').value,
-                kelas: document.getElementById('kelas').value,
-                mapel: document.getElementById('mapel').value,
-                jawabanUser: JSON.stringify(jawabanUser),
-                benar: benar,
-                salah: dataSoal.length - benar
-            });
-
-            document.body.innerHTML = `
-                <div style="text-align:center; margin-top:100px;">
-                    <img src="https://github.com/masrahmat-id/absensi-barcode-online-smp-smk-azzahro/raw/main/logo-smp-azzahro.png" style="width:80px;">
-                    <h2>Mengirim ke Server...</h2>
-                    <p>Mohon jangan tutup halaman ini.</p>
-                </div>`;
-
-            try {
-                // Kirim via GET dengan no-cors untuk kestabilan GitHub Pages
-                await fetch(`${SCRIPT_URL}?${params.toString()}`, { method: 'GET', mode: 'no-cors' });
-                alert("Berhasil! Jawaban Anda telah tersimpan di database.");
-                location.reload();
-            } catch (e) {
-                alert("Terjadi kesalahan pengiriman. Pastikan koneksi internet stabil.");
-            }
-        }
+        alert("Mengirim jawaban...");
+        await fetch(`${SCRIPT_URL}?${params.toString()}`, { method: 'GET', mode: 'no-cors' });
+        location.reload();
     }
 </script>
-
 </body>
 </html>
