@@ -3,169 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CBT SMP Azzahro - Interface Profesional</title>
+    <title>CBT Minimalis - SMP Azzahro</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f0f2f5; color: #333; }
+        :root {
+            --primary: #3f51b5;
+            --secondary: #757575;
+            --success: #43a047;
+            --bg: #f4f7f9;
+        }
+
+        body { font-family: 'Inter', sans-serif; margin: 0; background-color: var(--bg); color: #2c3e50; line-height: 1.5; }
         
-        /* HEADER PROFESIONAL */
+        /* HEADER RINGKAS */
         .header-ujian { 
-            background: #1a237e; /* Navy Blue lebih gelap & elegan */
-            color: white; 
-            padding: 0 25px; 
-            position: fixed; 
-            top: 0; width: 100%; 
-            height: 70px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            z-index: 100; 
-            box-sizing: border-box; 
-            box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+            background: white; color: #333; padding: 0 20px; position: fixed; 
+            top: 0; width: 100%; height: 60px; display: flex; 
+            justify-content: space-between; align-items: center; z-index: 100; 
+            box-sizing: border-box; border-bottom: 1px solid #e0e0e0;
         }
 
-        /* Area Kiri: Identitas Siswa */
-        .identity-area { display: flex; align-items: center; gap: 15px; }
-        
-        .avatar-circle {
-            width: 40px; height: 40px; background: #ffffff33;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 18px; border: 1px solid #ffffff66;
-        }
+        .identity-area { display: flex; align-items: center; gap: 12px; }
+        .user-name { font-weight: 700; font-size: 14px; color: var(--primary); }
+        .user-meta { font-size: 11px; color: #777; font-weight: 600; }
 
-        .user-detail { display: flex; flex-direction: column; }
-        .user-name { 
-            font-weight: 700; font-size: 15px; text-transform: uppercase; 
-            letter-spacing: 0.8px; margin-bottom: 2px;
-        }
-        .user-meta { display: flex; align-items: center; gap: 8px; font-size: 12px; opacity: 0.8; }
-        .sep-line { width: 1px; height: 10px; background: #ffffff66; }
+        .subject-area { text-align: right; line-height: 1.2; }
+        .subject-name { font-weight: 800; font-size: 14px; color: #333; }
 
-        /* Area Kanan: Informasi Mapel */
-        .subject-area { text-align: right; border-left: 2px solid #ffffff; padding-left: 15px; }
-        .label-mapel { font-size: 10px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; }
-        .subject-name { font-weight: 800; font-size: 16px; letter-spacing: 1px; }
-
-        /* Kontainer Utama */
+        /* KONTAINER */
         .container { 
-            max-width: 850px; margin: 100px auto 40px; background: white; 
-            border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding: 35px; 
-            min-height: 400px;
+            max-width: 700px; margin: 85px auto 30px; background: white; 
+            border-radius: 8px; border: 1px solid #e0e0e0; padding: 25px; 
         }
 
-        /* Soal Card */
-        .soal-card { display: none; }
-        .soal-card.active { display: block; animation: slideIn 0.4s ease-out; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        .question-number { font-size: 12px; font-weight: 800; color: var(--secondary); margin-bottom: 15px; display: block; }
+        .pertanyaan { font-size: 17px; font-weight: 500; margin-bottom: 20px; }
 
-        .question-number { color: #1a237e; font-weight: 800; font-size: 14px; margin-bottom: 20px; display: block; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-
-        /* Pilihan Jawaban */
+        /* PILIHAN JAWABAN MINIMALIS */
         .pilihan-label { 
-            display: flex; align-items: center; background: #ffffff; padding: 16px; 
-            margin: 12px 0; border: 1px solid #dee2e6; border-radius: 10px; 
-            cursor: pointer; transition: all 0.2s ease;
+            display: flex; align-items: center; padding: 12px 15px; 
+            margin: 8px 0; border: 1px solid #eceff1; border-radius: 6px; 
+            cursor: pointer; transition: 0.2s; font-size: 15px;
         }
-        .pilihan-label:hover { background: #f8f9ff; border-color: #1a237e; }
-        .pilihan-label input { margin-right: 15px; transform: scale(1.3); cursor: pointer; }
+        .pilihan-label:hover { background: #f5f7ff; border-color: var(--primary); }
+        .pilihan-label input { margin-right: 12px; accent-color: var(--primary); }
 
-        /* Navigasi Bawah */
-        .btn-group { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; }
-        .btn { padding: 14px 30px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 13px; }
-        
-        /* NAVIGASI NOMOR PROFESIONAL */
+        /* TOMBOL KECIL & MINIMALIS */
+        .btn-group { display: flex; justify-content: space-between; margin-top: 30px; }
+        .btn { 
+            padding: 8px 20px; border-radius: 4px; border: none; 
+            font-weight: 600; cursor: pointer; font-size: 13px; 
+            transition: 0.2s; text-transform: none;
+        }
+        .btn-prev { background: #eceff1; color: #607d8b; }
+        .btn-next { background: var(--primary); color: white; }
+        .btn-submit { background: var(--success); color: white; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* NOMOR NAVIGASI KECIL */
         .nomor-navigasi { 
-            display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; 
-            padding: 25px; justify-content: center;
-            background: #f8f9fa; border-radius: 12px;
-            border: 1px dashed #dee2e6;
+            display: flex; flex-wrap: wrap; gap: 6px; margin-top: 25px; 
+            justify-content: center; padding: 15px; border-top: 1px solid #eee;
         }
-
         .kotak-nomor { 
-            width: 42px; height: 42px; border: 2px solid #ced4da; 
-            text-align: center; cursor: pointer; border-radius: 10px; 
-            font-weight: 700; background: white; font-size: 14px; color: #495057;
-            transition: all 0.2s ease; display: flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px; border: 1px solid #ddd; 
+            text-align: center; line-height: 32px; cursor: pointer; 
+            border-radius: 4px; font-weight: 600; background: white; 
+            font-size: 12px; color: #757575; transition: 0.2s;
         }
+        .kotak-nomor.sudah { background: #455a64; color: white; border-color: #455a64; }
+        .kotak-nomor.aktif { border: 2px solid var(--primary); color: var(--primary); background: #f0f3ff; }
 
-        .kotak-nomor.sudah { 
-            background: #2e7d32 !important; color: white !important; 
-            border-color: #1b5e20 !important; box-shadow: 0 2px 4px rgba(46, 125, 50, 0.2);
-        }
-
-        .kotak-nomor.aktif { 
-            background: #e8eaf6; color: #1a237e; border-color: #1a237e; 
-            transform: translateY(-3px); box-shadow: 0 4px 8px rgba(26, 35, 126, 0.2);
-        }
-
-        .kotak-nomor:hover:not(.sudah):not(.aktif) {
-            border-color: #1a237e; color: #1a237e; background: #f0f2f5;
-        }
-
-        /* MODAL STYLE */
+        /* MODAL */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); display: none; justify-content: center;
-            align-items: center; z-index: 1000; backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.5); display: none; justify-content: center;
+            align-items: center; z-index: 1000;
         }
         .modal-box {
-            background: white; padding: 40px; border-radius: 15px; max-width: 400px;
-            width: 85%; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            animation: modalPop 0.3s ease;
+            background: white; padding: 25px; border-radius: 8px; max-width: 320px;
+            width: 80%; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
-        @keyframes modalPop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-        .icon-circle { width: 70px; height: 70px; border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; border: 4px solid currentColor; }
-        .icon-warn { color: #f9a825; } .icon-error { color: #c62828; } .icon-success { color: #2e7d32; }
-        
-        .check-mark { width: 30px; height: 15px; border-left: 6px solid currentColor; border-bottom: 6px solid currentColor; transform: rotate(-45deg); margin-top: -5px; }
-        .cross-mark::before, .cross-mark::after { content: ''; position: absolute; width: 35px; height: 6px; background: currentColor; border-radius: 3px; }
-        .cross-mark::before { transform: rotate(45deg); } .cross-mark::after { transform: rotate(-45deg); }
-        .warn-mark { width: 8px; height: 30px; background: currentColor; border-radius: 4px; position: relative; }
-        .warn-mark::after { content: ''; position: absolute; bottom: -12px; left: 0; width: 8px; height: 8px; background: currentColor; border-radius: 50%; }
-
-        .btn-modal-group { display: flex; gap: 12px; justify-content: center; margin-top: 30px; }
-        .btn-modal { padding: 12px 24px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; flex: 1; }
+        .btn-modal { padding: 10px 20px; border-radius: 4px; border: none; font-weight: bold; cursor: pointer; margin: 5px; font-size: 13px; }
     </style>
 </head>
 <body>
 
 <div id="customModal" class="modal-overlay">
     <div class="modal-box">
-        <div id="modalIconContainer" class="icon-circle">
-            <div id="innerIcon"></div>
-        </div>
-        <h3 id="modalTitle" style="margin: 0 0 12px; font-size: 22px;">Judul</h3>
-        <p id="modalMessage" style="color: #666; line-height: 1.6;">Pesan Notifikasi.</p>
-        <div id="modalButtons" class="btn-modal-group"></div>
+        <h4 id="modalTitle" style="margin: 0 0 10px;">Konfirmasi</h4>
+        <p id="modalMessage" style="color: #666; font-size: 14px; margin-bottom: 20px;">Pesan di sini.</p>
+        <div id="modalButtons"></div>
     </div>
 </div>
 
 <div class="header-ujian">
     <div class="identity-area">
-        <div class="avatar-circle" id="user-initial">S</div>
-        <div class="user-detail">
-            <div class="user-name" id="user-name">NAMA SISWA LENGKAP</div>
-            <div class="user-meta">
-                <span id="display-kelas">KELAS</span>
-                <div class="sep-line"></div>
-                <span>UJIAN BERBASIS ONLINE</span>
-            </div>
+        <div style="border-left: 3px solid var(--primary); padding-left: 10px;">
+            <div class="user-name" id="user-name">NAMA SISWA</div>
+            <div class="user-meta" id="display-kelas">KELAS</div>
         </div>
     </div>
-    
     <div class="subject-area">
-        <div class="label-mapel">Mata Pelajaran</div>
+        <div style="font-size: 9px; text-transform: uppercase; color: #999;">Mata Pelajaran</div>
         <div class="subject-name">INFORMATIKA</div>
     </div>
 </div>
 
 <div class="container">
-    <div id="konten-soal">Memuat konten ujian...</div>
+    <div id="konten-soal">Memuat...</div>
     
     <div class="btn-group">
-        <button class="btn" style="background:#f1f3f5; color:#495057;" onclick="navigasi(-1)">Kembali</button>
-        <button class="btn" style="background:#1a237e; color:white;" id="btnNext" onclick="navigasi(1)">Berikutnya</button>
-        <button class="btn" style="background:#2e7d32; color:white; display:none;" id="btnSubmit" onclick="validasiSelesai()">Selesai Ujian</button>
+        <button class="btn btn-prev" onclick="navigasi(-1)">Kembali</button>
+        <button class="btn btn-next" id="btnNext" onclick="navigasi(1)">Berikutnya</button>
+        <button class="btn btn-submit" id="btnSubmit" style="display:none;" onclick="validasiSelesai()">Selesai</button>
     </div>
 
     <div class="nomor-navigasi" id="navigasiNomor"></div>
@@ -184,36 +134,25 @@
         window.location.href = 'index.html';
     } else {
         document.getElementById('user-name').innerText = userData.nama;
-        document.getElementById('display-kelas').innerText = "KELAS " + userData.kelas;
-        document.getElementById('user-initial').innerText = userData.nama.charAt(0).toUpperCase();
+        document.getElementById('display-kelas').innerText = userData.kelas + " | CBT Azzahro";
         muatSoal();
     }
 
-    function showNotif(type, title, msg, onConfirm = null) {
+    function showNotif(title, msg, onConfirm = null) {
         const modal = document.getElementById('customModal');
-        const iconContainer = document.getElementById('modalIconContainer');
-        const innerIcon = document.getElementById('innerIcon');
         const btnArea = document.getElementById('modalButtons');
-
-        iconContainer.className = 'icon-circle';
-        innerIcon.className = '';
-        btnArea.innerHTML = '';
-
-        if(type === 'warn') { iconContainer.classList.add('icon-warn'); innerIcon.className = 'warn-mark'; } 
-        else if(type === 'error') { iconContainer.classList.add('icon-error'); innerIcon.className = 'cross-mark'; } 
-        else { iconContainer.classList.add('icon-success'); innerIcon.className = 'check-mark'; }
-
         document.getElementById('modalTitle').innerText = title;
         document.getElementById('modalMessage').innerText = msg;
-        
+        btnArea.innerHTML = '';
+
         if(onConfirm) {
             btnArea.innerHTML = `
-                <button class="btn-modal" style="background:#eee; color:#333;" onclick="closeModal()">BATAL</button>
-                <button class="btn-modal" style="background:#1a237e; color:white;" id="confirmBtn">YA, SELESAI</button>
+                <button class="btn-modal" style="background:#eee;" onclick="closeModal()">Batal</button>
+                <button class="btn-modal" style="background:var(--primary); color:white;" id="confirmBtn">Ya, Kirim</button>
             `;
             document.getElementById('confirmBtn').onclick = () => { onConfirm(); closeModal(); };
         } else {
-            btnArea.innerHTML = `<button class="btn-modal" style="background:#1a237e; color:white;" onclick="closeModal()">SAYA MENGERTI</button>`;
+            btnArea.innerHTML = `<button class="btn-modal" style="background:var(--primary); color:white; width:100%" onclick="closeModal()">Oke</button>`;
         }
         modal.style.display = 'flex';
     }
@@ -231,16 +170,18 @@
     function renderUjian() {
         let html = '';
         dataSoal.forEach((s, i) => {
-            html += `<div class="soal-card ${i === indexSekarang ? 'active' : ''}">
-                <span class="question-number">BUTIR SOAL NOMOR ${i + 1}</span>
-                <p style="font-size:19px; line-height:1.7; margin-bottom:30px; font-weight: 500;">${s.pertanyaan}</p>
-                ${s.pilihan.map((p, pIdx) => `
-                    <label class="pilihan-label">
-                        <input type="radio" name="soal${i}" ${jawabanUser[i] == pIdx ? 'checked' : ''} onclick="pilih(${i},${pIdx})"> 
-                        <span style="font-size: 16px;">${p}</span>
-                    </label>
-                `).join('')}
-            </div>`;
+            if (i === indexSekarang) {
+                html = `<div class="soal-card active">
+                    <span class="question-number">NOMOR ${i + 1} DARI ${dataSoal.length}</span>
+                    <div class="pertanyaan">${s.pertanyaan}</div>
+                    ${s.pilihan.map((p, pIdx) => `
+                        <label class="pilihan-label">
+                            <input type="radio" name="soal${i}" ${jawabanUser[i] == pIdx ? 'checked' : ''} onclick="pilih(${i},${pIdx})"> 
+                            <span>${p}</span>
+                        </label>
+                    `).join('')}
+                </div>`;
+            }
         });
         document.getElementById('konten-soal').innerHTML = html;
         renderNav();
@@ -275,32 +216,28 @@
     function validasiSelesai() {
         let terjawab = Object.keys(jawabanUser).length;
         if (terjawab < dataSoal.length) {
-            showNotif('error', 'Ujian Belum Lengkap', `Anda baru menjawab ${terjawab} dari ${dataSoal.length} soal. Pastikan semua nomor telah berwarna hijau.`);
+            showNotif('Perhatian', `Baru ${terjawab}/${dataSoal.length} terjawab. Lengkapi dahulu.`);
         } else {
-            showNotif('warn', 'Konfirmasi Selesai', 'Anda telah menjawab semua soal. Apakah Anda yakin ingin mengakhiri sesi ujian ini?', kirimJawaban);
+            showNotif('Selesai?', 'Kirim jawaban Anda sekarang?', kirimJawaban);
         }
     }
 
     async function kirimJawaban() {
-        document.getElementById('btnSubmit').innerText = "MEMPROSES...";
-        document.getElementById('btnSubmit').disabled = true;
-
+        document.getElementById('btnSubmit').innerText = "...";
         let benar = 0;
         dataSoal.forEach((s, i) => { if(jawabanUser[i] == s.jawaban) benar++; });
-        
         const params = new URLSearchParams({
             nama: userData.nama, kelas: userData.kelas, mapel: "INFORMATIKA",
             jawabanUser: JSON.stringify(jawabanUser), benar: benar, salah: dataSoal.length - benar
         });
-
         try {
             await fetch(`${SCRIPT_URL}?${params.toString()}`, { method: 'GET', mode: 'no-cors' });
             localStorage.removeItem('drafJawaban'); 
             sessionStorage.clear();
-            showNotif('success', 'Ujian Selesai', 'Data jawaban Anda berhasil dikirim ke server. Terima kasih telah mengikuti ujian.');
-            setTimeout(() => { window.location.href = 'index.html'; }, 3500);
+            showNotif('Berhasil', 'Jawaban terkirim.');
+            setTimeout(() => { window.location.href = 'index.html'; }, 2000);
         } catch (e) {
-            alert("Terjadi gangguan server. Coba beberapa saat lagi.");
+            alert("Gagal kirim.");
             document.getElementById('btnSubmit').disabled = false;
         }
     }
