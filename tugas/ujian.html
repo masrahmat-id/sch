@@ -7,27 +7,37 @@
     <style>
         body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; background-color: #eef2f7; color: #333; }
         
-        /* Header Modern */
+        /* Header Profesional */
         .header-ujian { 
-            background: #1565c0; color: white; padding: 12px 20px; position: fixed; 
-            top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center;
-            z-index: 10; box-sizing: border-box; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: #1565c0; color: white; padding: 0 20px; position: fixed; 
+            top: 0; width: 100%; height: 60px; display: flex; justify-content: space-between; align-items: center;
+            z-index: 10; box-sizing: border-box; box-shadow: 0 2px 10px rgba(0,0,0,0.15);
         }
 
-        /* Badge Kelas & Nama */
-        .user-profile { display: flex; align-items: center; gap: 10px; }
+        .user-info-wrapper { display: flex; align-items: center; gap: 15px; height: 100%; }
+        
         .badge-kelas { 
-            background: rgba(255, 255, 255, 0.2); padding: 4px 12px; 
-            border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid rgba(255,255,255,0.4);
+            background: #ffd600; color: #000; padding: 4px 12px; 
+            border-radius: 4px; font-size: 11px; font-weight: 800; 
+            letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .user-name { font-weight: 600; font-size: 14px; text-transform: uppercase; }
 
+        .divider { width: 1px; height: 24px; background: rgba(255,255,255,0.3); }
+
+        .user-name { font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .subject-box {
+            background: rgba(0,0,0,0.2); padding: 8px 15px; border-radius: 6px;
+            border-left: 4px solid #ffd600;
+        }
+        .subject-name { font-weight: 800; font-size: 13px; letter-spacing: 1.5px; }
+
+        /* Container & Soal */
         .container { 
             max-width: 800px; margin: 90px auto 40px; background: white; 
             border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); padding: 30px; 
         }
 
-        /* Soal */
         .soal-card { display: none; }
         .soal-card.active { display: block; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -53,7 +63,7 @@
         .kotak-nomor.sudah { background: #28a745; color: white; border-color: #218838; }
         .kotak-nomor.aktif { border: 2px solid #1e88e5; color: #1e88e5; transform: scale(1.1); box-shadow: 0 0 8px rgba(30,136,229,0.3); }
 
-        /* Modal Custom CSS Icons */
+        /* Modal Notifikasi */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); display: none; justify-content: center;
@@ -100,11 +110,14 @@
 </div>
 
 <div class="header-ujian">
-    <div class="user-profile">
+    <div class="user-info-wrapper">
         <span class="badge-kelas" id="badge-kelas">KELAS</span>
+        <div class="divider"></div>
         <span class="user-name" id="user-name">NAMA SISWA</span>
     </div>
-    <div style="font-weight: 800; letter-spacing: 1px; font-size: 14px;">INFORMATIKA</div>
+    <div class="subject-box">
+        <div class="subject-name">INFORMATIKA</div>
+    </div>
 </div>
 
 <div class="container">
@@ -131,9 +144,8 @@
     if (!hasPermission || !userData) {
         window.location.href = 'index.html';
     } else {
-        // TAMPILKAN NAMA DAN KELAS DI HEADER
         document.getElementById('user-name').innerText = userData.nama;
-        document.getElementById('badge-kelas').innerText = "KELAS " + userData.kelas;
+        document.getElementById('badge-kelas').innerText = userData.kelas;
         muatSoal();
     }
 
@@ -157,11 +169,11 @@
         if(onConfirm) {
             btnArea.innerHTML = `
                 <button class="btn-modal" style="background:#eee; color:#333;" onclick="closeModal()">BATAL</button>
-                <button class="btn-modal" style="background:#1e88e5; color:white;" id="confirmBtn">YA, KIRIM</button>
+                <button class="btn-modal" style="background:#1565c0; color:white;" id="confirmBtn">YA, KIRIM</button>
             `;
             document.getElementById('confirmBtn').onclick = () => { onConfirm(); closeModal(); };
         } else {
-            btnArea.innerHTML = `<button class="btn-modal" style="background:#1e88e5; color:white; width:100%" onclick="closeModal()">MENGERTI</button>`;
+            btnArea.innerHTML = `<button class="btn-modal" style="background:#1565c0; color:white; width:100%" onclick="closeModal()">MENGERTI</button>`;
         }
         modal.style.display = 'flex';
     }
@@ -180,13 +192,14 @@
         let html = '';
         dataSoal.forEach((s, i) => {
             html += `<div class="soal-card ${i === indexSekarang ? 'active' : ''}">
-                <div style="margin-bottom:15px">
-                    <span style="font-weight:bold; color:#1e88e5; font-size:18px">SOAL NO. ${i + 1}</span>
+                <div style="margin-bottom:15px; border-bottom: 2px solid #eef2f7; padding-bottom: 10px;">
+                    <span style="font-weight:800; color:#1565c0; font-size:16px">PERTANYAAN NO. ${i + 1}</span>
                 </div>
-                <p style="font-size:18px; line-height:1.6; margin-bottom:25px">${s.pertanyaan}</p>
+                <p style="font-size:18px; line-height:1.6; margin-bottom:25px; font-weight: 500;">${s.pertanyaan}</p>
                 ${s.pilihan.map((p, pIdx) => `
                     <label class="pilihan-label">
-                        <input type="radio" name="soal${i}" ${jawabanUser[i] == pIdx ? 'checked' : ''} onclick="pilih(${i},${pIdx})"> ${p}
+                        <input type="radio" name="soal${i}" ${jawabanUser[i] == pIdx ? 'checked' : ''} onclick="pilih(${i},${pIdx})"> 
+                        <span style="font-size: 16px;">${p}</span>
                     </label>
                 `).join('')}
             </div>`;
