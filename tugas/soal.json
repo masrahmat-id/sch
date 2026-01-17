@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "pertanyaan": "Apa ibukota Indonesia?",
+    "pilihan": ["Jakarta", "Bandung", "Surabaya", "Medan"],
+    "jawaban": 0
+  },
+  {
+    "id": 2,
+    "pertanyaan": "Berapakah hasil dari 5 + 5?",
+    "pilihan": ["5", "10", "15", "20"],
+    "jawaban": 1
+  }
+]
