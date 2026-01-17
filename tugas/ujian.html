@@ -7,39 +7,59 @@
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f0f2f5; color: #333; }
         
-        /* HEADER TETAP SAMA (SESUAI PERMINTAAN SEBELUMNYA) */
+        /* HEADER PROFESIONAL */
         .header-ujian { 
-            background: #1a237e; color: white; padding: 0 25px; position: fixed; 
-            top: 0; width: 100%; height: 70px; display: flex; 
-            justify-content: space-between; align-items: center; z-index: 100; 
-            box-sizing: border-box; box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+            background: #1a237e; /* Navy Blue */
+            color: white; 
+            padding: 0 25px; 
+            position: fixed; 
+            top: 0; width: 100%; 
+            height: 70px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            z-index: 100; 
+            box-sizing: border-box; 
+            box-shadow: 0 3px 12px rgba(0,0,0,0.2);
         }
 
+        /* Area Kiri: Nama & Kelas (Sesuai Urutan Permintaan) */
         .identity-area { display: flex; align-items: center; gap: 15px; }
+        
         .avatar-circle {
             width: 40px; height: 40px; background: #ffffff33;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
             font-weight: bold; font-size: 18px; border: 1px solid #ffffff66;
         }
+
         .user-detail { display: flex; flex-direction: column; }
-        .user-name { font-weight: 700; font-size: 15px; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 2px; }
+        .user-name { 
+            font-weight: 700; font-size: 15px; text-transform: uppercase; 
+            letter-spacing: 0.8px; margin-bottom: 2px;
+        }
         .user-meta { display: flex; align-items: center; gap: 8px; font-size: 12px; opacity: 0.8; }
         .sep-line { width: 1px; height: 10px; background: #ffffff66; }
 
+        /* Area Kanan: Informasi Mapel */
         .subject-area { text-align: right; border-left: 2px solid #ffffff; padding-left: 15px; }
         .label-mapel { font-size: 10px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; }
         .subject-name { font-weight: 800; font-size: 16px; letter-spacing: 1px; }
 
+        /* Kontainer Utama */
         .container { 
             max-width: 850px; margin: 100px auto 40px; background: white; 
             border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding: 35px; 
+            min-height: 400px;
         }
 
+        /* Soal Card */
         .soal-card { display: none; }
         .soal-card.active { display: block; animation: slideIn 0.4s ease-out; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
         .question-number { color: #1a237e; font-weight: 800; font-size: 14px; margin-bottom: 20px; display: block; border-bottom: 1px solid #eee; padding-bottom: 10px; }
 
+        /* Pilihan Jawaban */
         .pilihan-label { 
             display: flex; align-items: center; background: #ffffff; padding: 16px; 
             margin: 12px 0; border: 1px solid #dee2e6; border-radius: 10px; 
@@ -48,36 +68,46 @@
         .pilihan-label:hover { background: #f8f9ff; border-color: #1a237e; }
         .pilihan-label input { margin-right: 15px; transform: scale(1.3); cursor: pointer; }
 
-        /* --- PERUBAHAN: TOMBOL LEBIH KECIL & WARNA BARU --- */
+        /* TOMBOL NAVIGASI KECIL & WARNA BARU */
         .btn-group { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; }
         
         .btn { 
-            padding: 8px 18px; /* Ukuran dikecilkan */
-            border-radius: 6px; 
-            border: none; 
-            font-weight: 700; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            text-transform: uppercase; 
-            font-size: 12px; /* Font dikecilkan */
+            padding: 8px 18px; border-radius: 6px; border: none; 
+            font-weight: 700; cursor: pointer; transition: 0.3s; 
+            text-transform: uppercase; font-size: 12px;
         }
         
-        /* Warna Tombol Baru */
         .btn-back { background: #607d8b; color: white; } /* Abu-abu Steel */
         .btn-next { background: #3949ab; color: white; } /* Indigo Bright */
-        .btn-finish { background: #d81b60; color: white; } /* Pink Maroon (Tegas) */
+        .btn-finish { background: #d81b60; color: white; } /* Pink Maroon */
         
         .btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
 
-        /* --- NAVIGASI NOMOR TETAP PROFESIONAL --- */
+        /* NAVIGASI NOMOR PROFESIONAL (HIJAU DIUBAH KE NAVY) */
         .nomor-navigasi { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 30px; justify-content: center; }
+        
         .kotak-nomor { 
             width: 38px; height: 38px; border: 1px solid #ddd; text-align: center; 
             line-height: 38px; cursor: pointer; border-radius: 6px; font-weight: 600;
             background: white; font-size: 13px; transition: 0.2s;
         }
-        .kotak-nomor.sudah { background: #2e7d32; color: white; border-color: #1b5e20; }
-        .kotak-nomor.aktif { background: #1a237e; color: white; box-shadow: 0 4px 10px rgba(26,35,126,0.3); }
+
+        /* Status: Sudah Dijawab (Navy Gelap) */
+        .kotak-nomor.sudah { 
+            background: #1a237e !important; 
+            color: white !important; 
+            border-color: #0d124a !important; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Status: Aktif Sedang Dibuka */
+        .kotak-nomor.aktif { 
+            background: #ffffff; 
+            color: #1a237e; 
+            border: 3px solid #3949ab; 
+            box-shadow: 0 4px 10px rgba(57, 73, 171, 0.3);
+            transform: translateY(-2px);
+        }
 
         /* MODAL */
         .modal-overlay {
@@ -134,7 +164,6 @@
 </div>
 
 <script>
-    /* LOGIK JAVASCRIPT TETAP SAMA SEPERTI SEBELUMNYA */
     let dataSoal = [];
     let jawabanUser = JSON.parse(localStorage.getItem('drafJawaban')) || {}; 
     let indexSekarang = 0;
@@ -207,15 +236,14 @@
     function validasiSelesai() {
         let terjawab = Object.keys(jawabanUser).length;
         if (terjawab < dataSoal.length) {
-            showNotif('error', 'Ujian Belum Lengkap', `Anda baru menjawab ${terjawab} dari ${dataSoal.length} soal.`);
+            showNotif('error', 'Belum Lengkap', `Masih ada soal yang belum dijawab.`);
         } else {
-            showNotif('warn', 'Konfirmasi Selesai', 'Yakin ingin mengakhiri sesi ujian?', kirimJawaban);
+            showNotif('warn', 'Konfirmasi', 'Yakin ingin menyelesaikan ujian?', kirimJawaban);
         }
     }
 
     async function kirimJawaban() {
-        document.getElementById('btnSubmit').innerText = "PROSES...";
-        document.getElementById('btnSubmit').disabled = true;
+        document.getElementById('btnSubmit').innerText = "...";
         let benar = 0;
         dataSoal.forEach((s, i) => { if(jawabanUser[i] == s.jawaban) benar++; });
         const params = new URLSearchParams({
@@ -227,7 +255,7 @@
             localStorage.removeItem('drafJawaban'); 
             sessionStorage.clear();
             window.location.href = 'index.html';
-        } catch (e) { alert("Gangguan server."); document.getElementById('btnSubmit').disabled = false; }
+        } catch (e) { alert("Gagal kirim."); }
     }
 
     function showNotif(type, title, msg, onConfirm = null) {
@@ -238,7 +266,7 @@
         btnArea.innerHTML = '';
         if(onConfirm) {
             btnArea.innerHTML = `<button class="btn-modal" style="background:#eee;" onclick="closeModal()">BATAL</button>
-                                 <button class="btn-modal" style="background:#3949ab; color:white;" id="confirmBtn">YA, SELESAI</button>`;
+                                 <button class="btn-modal" style="background:#3949ab; color:white;" id="confirmBtn">YA</button>`;
             document.getElementById('confirmBtn').onclick = () => { onConfirm(); closeModal(); };
         } else {
             btnArea.innerHTML = `<button class="btn-modal" style="background:#3949ab; color:white; width:100%" onclick="closeModal()">OKE</button>`;
