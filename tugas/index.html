@@ -75,32 +75,53 @@
 </div>
 <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyY528MhAel09tDGjpEeXaGNkzf0BCOc8rUJhoW7-F0c8wQ4alSA1L5KZxLy7uT_OQ6/exec';
+    
     function showNotif(msg) { document.getElementById('modalMessage').innerText = msg; document.getElementById('customModal').style.display = 'flex'; }
     function closeModal() { document.getElementById('customModal').style.display = 'none'; }
+    
     async function validasiLogin() {
         const btn = document.getElementById('btnLogin');
         const nama = document.getElementById('nama').value.trim().toUpperCase();
         const kelas = document.getElementById('kelas').value;
-        const tokenInput = document.getElementById('tokenInput').value;
+        const tokenInput = document.getElementById('tokenInput').value.trim();
+
         if(!nama || !kelas || !tokenInput) return showNotif("Lengkapi data login!");
-        btn.disabled = true; btn.innerHTML = 'MEMVALIDASI DATA<span class="dots"></span>';
+        
+        btn.disabled = true; 
+        btn.innerHTML = 'MEMVALIDASI DATA<span class="dots"></span>';
+        
         try {
-            const resToken = await fetch('token.json');
+            // PERBAIKAN: Mengambil token dari Google Script (action=getToken) bukan dari token.json
+            const resToken = await fetch(`${SCRIPT_URL}?action=getToken&t=${new Date().getTime()}`);
             const dataToken = await resToken.json();
+            
+            // Validasi Token
             if(tokenInput !== dataToken.token_aktif) {
-                btn.disabled = false; btn.innerHTML = 'MASUK SEKARANG';
-                return showNotif("Token Salah!");
+                btn.disabled = false; 
+                btn.innerHTML = 'MASUK SEKARANG';
+                return showNotif("Token Salah! Gunakan token terbaru dari pengawas.");
             }
-            const cekRes = await fetch(`${SCRIPT_URL}?action=checkStatus&nama=${nama}&kelas=${kelas}`);
+            
+            // Cek Status Absensi
+            const cekRes = await fetch(`${SCRIPT_URL}?action=checkStatus&nama=${nama}&kelas=${kelas}&t=${new Date().getTime()}`);
             const status = await cekRes.text(); 
+            
             if (status === "SUDAH_ADA") {
-                btn.disabled = false; btn.innerHTML = 'MASUK SEKARANG';
+                btn.disabled = false; 
+                btn.innerHTML = 'MASUK SEKARANG';
                 return showNotif("Nama tersebut sudah mengerjakan ujian!");
             }
+            
+            // Simpan Session dan Login
             sessionStorage.setItem('Screen1.Has Permission', 'true');
             sessionStorage.setItem('userCBT', JSON.stringify({ nama, kelas, isAuth: true }));
             window.location.href = 'ujian.html';
-        } catch (e) { btn.disabled = false; btn.innerHTML = 'MASUK SEKARANG'; showNotif("Gagal koneksi database."); }
+
+        } catch (e) { 
+            btn.disabled = false; 
+            btn.innerHTML = 'MASUK SEKARANG'; 
+            showNotif("Gagal koneksi database. Periksa internet Anda."); 
+        }
     }
 </script>
 </body>
