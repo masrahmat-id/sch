@@ -3,92 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ujian Berjalan - CBT SMP Azzahro</title>
+    <title>CBT SMP Azzahro - Ujian Berjalan</title>
     <style>
-        body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; background-color: #eef2f7; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; background-color: #eef2f7; color: #333; }
         
-        /* Header Fixed */
+        /* Header */
         .header-ujian { 
             background: #1565c0; color: white; padding: 15px 20px; position: fixed; 
             top: 0; width: 100%; display: flex; justify-content: space-between; 
-            z-index: 10; box-sizing: border-box; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 10; box-sizing: border-box; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .container { 
             max-width: 800px; margin: 100px auto 40px; background: white; 
-            border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); padding: 25px; 
+            border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); padding: 30px; 
         }
 
-        /* Soal Styling */
+        /* Soal */
         .soal-card { display: none; }
-        .soal-card.active { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .soal-card.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .pilihan-label { 
-            display: block; background: #f8f9fa; padding: 15px; margin: 10px 0; 
-            border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; background: #f8f9fa; padding: 15px; 
+            margin: 12px 0; border: 2px solid #eee; border-radius: 10px; 
+            cursor: pointer; transition: 0.3s;
         }
-        .pilihan-label:hover { background: #f0f7ff; border-color: #1e88e5; }
+        .pilihan-label:hover { background: #eef2f7; border-color: #1e88e5; }
+        .pilihan-label input { margin-right: 15px; width: 18px; height: 18px; cursor: pointer; }
 
         /* Navigasi Nomor */
         .nomor-navigasi { 
-            display: flex; flex-wrap: wrap; gap: 8px; margin-top: 40px; 
-            padding-top: 20px; border-top: 1px solid #eee; justify-content: center; 
+            display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; 
+            padding-top: 25px; border-top: 2px solid #f1f3f5; justify-content: center; 
         }
         .kotak-nomor { 
-            width: 35px; height: 35px; border: 1px solid #ddd; text-align: center; 
-            line-height: 35px; cursor: pointer; border-radius: 6px; font-size: 13px;
+            width: 40px; height: 40px; border: 1px solid #ddd; text-align: center; 
+            line-height: 40px; cursor: pointer; border-radius: 8px; font-weight: 600;
+            background: white; transition: 0.2s;
         }
         .kotak-nomor.sudah { background: #28a745; color: white; border-color: #218838; }
-        .kotak-nomor.aktif { border: 2px solid #1e88e5; font-weight: bold; color: #1e88e5; }
+        .kotak-nomor.aktif { border: 2px solid #1e88e5; color: #1e88e5; transform: scale(1.1); }
 
-        /* Custom Modal Notifikasi */
+        /* Modal & CSS Icons */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); display: none; justify-content: center;
-            align-items: center; z-index: 1000;
+            background: rgba(0,0,0,0.6); display: none; justify-content: center;
+            align-items: center; z-index: 1000; backdrop-filter: blur(4px);
         }
         .modal-box {
-            background: white; padding: 30px; border-radius: 15px; max-width: 400px;
-            width: 85%; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            animation: slideDown 0.3s ease;
+            background: white; padding: 35px; border-radius: 20px; max-width: 400px;
+            width: 85%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        @keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        
-        .modal-box h3 { margin-top: 0; color: #d32f2f; }
-        .modal-box p { color: #555; line-height: 1.5; }
-        .btn-modal { 
-            background: #1e88e5; color: white; border: none; padding: 10px 25px; 
-            border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 15px;
-        }
+        @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
+        /* Custom CSS Icons */
+        .icon-circle { width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; border: 4px solid currentColor; }
+        .icon-warn { color: #ffa000; }
+        .icon-error { color: #d32f2f; }
+        .icon-success { color: #388e3c; }
+        
+        .check-mark { width: 30px; height: 15px; border-left: 5px solid currentColor; border-bottom: 5px solid currentColor; transform: rotate(-45deg); margin-top: -5px; }
+        .cross-mark { position: relative; width: 30px; height: 30px; }
+        .cross-mark::before, .cross-mark::after { content: ''; position: absolute; top: 13px; left: 0; width: 30px; height: 5px; background: currentColor; border-radius: 5px; }
+        .cross-mark::before { transform: rotate(45deg); }
+        .cross-mark::after { transform: rotate(-45deg); }
+        .warn-mark { width: 6px; height: 25px; background: currentColor; position: relative; border-radius: 5px; }
+        .warn-mark::after { content: ''; position: absolute; bottom: -12px; left: 0; width: 6px; height: 6px; background: currentColor; border-radius: 50%; }
+
+        .btn-modal-group { display: flex; gap: 10px; justify-content: center; margin-top: 25px; }
+        .btn-modal { padding: 12px 25px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        
         .btn-group { display: flex; justify-content: space-between; margin-top: 30px; }
-        .btn { padding: 12px 25px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
+        .btn { padding: 12px 28px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; }
     </style>
 </head>
 <body>
 
 <div id="customModal" class="modal-overlay">
     <div class="modal-box">
-        <div id="modalIcon" style="font-size: 50px; margin-bottom: 10px;">⚠️</div>
-        <h3 id="modalTitle">Peringatan</h3>
-        <p id="modalMessage">Pesan notifikasi di sini.</p>
-        <button class="btn-modal" onclick="closeModal()">SAYA MENGERTI</button>
+        <div id="modalIconContainer" class="icon-circle">
+            <div id="innerIcon"></div>
+        </div>
+        <h3 id="modalTitle" style="margin: 0 0 10px;">Judul</h3>
+        <p id="modalMessage" style="color: #666; margin-bottom: 0;">Pesan di sini.</p>
+        <div id="modalButtons" class="btn-modal-group">
+            </div>
     </div>
 </div>
 
 <div class="header-ujian">
-    <div id="info-user">Memuat Data...</div>
-    <div>MAPEL: INFORMATIKA</div>
+    <div id="info-user">Memuat...</div>
+    <div style="font-weight: 800; letter-spacing: 1px;">INFORMATIKA</div>
 </div>
 
 <div class="container">
     <div id="konten-soal">Memuat soal...</div>
     
     <div class="btn-group">
-        <button class="btn" style="background:#6c757d; color:white;" onclick="navigasi(-1)">Kembali</button>
-        <button class="btn" style="background:#1e88e5; color:white;" id="btnNext" onclick="navigasi(1)">Berikutnya</button>
-        <button class="btn" style="background:#28a745; color:white; display:none;" id="btnSubmit" onclick="konfirmasiSelesai()">Selesai & Kirim</button>
+        <button class="btn" style="background:#e0e0e0; color:#555;" onclick="navigasi(-1)">KEMBALI</button>
+        <button class="btn" style="background:#1e88e5; color:white;" id="btnNext" onclick="navigasi(1)">BERIKUTNYA</button>
+        <button class="btn" style="background:#28a745; color:white; display:none;" id="btnSubmit" onclick="validasiSelesai()">SELESAI</button>
     </div>
 
     <div class="nomor-navigasi" id="navigasiNomor"></div>
@@ -96,7 +112,7 @@
 
 <script>
     let dataSoal = [];
-    let jawabanUser = {};
+    let jawabanUser = JSON.parse(localStorage.getItem('drafJawaban')) || {}; // Ambil draf dari storage
     let indexSekarang = 0;
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyY528MhAel09tDGjpEeXaGNkzf0BCOc8rUJhoW7-F0c8wQ4alSA1L5KZxLy7uT_OQ6/exec';
     
@@ -106,39 +122,70 @@
     if (!hasPermission || !userData) {
         window.location.href = 'index.html';
     } else {
-        document.getElementById('info-user').innerText = `${userData.nama} (${userData.kelas})`;
+        document.getElementById('info-user').innerText = userData.nama;
         muatSoal();
     }
 
-    // FUNGSI MODAL CUSTOM
-    function showModal(title, message, icon = '⚠️') {
+    // FUNGSI NOTIFIKASI CUSTOM
+    function showNotif(type, title, msg, onConfirm = null) {
+        const modal = document.getElementById('customModal');
+        const iconContainer = document.getElementById('modalIconContainer');
+        const innerIcon = document.getElementById('innerIcon');
+        const btnArea = document.getElementById('modalButtons');
+
+        // Reset
+        iconContainer.className = 'icon-circle';
+        innerIcon.className = '';
+        btnArea.innerHTML = '';
+
+        if(type === 'warn') {
+            iconContainer.classList.add('icon-warn');
+            innerIcon.className = 'warn-mark';
+        } else if(type === 'error') {
+            iconContainer.classList.add('icon-error');
+            innerIcon.className = 'cross-mark';
+        } else {
+            iconContainer.classList.add('icon-success');
+            innerIcon.className = 'check-mark';
+        }
+
         document.getElementById('modalTitle').innerText = title;
-        document.getElementById('modalMessage').innerText = message;
-        document.getElementById('modalIcon').innerText = icon;
-        document.getElementById('customModal').style.display = 'flex';
+        document.getElementById('modalMessage').innerText = msg;
+        
+        if(onConfirm) {
+            btnArea.innerHTML = `
+                <button class="btn-modal" style="background:#eee; color:#333;" onclick="closeModal()">BATAL</button>
+                <button class="btn-modal" style="background:#1e88e5; color:white;" id="confirmBtn">YA, KIRIM</button>
+            `;
+            document.getElementById('confirmBtn').onclick = () => { onConfirm(); closeModal(); };
+        } else {
+            btnArea.innerHTML = `<button class="btn-modal" style="background:#1e88e5; color:white; width:100%" onclick="closeModal()">MENGERTI</button>`;
+        }
+        
+        modal.style.display = 'flex';
     }
 
-    function closeModal() {
-        document.getElementById('customModal').style.display = 'none';
-    }
+    function closeModal() { document.getElementById('customModal').style.display = 'none'; }
 
     async function muatSoal() {
         try {
             const res = await fetch('soal.json');
             dataSoal = await res.json();
             renderUjian();
-        } catch (e) { console.error("Gagal muat soal"); }
+        } catch (e) { alert("Soal gagal dimuat!"); }
     }
 
     function renderUjian() {
         let html = '';
         dataSoal.forEach((s, i) => {
             html += `<div class="soal-card ${i === indexSekarang ? 'active' : ''}">
-                <h3 style="color:#1565c0">Soal No. ${i + 1}</h3>
-                <p style="font-size:17px; line-height:1.6;">${s.pertanyaan}</p>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px">
+                    <span style="font-weight:bold; color:#1e88e5; font-size:18px">SOAL NO. ${i + 1}</span>
+                </div>
+                <p style="font-size:18px; line-height:1.6; margin-bottom:25px">${s.pertanyaan}</p>
                 ${s.pilihan.map((p, pIdx) => `
                     <label class="pilihan-label">
-                        <input type="radio" name="soal${i}" ${jawabanUser[i] === pIdx ? 'checked' : ''} onclick="pilih(${i},${pIdx})"> ${p}
+                        <input type="radio" name="soal${i}" ${jawabanUser[i] == pIdx ? 'checked' : ''} onclick="pilih(${i},${pIdx})"> ${p}
                     </label>
                 `).join('')}
             </div>`;
@@ -147,7 +194,11 @@
         renderNav();
     }
 
-    function pilih(s, p) { jawabanUser[s] = p; renderNav(); }
+    function pilih(s, p) { 
+        jawabanUser[s] = p; 
+        localStorage.setItem('drafJawaban', JSON.stringify(jawabanUser)); // Simpan tiap klik
+        renderNav(); 
+    }
 
     function renderNav() {
         let html = '';
@@ -161,26 +212,29 @@
         document.getElementById('btnSubmit').style.display = indexSekarang === dataSoal.length - 1 ? 'block' : 'none';
     }
 
-    function navigasi(n) { indexSekarang += n; renderUjian(); }
-
-    async function konfirmasiSelesai() {
-        let terjawab = Object.keys(jawabanUser).length;
-        
-        // JIKA BELUM LENGKAP
-        if (terjawab < dataSoal.length) {
-            let sisa = dataSoal.length - terjawab;
-            showModal("Belum Lengkap", `Anda belum menjawab ${sisa} soal lagi. Silakan periksa kembali semua nomor sebelum mengirim!`, "❌");
-            return;
+    function navigasi(n) { 
+        let target = indexSekarang + n;
+        if(target >= 0 && target < dataSoal.length) {
+            indexSekarang = target;
+            renderUjian();
         }
+    }
 
-        // KONFIRMASI AKHIR
-        if(!confirm("Semua soal sudah dijawab. Kirim sekarang?")) return;
-        
-        document.getElementById('btnSubmit').innerText = "Mengirim...";
+    function validasiSelesai() {
+        let terjawab = Object.keys(jawabanUser).length;
+        if (terjawab < dataSoal.length) {
+            showNotif('error', 'Belum Lengkap!', `Masih ada ${dataSoal.length - terjawab} soal yang kosong.`);
+        } else {
+            showNotif('warn', 'Konfirmasi Kirim', 'Semua soal sudah dijawab. Kirim sekarang?', kirimJawaban);
+        }
+    }
+
+    async function kirimJawaban() {
+        document.getElementById('btnSubmit').innerText = "MENGIRIM...";
         document.getElementById('btnSubmit').disabled = true;
 
         let benar = 0;
-        dataSoal.forEach((s, i) => { if(jawabanUser[i] === s.jawaban) benar++; });
+        dataSoal.forEach((s, i) => { if(jawabanUser[i] == s.jawaban) benar++; });
         
         const params = new URLSearchParams({
             nama: userData.nama, kelas: userData.kelas, mapel: "INFORMATIKA",
@@ -189,11 +243,12 @@
 
         try {
             await fetch(`${SCRIPT_URL}?${params.toString()}`, { method: 'GET', mode: 'no-cors' });
+            localStorage.removeItem('drafJawaban'); // Hapus draf karena sudah sukses
             sessionStorage.clear();
-            showModal("Berhasil!", "Jawaban Anda telah tersimpan. Anda akan diarahkan ke halaman awal.", "✅");
+            showNotif('success', 'Berhasil!', 'Jawaban terkirim. Anda akan keluar...');
             setTimeout(() => { window.location.href = 'index.html'; }, 3000);
         } catch (e) {
-            alert("Koneksi bermasalah. Silakan coba lagi.");
+            alert("Gagal kirim. Cek internet!");
             document.getElementById('btnSubmit').disabled = false;
         }
     }
