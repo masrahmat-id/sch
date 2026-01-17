@@ -12,8 +12,15 @@
         .avatar-circle { width: 45px; height: 45px; background: #ffffff33; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid #ffffff66; font-size: 20px; }
         .subject-area { text-align: right; border-left: 2px solid #ffffff; padding-left: 15px; }
         .container { max-width: 850px; margin: 100px auto 40px; background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding: 35px; min-height: 400px; }
-        #konten-ujian { display: block; }
+        
+        /* Area Hasil Akhir */
         #hasil-akhir { display: none; text-align: center; padding: 40px 10px; }
+        .info-skor-box { margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 15px; display: inline-block; min-width: 300px; }
+        .skor-besar { font-size: 82px; font-weight: 900; margin: 10px 0; display: block; line-height: 1; }
+        .txt-benar { color: #d32f2f; } /* Merah */
+        .txt-total { color: #ff9800; } /* Orange */
+        .label-perolehan { font-size: 18px; font-weight: 600; color: #555; margin-bottom: 5px; }
+
         .soal-card { display: none; }
         .soal-card.active { display: block; animation: slideIn 0.4s; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
@@ -21,39 +28,29 @@
         .pilihan-label:hover { background: #f8f9fa; border-color: #1a237e; }
         .btn-group { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; }
         .btn { padding: 12px 25px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 13px; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
-        .btn:active { transform: scale(0.95); }
         .btn-back { background: #607d8b; color: white; }
         .btn-next { background: #3949ab; color: white; }
         .btn-finish { background: #1a237e; color: white; }
         .btn-sending { background: #d32f2f !important; color: white !important; cursor: not-allowed; }
-        .moving-dots::after { content: '...'; display: inline-block; animation: flowRight 1.5s infinite; letter-spacing: 2px; }
-        @keyframes flowRight { 0% { opacity: 0; transform: translateX(-5px); } 50% { opacity: 1; transform: translateX(0px); } 100% { opacity: 0; transform: translateX(5px); } }
-        .skor-besar { color: #d32f2f; font-size: 82px; font-weight: 900; margin: 10px 0; display: block; }
         .nomor-navigasi { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 30px; justify-content: center; }
         .kotak-nomor { width: 38px; height: 38px; border: 1px solid #ddd; text-align: center; line-height: 38px; cursor: pointer; border-radius: 6px; font-weight: 600; background: white; transition: 0.2s; }
         .kotak-nomor.sudah { background: #1a237e !important; color: white !important; }
-        .kotak-nomor.aktif { border: 3px solid #f9a825; transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .kotak-nomor.aktif { border: 3px solid #f9a825; transform: translateY(-3px); }
         
-        /* Modal Style Improvements */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
-        .modal-box { background: white; padding: 40px; border-radius: 20px; max-width: 400px; width: 85%; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        .modal-box { background: white; padding: 40px; border-radius: 20px; max-width: 400px; width: 85%; text-align: center; }
         .icon-circle { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; }
         .icon-circle .material-icons-round { font-size: 50px; }
         .icon-warn { background: #fff3e0; color: #f9a825; } 
         .icon-error { background: #ffebee; color: #c62828; } 
         .icon-success { background: #e8f5e9; color: #2e7d32; }
-        
-        #modalTitle { margin: 10px 0; font-size: 22px; color: #1a237e; }
-        #modalMessage { color: #666; line-height: 1.5; }
     </style>
 </head>
 <body>
 
 <div id="customModal" class="modal-overlay">
     <div class="modal-box">
-        <div id="modalIconContainer" class="icon-circle">
-            <span id="innerIcon" class="material-icons-round"></span>
-        </div>
+        <div id="modalIconContainer" class="icon-circle"><span id="innerIcon" class="material-icons-round"></span></div>
         <h3 id="modalTitle">Judul</h3>
         <p id="modalMessage">Pesan.</p>
         <div id="modalButtons" style="display:flex; gap:10px; margin-top:25px;"></div>
@@ -78,27 +75,29 @@
     <div id="konten-ujian">
         <div id="konten-soal">Memuat soal...</div>
         <div class="btn-group">
-            <button class="btn btn-back" onclick="navigasi(-1)">
-                <span class="material-icons-round">arrow_back</span> Kembali
-            </button>
-            <button class="btn btn-next" id="btnNext" onclick="navigasi(1)">
-                Berikutnya <span class="material-icons-round">arrow_forward</span>
-            </button>
-            <button class="btn btn-finish" id="btnSubmit" style="display:none;" onclick="validasiSelesai()">
-                Selesai Ujian <span class="material-icons-round">send</span>
-            </button>
+            <button class="btn btn-back" onclick="navigasi(-1)"><span class="material-icons-round">arrow_back</span> Kembali</button>
+            <button class="btn btn-next" id="btnNext" onclick="navigasi(1)">Berikutnya <span class="material-icons-round">arrow_forward</span></button>
+            <button class="btn btn-finish" id="btnSubmit" style="display:none;" onclick="validasiSelesai()">Selesai Ujian <span class="material-icons-round">send</span></button>
         </div>
         <div class="nomor-navigasi" id="navigasiNomor"></div>
     </div>
 
     <div id="hasil-akhir">
-        <div class="icon-circle icon-success" style="margin: 0 auto;">
-            <span class="material-icons-round">check_circle</span>
-        </div>
+        <div class="icon-circle icon-success" style="margin: 0 auto;"><span class="material-icons-round">check_circle</span></div>
         <h2 style="margin-top:20px;">UJIAN SELESAI</h2>
-        <p>Jawaban berhasil dikirim ke server. Skor Anda:</p>
-        <span class="skor-besar" id="skor-tampil">0</span>
-        <button class="btn btn-finish" style="padding:15px 30px; margin: 0 auto;" onclick="sessionStorage.clear(); location.href='index.html'">
+        
+        <div class="info-skor-box">
+            <div class="label-perolehan">INFORMASI PEROLEHAN JAWABAN</div>
+            <span class="skor-besar">
+                <span id="benar-tampil" class="txt-benar">0</span> 
+                <span style="color:#ccc; font-weight:300;">/</span> 
+                <span id="total-tampil" class="txt-total">0</span>
+            </span>
+            <p style="color:#666; margin:0;">Jawaban Benar dari Total Soal</p>
+        </div>
+
+        <br>
+        <button class="btn btn-finish" style="padding:15px 30px; margin: 20px auto;" onclick="sessionStorage.clear(); location.href='index.html'">
             <span class="material-icons-round">logout</span> KEMBALI KE LOGIN
         </button>
     </div>
@@ -126,9 +125,7 @@
             const res = await fetch('soal.json'); 
             dataSoal = await res.json(); 
             renderUjian(); 
-        } catch (e) { 
-            showNotif('error', 'Gagal', 'Gagal memuat soal. Pastikan file soal.json tersedia.');
-        } 
+        } catch (e) { alert("Gagal memuat soal."); } 
     }
 
     function renderUjian() {
@@ -163,17 +160,13 @@
             html += `<div class="kotak-nomor ${cls}" onclick="indexSekarang=${i}; renderUjian();">${i+1}</div>`;
         });
         document.getElementById('navigasiNomor').innerHTML = html;
-        
         document.getElementById('btnNext').style.display = indexSekarang === dataSoal.length - 1 ? 'none' : 'flex';
         document.getElementById('btnSubmit').style.display = indexSekarang === dataSoal.length - 1 ? 'flex' : 'none';
     }
 
     function navigasi(n) { 
         let target = indexSekarang + n; 
-        if(target >= 0 && target < dataSoal.length){
-            indexSekarang = target; 
-            renderUjian();
-        } 
+        if(target >= 0 && target < dataSoal.length){ indexSekarang = target; renderUjian(); } 
     }
 
     function showNotif(type, title, msg, onConfirm = null) {
@@ -181,41 +174,28 @@
         const icon = document.getElementById('innerIcon');
         const btnArea = document.getElementById('modalButtons'); 
         modal.style.display = 'flex';
-        
         document.getElementById('modalIconContainer').className = 'icon-circle icon-' + type;
-        
-        // Memilih icon berdasarkan type
-        if(type === 'error') icon.innerText = 'report_gmailerrorred';
-        else if(type === 'warn') icon.innerText = 'help_outline';
-        else icon.innerText = 'check_circle_outline';
-        
+        icon.innerText = type === 'error' ? 'report_gmailerrorred' : (type === 'warn' ? 'help_outline' : 'check_circle_outline');
         document.getElementById('modalTitle').innerText = title; 
         document.getElementById('modalMessage').innerText = msg;
-        
         btnArea.innerHTML = onConfirm ? 
-            `<button onclick="document.getElementById('customModal').style.display='none'" style="flex:1; padding:12px; border-radius:8px; border:1px solid #ddd; cursor:pointer; font-weight:bold;">BATAL</button>
+            `<button onclick="document.getElementById('customModal').style.display='none'" style="flex:1; padding:12px; border-radius:8px; border:1px solid #ddd; cursor:pointer;">BATAL</button>
              <button id="cfm" style="flex:1; background:#1a237e; color:white; padding:12px; border-radius:8px; border:none; cursor:pointer; font-weight:bold;">YA, KIRIM</button>` : 
-            `<button onclick="document.getElementById('customModal').style.display='none'" style="width:100%; padding:12px; background:#1a237e; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">OKE</button>`;
-        
-        if(onConfirm) document.getElementById('cfm').onclick = () => { 
-            onConfirm(); 
-            document.getElementById('customModal').style.display='none'; 
-        };
+            `<button onclick="document.getElementById('customModal').style.display='none'" style="width:100%; padding:12px; background:#1a237e; color:white; border:none; border-radius:8px; cursor:pointer;">OKE</button>`;
+        if(onConfirm) document.getElementById('cfm').onclick = () => { onConfirm(); document.getElementById('customModal').style.display='none'; };
     }
 
     function validasiSelesai() {
-        let terjawab = Object.keys(jawabanUser).length;
-        if(terjawab < dataSoal.length) {
-            showNotif('error', 'Belum Lengkap', 'Anda belum menjawab semua soal. Silakan lengkapi terlebih dahulu!');
+        if(Object.keys(jawabanUser).length < dataSoal.length) {
+            showNotif('error', 'Belum Lengkap', 'Anda belum menjawab semua soal!');
         } else {
-            showNotif('warn', 'Konfirmasi', 'Apakah Anda yakin ingin mengakhiri ujian dan mengirim jawaban?', kirimJawaban);
+            showNotif('warn', 'Konfirmasi', 'Kirim jawaban sekarang?', kirimJawaban);
         }
     }
 
     async function kirimJawaban() {
         const btn = document.getElementById('btnSubmit'); 
-        btn.innerHTML = 'MENGIRIM JAWABAN <span class="moving-dots"></span>';
-        btn.className = 'btn btn-sending'; 
+        btn.innerHTML = 'MENGIRIM...';
         btn.disabled = true;
 
         let benar = 0; 
@@ -227,25 +207,22 @@
             detailJawaban.push(`No${i+1}:${opsiLabel[jawabanUser[i]] || '-'}`);
         });
 
-        let salah = dataSoal.length - benar;
-        let jawabanString = detailJawaban.join(", ");
-
         try {
-            const mapel = "INFORMATIKA";
-            const finalURL = `${SCRIPT_URL}?nama=${encodeURIComponent(userData.nama)}&kelas=${userData.kelas}&mapel=${encodeURIComponent(mapel)}&benar=${benar}&salah=${salah}&jawabanUser=${encodeURIComponent(jawabanString)}`;
-
+            const finalURL = `${SCRIPT_URL}?nama=${encodeURIComponent(userData.nama)}&kelas=${userData.kelas}&mapel=INFORMATIKA&benar=${benar}&salah=${dataSoal.length - benar}&jawabanUser=${encodeURIComponent(detailJawaban.join(", "))}`;
             await fetch(finalURL, { mode: 'no-cors' });
 
             document.getElementById('konten-ujian').style.display = 'none';
             document.getElementById('hasil-akhir').style.display = 'block';
-            document.getElementById('skor-tampil').innerText = benar;
+            
+            // Update Tampilan Skor Sesuai Permintaan
+            document.getElementById('benar-tampil').innerText = benar;
+            document.getElementById('total-tampil').innerText = dataSoal.length;
             
             localStorage.removeItem('drafJawaban'); 
         } catch (e) { 
-            btn.innerHTML = 'Selesai Ujian <span class="material-icons-round">send</span>'; 
-            btn.className = 'btn btn-finish'; 
+            btn.innerHTML = 'Selesai Ujian'; 
             btn.disabled = false; 
-            showNotif('error', 'Koneksi Gagal', 'Gagal mengirim jawaban. Periksa koneksi internet Anda!');
+            showNotif('error', 'Gagal', 'Koneksi bermasalah!');
         }
     }
 </script>
