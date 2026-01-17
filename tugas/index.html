@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sistem ANBK Lite</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .soal-container { margin-bottom: 20px; display: none; }
+        .active { display: block; }
+        button { padding: 10px 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="card" id="app">
+        <div id="form-identitas">
+            <h3>Data Peserta</h3>
+            <input type="text" id="nama" placeholder="Nama Lengkap"><br><br>
+            <input type="text" id="kelas" placeholder="Kelas"><br><br>
+            <input type="text" id="mapel" placeholder="Mata Pelajaran"><br><br>
+            <button onclick="mulaiUjian()">Mulai Ujian</button>
+        </div>
+
+        <div id="ujian-container" style="display:none;">
+            <div id="soal-list"></div>
+            <button id="prevBtn" onclick="geserSoal(-1)">Kembali</button>
+            <button id="nextBtn" onclick="geserSoal(1)">Lanjut</button>
+            <button id="submitBtn" style="display:none; background: green; color: white;" onclick="selesaiUjian()">Kirim Jawaban</button>
+        </div>
+    </div>
+
+    <script>
+        let dataSoal = [];
+        let jawabanUser = {};
+        let indexSekarang = 0;
+
+        // 1. Ambil soal dari file JSON
+        fetch('soal.json')
+            .then(res => res.json())
+            .then(data => { dataSoal = data; });
+
+        function mulaiUjian() {
+            document.getElementById('form-identitas').style.display = 'none';
+            document.getElementById('ujian-container').style.display = 'block';
+            tampilkanSoal();
+        }
+
+        function tampilkanSoal() {
+            let html = '';
+            dataSoal.forEach((s, i) => {
+                html += `<div class="soal-container ${i === indexSekarang ? 'active' : ''}">
+                    <h4>Soal ${i + 1}</h4>
+                    <p>${s.pertanyaan}</p>
+                    ${s.pilihan.map((p, j) => `
+                        <input type="radio" name="soal${i}" onclick="simpanJawaban(${i}, ${j})"> ${p}<br>
+                    `).join('')}
+                </div>`;
+            });
+            document.getElementById('soal-list').innerHTML = html;
+            updateNavigasi();
+        }
+
+        function simpanJawaban(soalIdx, jawabanIdx) {
+            jawabanUser[soalIdx] = jawabanIdx;
+        }
+
+        function geserSoal(n) {
+            indexSekarang += n;
+            tampilkanSoal();
+        }
+
+        function updateNavigasi() {
+            document.getElementById('prevBtn').disabled = (indexSekarang === 0);
+            if (indexSekarang === dataSoal.length - 1) {
+                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('submitBtn').style.display = 'inline-block';
+            } else {
+                document.getElementById('nextBtn').style.display = 'inline-block';
+                document.getElementById('submitBtn').style.display = 'none';
+            }
+        }
+
+        async function selesaiUjian() {
+            let benar = 0;
+            dataSoal.forEach((s, i) => {
+                if (jawabanUser[i] === s.jawaban) benar++;
+            });
+
+            const hasil = {
+                nama: document.getElementById('nama').value,
+                kelas: document.getElementById('kelas').value,
+                mapel: document.getElementById('mapel').value,
+                jawabanUser: jawabanUser,
+                benar: benar,
+                salah: dataSoal.length - benar
+            };
+
+            // Kirim ke Google Sheets
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyY528MhAel09tDGjpEeXaGNkzf0BCOc8rUJhoW7-F0c8wQ4alSA1L5KZxLy7uT_OQ6/exec';
+            await fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(hasil)
+            });
+
+            alert('Ujian Selesai! Jawaban terkirim.');
+            location.reload();
+        }
+    </script>
+</body>
+</html>
