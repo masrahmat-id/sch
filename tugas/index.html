@@ -66,36 +66,35 @@
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyY528MhAel09tDGjpEeXaGNkzf0BCOc8rUJhoW7-F0c8wQ4alSA1L5KZxLy7uT_OQ6/exec';
 
     async function validasiLogin() {
-        const nama = document.getElementById('nama').value.trim().toUpperCase();
-        const kelas = document.getElementById('kelas').value;
-        const tokenInput = document.getElementById('tokenInput').value;
+    const nama = document.getElementById('nama').value.trim().toUpperCase();
+    const kelas = document.getElementById('kelas').value;
+    const tokenInput = document.getElementById('tokenInput').value;
 
-        if(!nama || !kelas || !tokenInput) return alert("Lengkapi data login!");
+    if(!nama || !kelas || !tokenInput) return alert("Lengkapi data login!");
 
-        try {
-            // 1. Cek Token
-            const resToken = await fetch('token.json');
-            const dataToken = await resToken.json();
-            if(tokenInput !== dataToken.token_aktif) return alert("Token Salah!");
+    try {
+        const resToken = await fetch('token.json');
+        const dataToken = await resToken.json();
+        if(tokenInput !== dataToken.token_aktif) return alert("Token Salah!");
 
-            // 2. Cek apakah nama sudah mengerjakan (API ke Google Sheets)
-            const cekRes = await fetch(`${SCRIPT_URL}?action=checkStatus&nama=${nama}`);
-            const status = await cekRes.text(); 
+        // KIRIM NAMA DAN KELAS UNTUK DICEK
+        const cekRes = await fetch(`${SCRIPT_URL}?action=checkStatus&nama=${nama}&kelas=${kelas}`);
+        const status = await cekRes.text(); 
 
-            if (status === "SUDAH_ADA") {
-                alert("Maaf, Nama ini sudah mengirimkan jawaban dan dilarang login kembali!");
-                return;
-            }
-
-            // 3. Set Izin Akses
-            sessionStorage.setItem('Screen1.Has Permission', 'true');
-            sessionStorage.setItem('userCBT', JSON.stringify({ nama, kelas, isAuth: true }));
-            window.location.href = 'ujian.html';
-
-        } catch (e) {
-            alert("Terjadi kesalahan koneksi atau database.");
+        if (status === "SUDAH_ADA") {
+            alert("Maaf, Nama tersebut di Kelas " + kelas + " sudah mengerjakan ujian!");
+            return;
         }
+
+        // Jika lolos (Belum ada kombinasi nama & kelas tersebut)
+        sessionStorage.setItem('Screen1.Has Permission', 'true');
+        sessionStorage.setItem('userCBT', JSON.stringify({ nama, kelas, isAuth: true }));
+        window.location.href = 'ujian.html';
+
+    } catch (e) {
+        alert("Gagal terhubung ke database.");
     }
+}
 </script>
 </body>
 </html>
