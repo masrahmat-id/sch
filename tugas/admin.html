@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - Token CBT</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #0d124a; color: white; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; text-align: center; }
+        .admin-card { background: #1a237e; padding: 30px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); width: 85%; max-width: 400px; border: 2px solid #3949ab; }
+        .logo { width: 60px; margin-bottom: 15px; }
+        h1 { font-size: 18px; letter-spacing: 2px; opacity: 0.8; margin-bottom: 30px; }
+        .token-display { background: #0d124a; padding: 25px; border-radius: 15px; border: 2px dashed #3949ab; margin-bottom: 20px; }
+        .token-label { font-size: 12px; color: #f9a825; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        #token-aktif { font-size: 48px; font-weight: 900; color: #fff; letter-spacing: 5px; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        .status-area { font-size: 12px; opacity: 0.6; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .dot { width: 8px; height: 8px; background: #4caf50; border-radius: 50%; animation: blink 1s infinite; }
+        @keyframes blink { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
+        .btn-refresh { margin-top: 25px; background: #f9a825; color: #0d124a; border: none; padding: 12px 25px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.3s; }
+        .btn-refresh:active { transform: scale(0.95); }
+    </style>
+</head>
+<body>
+
+<div class="admin-card">
+    <img src="https://github.com/masrahmat-id/absensi-barcode-online-smp-smk-azzahro/raw/main/logo-smp-azzahro.png" class="logo">
+    <h1>CBT ADMIN PANEL</h1>
+    
+    <div class="token-display">
+        <span class="token-label">Token Aktif Saat Ini</span>
+        <div id="token-aktif">----</div>
+    </div>
+
+    <div class="status-area">
+        <div class="dot"></div>
+        Terhubung ke Server (Update per 5 Menit)
+    </div>
+
+    <button class="btn-refresh" onclick="muatToken()">PERBARUI SEKARANG</button>
+    <p style="font-size: 10px; margin-top: 20px; opacity: 0.4;">&copy; 2026 SMP Azzahro - Private Access Only</p>
+</div>
+
+<script>
+    // MASUKKAN URL SCRIPT ANDA DI SINI
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyY528MhAel09tDGjpEeXaGNkzf0BCOc8rUJhoW7-F0c8wQ4alSA1L5KZxLy7uT_OQ6/exec';
+
+    async function muatToken() {
+        const display = document.getElementById('token-aktif');
+        display.style.opacity = "0.3";
+        try {
+            const res = await fetch(`${SCRIPT_URL}?action=getToken`);
+            const data = await res.json();
+            display.innerText = data.token_aktif;
+        } catch (e) {
+            display.innerText = "ERR";
+            console.error("Gagal mengambil token");
+        }
+        display.style.opacity = "1";
+    }
+
+    // Ambil token saat halaman dibuka
+    muatToken();
+
+    // Update otomatis setiap 1 menit agar admin selalu sinkron
+    setInterval(muatToken, 60000);
+</script>
+
+</body>
+</html>
