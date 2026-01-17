@@ -16,9 +16,10 @@
         .soal-card { display: none; }
         .soal-card.active { display: block; animation: slideIn 0.4s; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-        .pilihan-label { display: flex; align-items: center; background: #ffffff; padding: 16px; margin: 12px 0; border: 1px solid #dee2e6; border-radius: 10px; cursor: pointer; }
+        .pilihan-label { display: flex; align-items: center; background: #ffffff; padding: 16px; margin: 12px 0; border: 1px solid #dee2e6; border-radius: 10px; cursor: pointer; transition: 0.2s; }
+        .pilihan-label:hover { background: #f8f9fa; border-color: #1a237e; }
         .btn-group { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; }
-        .btn { padding: 10px 20px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 12px; }
+        .btn { padding: 12px 25px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 13px; }
         .btn-back { background: #607d8b; color: white; }
         .btn-next { background: #3949ab; color: white; }
         .btn-finish { background: #1a237e; color: white; }
@@ -29,7 +30,7 @@
         .nomor-navigasi { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 30px; justify-content: center; }
         .kotak-nomor { width: 38px; height: 38px; border: 1px solid #ddd; text-align: center; line-height: 38px; cursor: pointer; border-radius: 6px; font-weight: 600; background: white; }
         .kotak-nomor.sudah { background: #1a237e !important; color: white !important; }
-        .kotak-nomor.aktif { border: 3px solid #3949ab; transform: translateY(-2px); }
+        .kotak-nomor.aktif { border: 3px solid #f9a825; transform: translateY(-2px); }
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
         .modal-box { background: white; padding: 40px; border-radius: 15px; max-width: 400px; width: 85%; text-align: center; }
         .icon-circle { width: 70px; height: 70px; border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; border: 4px solid currentColor; position: relative; }
@@ -40,6 +41,7 @@
     </style>
 </head>
 <body>
+
 <div id="customModal" class="modal-overlay">
     <div class="modal-box">
         <div id="modalIconContainer" class="icon-circle"><div id="innerIcon"></div></div>
@@ -48,6 +50,7 @@
         <div id="modalButtons" style="display:flex; gap:10px; margin-top:20px;"></div>
     </div>
 </div>
+
 <div class="header-ujian">
     <div class="identity-area">
         <div class="avatar-circle" id="user-initial">S</div>
@@ -56,8 +59,12 @@
             <div id="display-kelas" style="font-size:12px; opacity:0.8;">KELAS</div>
         </div>
     </div>
-    <div class="subject-area"><div style="font-size:10px;">Mata Pelajaran</div><div style="font-weight:800;">INFORMATIKA</div></div>
+    <div class="subject-area">
+        <div style="font-size:10px;">Mata Pelajaran</div>
+        <div style="font-weight:800;">INFORMATIKA</div>
+    </div>
 </div>
+
 <div class="container">
     <div id="konten-ujian">
         <div id="konten-soal">Memuat soal...</div>
@@ -68,58 +75,124 @@
         </div>
         <div class="nomor-navigasi" id="navigasiNomor"></div>
     </div>
+
     <div id="hasil-akhir">
         <div class="icon-circle icon-success"><div class="check-mark"></div></div>
         <h2>UJIAN SELESAI</h2>
-        <p>Jawaban terkirim. Jumlah jawaban yang benar:</p>
+        <p>Jawaban terhasil dikirim ke server. Skor Anda:</p>
         <span class="skor-besar" id="skor-tampil">0</span>
-        <button class="btn btn-finish" style="padding:15px 30px;" onclick="location.href='index.html'">KEMBALI KE LOGIN</button>
+        <button class="btn btn-finish" style="padding:15px 30px;" onclick="sessionStorage.clear(); location.href='index.html'">KEMBALI KE LOGIN</button>
     </div>
 </div>
+
 <script>
-    let dataSoal = []; let jawabanUser = JSON.parse(localStorage.getItem('drafJawaban')) || {}; let indexSekarang = 0;
+    let dataSoal = []; 
+    let jawabanUser = JSON.parse(localStorage.getItem('drafJawaban')) || {}; 
+    let indexSekarang = 0;
+    
+    // URL Web App Google Script Anda
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyY528MhAel09tDGjpEeXaGNkzf0BCOc8rUJhoW7-F0c8wQ4alSA1L5KZxLy7uT_OQ6/exec';
+    
+    // Cek Izin Akses (Screen1.Has Permission)
     const userData = JSON.parse(sessionStorage.getItem('userCBT'));
-    if (!sessionStorage.getItem('Screen1.Has Permission') || !userData) { window.location.href = 'index.html'; }
-    else { document.getElementById('user-name').innerText = userData.nama; document.getElementById('display-kelas').innerText = "KELAS " + userData.kelas; document.getElementById('user-initial').innerText = userData.nama[0]; muatSoal(); }
-    async function muatSoal() { try { const res = await fetch('soal.json'); dataSoal = await res.json(); renderUjian(); } catch (e) { alert("Gagal muat soal"); } }
+    if (!sessionStorage.getItem('Screen1.Has Permission') || !userData) { 
+        window.location.href = 'index.html'; 
+    } else { 
+        document.getElementById('user-name').innerText = userData.nama; 
+        document.getElementById('display-kelas').innerText = "KELAS " + userData.kelas; 
+        document.getElementById('user-initial').innerText = userData.nama[0]; 
+        muatSoal(); 
+    }
+
+    async function muatSoal() { 
+        try { 
+            const res = await fetch('soal.json'); 
+            dataSoal = await res.json(); 
+            renderUjian(); 
+        } catch (e) { 
+            alert("Gagal memuat soal. Pastikan file soal.json tersedia."); 
+        } 
+    }
+
     function renderUjian() {
         let html = '';
         dataSoal.forEach((s, i) => {
             html += `<div class="soal-card ${i === indexSekarang ? 'active' : ''}">
-                <p style="font-weight:800; color:#1a237e;">NOMOR ${i+1}</p>
-                <p style="font-size:18px;">${s.pertanyaan}</p>
-                ${s.pilihan.map((p, idx) => `<label class="pilihan-label"><input type="radio" name="s${i}" ${jawabanUser[i]==idx?'checked':''} onclick="pilih(${i},${idx})"> ${p}</label>`).join('')}
+                <p style="font-weight:800; color:#1a237e;">SOAL NOMOR ${i+1}</p>
+                <p style="font-size:18px; line-height:1.6;">${s.pertanyaan}</p>
+                ${s.pilihan.map((p, idx) => `
+                    <label class="pilihan-label">
+                        <input type="radio" name="s${i}" ${jawabanUser[i]==idx?'checked':''} onclick="pilih(${i},${idx})"> 
+                        <span style="margin-left:10px;">${p}</span>
+                    </label>
+                `).join('')}
             </div>`;
         });
-        document.getElementById('konten-soal').innerHTML = html; renderNav();
+        document.getElementById('konten-soal').innerHTML = html; 
+        renderNav();
     }
-    function pilih(s, p) { jawabanUser[s] = p; localStorage.setItem('drafJawaban', JSON.stringify(jawabanUser)); renderNav(); }
+
+    function pilih(s, p) { 
+        jawabanUser[s] = p; 
+        localStorage.setItem('drafJawaban', JSON.stringify(jawabanUser)); 
+        renderNav(); 
+    }
+
     function renderNav() {
-        let html = ''; dataSoal.forEach((_, i) => {
-            let cls = (i === indexSekarang) ? 'aktif' : ''; if (jawabanUser[i] !== undefined) cls += ' sudah';
+        let html = ''; 
+        dataSoal.forEach((_, i) => {
+            let cls = (i === indexSekarang) ? 'aktif' : ''; 
+            if (jawabanUser[i] !== undefined) cls += ' sudah';
             html += `<div class="kotak-nomor ${cls}" onclick="indexSekarang=${i}; renderUjian();">${i+1}</div>`;
         });
         document.getElementById('navigasiNomor').innerHTML = html;
+        
+        // Atur tombol navigasi
         document.getElementById('btnNext').style.display = indexSekarang === dataSoal.length - 1 ? 'none' : 'block';
         document.getElementById('btnSubmit').style.display = indexSekarang === dataSoal.length - 1 ? 'block' : 'none';
     }
-    function navigasi(n) { let target = indexSekarang + n; if(target>=0 && target<dataSoal.length){indexSekarang=target; renderUjian();} }
+
+    function navigasi(n) { 
+        let target = indexSekarang + n; 
+        if(target >= 0 && target < dataSoal.length){
+            indexSekarang = target; 
+            renderUjian();
+        } 
+    }
+
     function showNotif(type, title, msg, onConfirm = null) {
-        const modal = document.getElementById('customModal'); const icon = document.getElementById('innerIcon');
-        const btnArea = document.getElementById('modalButtons'); modal.style.display = 'flex';
+        const modal = document.getElementById('customModal'); 
+        const icon = document.getElementById('innerIcon');
+        const btnArea = document.getElementById('modalButtons'); 
+        modal.style.display = 'flex';
+        
         document.getElementById('modalIconContainer').className = 'icon-circle icon-' + type;
         icon.className = type === 'error' ? 'cross-mark' : (type === 'warn' ? '' : 'check-mark');
-        document.getElementById('modalTitle').innerText = title; document.getElementById('modalMessage').innerText = msg;
-        btnArea.innerHTML = onConfirm ? `<button onclick="document.getElementById('customModal').style.display='none'" style="flex:1; padding:10px;">BATAL</button><button id="cfm" style="flex:1; background:#1a237e; color:white; padding:10px;">YA</button>` : `<button onclick="document.getElementById('customModal').style.display='none'" style="width:100%; padding:10px; background:#1a237e; color:white;">OKE</button>`;
-        if(onConfirm) document.getElementById('cfm').onclick = () => { onConfirm(); document.getElementById('customModal').style.display='none'; };
+        
+        document.getElementById('modalTitle').innerText = title; 
+        document.getElementById('modalMessage').innerText = msg;
+        
+        btnArea.innerHTML = onConfirm ? 
+            `<button onclick="document.getElementById('customModal').style.display='none'" style="flex:1; padding:12px; border-radius:8px; border:1px solid #ddd; cursor:pointer;">BATAL</button>
+             <button id="cfm" style="flex:1; background:#1a237e; color:white; padding:12px; border-radius:8px; border:none; cursor:pointer; font-weight:bold;">YA, KIRIM</button>` : 
+            `<button onclick="document.getElementById('customModal').style.display='none'" style="width:100%; padding:12px; background:#1a237e; color:white; border:none; border-radius:8px; cursor:pointer;">OKE</button>`;
+        
+        if(onConfirm) document.getElementById('cfm').onclick = () => { 
+            onConfirm(); 
+            document.getElementById('customModal').style.display='none'; 
+        };
     }
+
     function validasiSelesai() {
         let terjawab = Object.keys(jawabanUser).length;
-        if(terjawab < dataSoal.length) showNotif('error', 'Belum Lengkap', 'Lengkapi semua jawaban!');
-        else showNotif('warn', 'Konfirmasi', 'Kirim jawaban sekarang?', kirimJawaban);
+        if(terjawab < dataSoal.length) {
+            showNotif('error', 'Belum Lengkap', 'Anda belum menjawab semua soal. Silakan lengkapi terlebih dahulu!');
+        } else {
+            showNotif('warn', 'Konfirmasi', 'Apakah Anda yakin ingin mengakhiri ujian dan mengirim jawaban?', kirimJawaban);
+        }
     }
-   async function kirimJawaban() {
+
+    async function kirimJawaban() {
         const btn = document.getElementById('btnSubmit'); 
         btn.innerHTML = 'MENGIRIM JAWABAN <span class="moving-dots"></span>';
         btn.className = 'btn btn-sending'; 
@@ -127,37 +200,35 @@
 
         let benar = 0; 
         let detailJawaban = [];
-        
+        const opsiLabel = ["A", "B", "C", "D"];
+
         dataSoal.forEach((s, i) => { 
-            // Hitung Skor
             if(jawabanUser[i] == s.jawaban) benar++; 
-            // Simpan detail jawaban (A, B, C, atau D)
-            let opsi = ["A", "B", "C", "D"];
-            detailJawaban.push(`No${i+1}:${opsi[jawabanUser[i]] || '-'}`);
+            detailJawaban.push(`No${i+1}:${opsiLabel[jawabanUser[i]] || '-'}`);
         });
 
         let salah = dataSoal.length - benar;
         let jawabanString = detailJawaban.join(", ");
 
         try {
-            // URL disesuaikan dengan parameter di Google Script:
-            // p.nama, p.kelas, p.mapel, p.benar, p.salah, p.jawabanUser
-            const mapel = "INFORMATIKA"; // Bisa diganti sesuai mapel ujian
+            const mapel = "INFORMATIKA";
             const finalURL = `${SCRIPT_URL}?nama=${encodeURIComponent(userData.nama)}&kelas=${userData.kelas}&mapel=${encodeURIComponent(mapel)}&benar=${benar}&salah=${salah}&jawabanUser=${encodeURIComponent(jawabanString)}`;
 
+            // Mengirim data ke Spreadsheet
             await fetch(finalURL, { mode: 'no-cors' });
 
+            // Tampilkan Hasil Akhir
             document.getElementById('konten-ujian').style.display = 'none';
             document.getElementById('hasil-akhir').style.display = 'block';
             document.getElementById('skor-tampil').innerText = benar;
             
+            // Bersihkan draf
             localStorage.removeItem('drafJawaban'); 
-            // Penting: Jangan hapus session di sini agar tidak error saat reload hasil akhir
         } catch (e) { 
             btn.innerHTML = "SELESAI UJIAN"; 
             btn.className = 'btn btn-finish'; 
             btn.disabled = false; 
-            alert("Gagal mengirim! Periksa koneksi internet.");
+            alert("Gagal mengirim jawaban. Periksa koneksi internet Anda lalu coba klik Selesai lagi.");
         }
     }
 </script>
