@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBT Ujian - INFORMATIKA</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #eef2f7; }
+        .header-ujian { background: #1565c0; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .container { max-width: 800px; margin: 20px auto; background: white; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); padding: 25px; }
+        .soal-card { display: none; }
+        .soal-card.active { display: block; }
+        .pilihan-label { display: block; background: #fff; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; }
+        .pilihan-label:hover { background: #f0f7ff; border-color: #1e88e5; }
+        .nomor-navigasi { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; justify-content: center; }
+        .kotak-nomor { width: 35px; height: 35px; border: 1px solid #ddd; text-align: center; line-height: 35px; cursor: pointer; border-radius: 6px; }
+        .kotak-nomor.sudah { background: #28a745; color: white; border-color: #28a745; }
+        .kotak-nomor.aktif { border: 2px solid #1e88e5; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="header-ujian">
+    <div id="info-user">Memuat...</div>
+    <div>MAPEL: INFORMATIKA</div>
+</div>
+
+<div class="container">
+    <div id="konten-soal">Memuat soal...</div>
+    
+    <div style="display:flex; justify-content: space-between; margin-top:30px;">
+        <button onclick="navigasi(-1)" id="btnPrev" style="padding:10px 20px; cursor:pointer;">Kembali</button>
+        <button onclick="navigasi(1)" id="btnNext" style="padding:10px 20px; background:#1e88e5; color:white; border:none; border-radius:6px; cursor:pointer;">Berikutnya</button>
+        <button onclick="konfirmasiSelesai()" id="btnSubmit" style="display:none; padding:10px 20px; background:#28a745; color:white; border:none; border-radius:6px; cursor:pointer;">Selesai</button>
+    </div>
+
+    <div class="nomor-navigasi" id="navigasiNomor"></div>
+</div>
+
+<script>
+    let dataSoal = [];
+    let jawabanUser = {};
+    let indexSekarang = 0;
+    const userData = JSON.parse(sessionStorage.getItem('userCBT'));
+
+    // Proteksi Halaman (Cek Izin/Permission)
+    if (!userData || !userData.isAuth) {
+        alert("Anda tidak memiliki izin akses. Silakan login kembali.");
+        window.location.href = 'index.html';
+    } else {
+        document.getElementById('info-user').innerText = `${userData.nama} (${userData.kelas})`;
+        muatSoal();
+    }
+
+    async function muatSoal() {
+        try {
+            const res = await fetch('soal.json');
+            dataSoal = await res.json();
+            renderUjian();
+        } catch (e) {
+            document.getElementById('konten-soal').innerHTML = "Gagal memuat soal.";
+        }
+    }
+
+    function renderUjian() {
+        let html = '';
+        dataSoal.forEach((s, i) => {
+            html += `<div class="soal-card ${i === indexSekarang ? 'active' : ''}">
+                <h3 style="color:#1565c0">Soal No. ${i + 1}</h3>
+                <p style="font-size:16px;">${s.pertanyaan}</p>
+                ${s.pilihan.map((p, pIdx) => `
+                    <label class="pilihan-label">
+                        <input type="radio" name="soal${i}" ${jawabanUser[i] === pIdx ? 'checked' : ''} 
+                        onclick="pilih(${i},${pIdx})"> ${p}
+                    </label>
+                `).join('')}
+            </div>`;
+        });
+        document.getElementById('konten-soal').innerHTML = html;
+        renderNav();
+    }
+
+    function pilih(s, p) { 
+        jawabanUser[s] = p; 
+        renderNav(); 
+    }
+
+    function renderNav() {
+        let html = '';
+        dataSoal.forEach((_, i) => {
+            let cls = (i === indexSekarang) ? 'aktif' : '';
+            if (jawabanUser[i] !== undefined) cls += ' sudah';
+            html += `<div class="kotak-nomor ${cls}" onclick="indexSekarang=${i}; renderUjian();">${i+1}</div>`;
+        });
+        document.getElementById('navigasiNomor').innerHTML = html;
+        
+        document.getElementById('btnNext').style.display = indexSekarang === dataSoal.length - 1 ? 'none' : 'block';
+        document.getElementById('btnSubmit').style.display = indexSekarang === dataSoal.length - 1 ? 'block' : 'none';
+    }
+
+    function navigasi(n) {
+        indexSekarang += n;
+        renderUjian();
+    }
+
+    async function konfirmasiSelesai() {
+        if(!confirm("Kirim jawaban sekarang?")) return;
+        
+        let benar = 0;
+        dataSoal.forEach((s, i) => { if(jawabanUser[i] === s.jawaban) benar++; });
+
+        alert("Jawaban terkirim!");
+        sessionStorage.clear(); // Hapus izin setelah selesai
+        window.location.href = 'index.html';
+    }
+</script>
+</body>
+</html>
