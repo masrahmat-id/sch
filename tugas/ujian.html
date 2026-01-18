@@ -97,7 +97,7 @@
     </div>
     <div class="nav-right-area">
         <div class="subject-area">
-            <div style="font-size:10px; opacity:0.8;">Mapel</div>
+            <div style="font-size:10px; opacity:0.8;">MATA PELAJARAN</div>
             <div style="font-weight:800; font-size:14px; letter-spacing:1px;">INFORMATIKA</div>
         </div>
         <button id="btn-menu-nomor" onclick="toggleMenuNomor()" title="Daftar Nomor">
@@ -119,7 +119,7 @@
         <div class="btn-group">
             <button class="btn btn-back" onclick="navigasi(-1)"><span class="material-icons-round">arrow_back</span> KEMBALI</button>
             <button class="btn btn-next" id="btnNext" onclick="navigasi(1)">LANJUT <span class="material-icons-round">arrow_forward</span></button>
-            <button class="btn btn-finish" id="btnSubmit" style="display:none;" onclick="bukaModalKonfirmasi()">SELESAI <span class="material-icons-round">task_alt</span></button>
+            <button class="btn btn-finish" id="btnSubmit" style="display:none;" onclick="cekKelengkapanSebelumSelesai()">SELESAI <span class="material-icons-round">task_alt</span></button>
         </div>
     </div>
 
@@ -147,7 +147,6 @@
     let jawabanUser = JSON.parse(localStorage.getItem('drafJawaban')) || {}; 
     let indexSekarang = 0;
     
-    // VARIABEL TIMER PERSISTEN
     let timeLeft = 60; 
     let timerRunning = false;
     let timerInterval;
@@ -207,11 +206,25 @@
         document.getElementById('btnSubmit').style.display = indexSekarang === dataSoal.length - 1 ? 'flex' : 'none';
     }
 
-    // FITUR TIMER TANPA RESET
+    // FUNGSI CEK SOAL KOSONG (NOTIFIKASI DIKEMBALIKAN)
+    function cekKelengkapanSebelumSelesai() {
+        let soalKosong = [];
+        dataSoal.forEach((_, i) => {
+            if (jawabanUser[i] === undefined) {
+                soalKosong.push(i + 1);
+            }
+        });
+
+        if (soalKosong.length > 0) {
+            alert("⚠️ UJIAN BELUM LENGKAP!\n\nNomor soal yang belum dijawab:\n" + soalKosong.join(", ") + "\n\nSilakan lengkapi semua jawaban terlebih dahulu.");
+        } else {
+            bukaModalKonfirmasi();
+        }
+    }
+
     function mulaiTimerSistem() {
         if (timerRunning) return;
         timerRunning = true;
-        
         timerInterval = setInterval(() => {
             if (timeLeft > 0) {
                 timeLeft--;
@@ -247,10 +260,6 @@
     }
 
     function bukaModalKonfirmasi() {
-        if(Object.keys(jawabanUser).length < dataSoal.length) {
-            alert("Harap jawab semua soal!");
-            return;
-        }
         document.getElementById('modalConfirm').style.display = 'flex';
         updateTampilanTimer();
         if (timeLeft <= 0) {
@@ -262,7 +271,6 @@
 
     function tutupModal() {
         document.getElementById('modalConfirm').style.display = 'none';
-        // Note: Timer tetap berjalan di latar belakang (setInterval tidak di-clear)
     }
 
     async function kirimJawaban() {
