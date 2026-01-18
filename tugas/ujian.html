@@ -12,25 +12,11 @@
         .header-ujian { background: #1a237e; color: white; padding: 0 15px; position: fixed; top: 0; width: 100%; height: 70px; display: flex; justify-content: space-between; align-items: center; z-index: 100; box-sizing: border-box; box-shadow: 0 3px 12px rgba(0,0,0,0.2); }
         .identity-area { display: flex; align-items: center; gap: 10px; }
         .avatar-circle { width: 40px; height: 40px; background: #ffffff33; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 1px solid #ffffff66; }
-        
         .nav-right-area { display: flex; align-items: center; gap: 12px; }
         .subject-area { text-align: right; border-right: 1px solid #ffffff44; padding-right: 12px; }
         
-        #btn-menu-nomor { 
-            background: #283593; 
-            color: white; 
-            border: 1px solid #ffffff44; 
-            border-radius: 10px; 
-            width: 42px; 
-            height: 42px; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            transition: 0.3s; 
-        }
-        #btn-menu-nomor:hover { background: #3949ab; border-color: white; }
-
+        #btn-menu-nomor { background: #283593; color: white; border: 1px solid #ffffff44; border-radius: 10px; width: 42px; height: 42px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        
         .menu-nomor-content { display: none; position: fixed; top: 75px; right: 15px; background: white; width: 280px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); padding: 20px; z-index: 1000; max-height: 70vh; overflow-y: auto; border: 1px solid #ddd; }
         .menu-nomor-content.show { display: block; animation: fadeIn 0.2s; }
         
@@ -39,16 +25,17 @@
         /* Hasil Akhir */
         #hasil-akhir { display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px 5px; }
         .info-skor-box { margin: 15px 0; padding: 30px 20px; background: #f8f9fa; border-radius: 20px; width: 100%; max-width: 500px; box-sizing: border-box; border: 2px dashed #dee2e6; }
-        
         .display-logika-skor { display: flex; align-items: flex-end; justify-content: center; gap: 10px; margin: 10px 0; }
         .txt-benar { color: #d32f2f; font-size: clamp(70px, 15vw, 100px); font-weight: 900; line-height: 0.8; } 
         .txt-total { color: #ff9800; font-size: clamp(70px, 15vw, 100px); font-weight: 900; line-height: 0.8; } 
         .txt-label-skor { font-weight: 800; color: #555; font-size: 16px; letter-spacing: 1px; padding-bottom: 5px; text-transform: uppercase; }
 
+        /* Navigasi Kotak */
         .nomor-navigasi { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
         .kotak-nomor { width: 42px; height: 42px; border: 1px solid #ddd; text-align: center; line-height: 42px; cursor: pointer; border-radius: 8px; font-weight: 700; background: white; transition: 0.2s; }
         .kotak-nomor.sudah { background: #1a237e !important; color: white !important; }
-        .kotak-nomor.aktif { border: 3px solid #f9a825; transform: scale(1.1); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .kotak-nomor.aktif { border: 3px solid #f9a825; transform: scale(1.1); }
+        .kotak-belum { width: 35px; height: 35px; background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px; }
 
         .btn-group { display: flex; justify-content: space-between; margin-top: 30px; gap: 10px; }
         .btn { padding: 12px 18px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center; transition: 0.3s; }
@@ -56,29 +43,39 @@
         .btn-next { background: #3949ab; color: white; }
         .btn-finish { background: #1a237e; color: white; }
         
-        .moving-dots::after { content: '...'; display: inline-block; animation: flowRight 1.5s infinite; letter-spacing: 2px; }
+        /* Modal Style */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(4px); }
+        .modal-box { background: white; padding: 30px; border-radius: 20px; width: 85%; max-width: 400px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+        .btn-lock { background: #ccc !important; cursor: not-allowed !important; opacity: 0.7; color: #666 !important; }
+        
+        .moving-dots::after { content: '...'; display: inline-block; animation: flowRight 1.5s infinite; }
         @keyframes flowRight { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
         .soal-card { display: none; }
         .soal-card.active { display: block; animation: slideIn 0.3s; }
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
         .pilihan-label { display: flex; align-items: center; background: #fff; padding: 14px; margin: 10px 0; border: 1px solid #dee2e6; border-radius: 10px; cursor: pointer; }
-        
-        /* Modal Hitung Mundur */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(4px); }
-        .modal-box { background: white; padding: 30px; border-radius: 20px; width: 85%; max-width: 380px; text-align: center; }
-        .btn-lock { background: #ccc !important; cursor: not-allowed !important; opacity: 0.7; color: #666 !important; }
     </style>
 </head>
 <body>
 
+<div id="modalPeringatan" class="modal-overlay">
+    <div class="modal-box" style="border-top: 6px solid #d32f2f;">
+        <div style="color:#d32f2f;"><span class="material-icons-round" style="font-size:60px;">report_problem</span></div>
+        <h3 style="margin:15px 0 5px; font-size:20px; color:#d32f2f;">Ujian Belum Lengkap!</h3>
+        <p style="font-size:14px; color:#666;">Anda belum menjawab nomor soal berikut:</p>
+        <div id="daftar-kosong" style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:20px 0; padding:10px; background:#fafafa; border-radius:10px;">
+            </div>
+        <button onclick="tutupPeringatan()" style="width:100%; padding:15px; border-radius:10px; background:#1a237e; color:white; border:none; cursor:pointer; font-weight:bold; font-size:14px;">LENGKAPI SEKARANG</button>
+    </div>
+</div>
+
 <div id="modalConfirm" class="modal-overlay">
-    <div class="modal-box">
+    <div class="modal-box" style="border-top: 6px solid #f9a825;">
         <div style="color:#f9a825;"><span class="material-icons-round" style="font-size:60px;">info_outline</span></div>
         <h3 style="margin:15px 0 5px; font-size:22px;">Kirim Jawaban?</h3>
-        <p style="font-size:14px; color:#666; line-height:1.4;">Pastikan semua jawaban sudah benar. Tombol kirim terbuka dalam:</p>
+        <p style="font-size:14px; color:#666;">Semua soal sudah terjawab. Tombol kirim terbuka dalam:</p>
         <div id="timer-box" style="font-size:32px; font-weight:900; color:#d32f2f; margin:20px 0; font-family: monospace;">01:00</div>
         <div style="display:flex; gap:10px;">
             <button onclick="tutupModal()" style="flex:1; padding:15px; border-radius:10px; border:1px solid #ddd; cursor:pointer; font-weight:bold;">BATAL</button>
@@ -97,10 +94,10 @@
     </div>
     <div class="nav-right-area">
         <div class="subject-area">
-            <div style="font-size:10px; opacity:0.8;">MATA PELAJARAN</div>
+            <div style="font-size:10px; opacity:0.8;">Mapel</div>
             <div style="font-weight:800; font-size:14px; letter-spacing:1px;">INFORMATIKA</div>
         </div>
-        <button id="btn-menu-nomor" onclick="toggleMenuNomor()" title="Daftar Nomor">
+        <button id="btn-menu-nomor" onclick="toggleMenuNomor()">
             <span class="material-icons-round">grid_view</span>
         </button>
     </div>
@@ -119,7 +116,7 @@
         <div class="btn-group">
             <button class="btn btn-back" onclick="navigasi(-1)"><span class="material-icons-round">arrow_back</span> KEMBALI</button>
             <button class="btn btn-next" id="btnNext" onclick="navigasi(1)">LANJUT <span class="material-icons-round">arrow_forward</span></button>
-            <button class="btn btn-finish" id="btnSubmit" style="display:none;" onclick="cekKelengkapanSebelumSelesai()">SELESAI <span class="material-icons-round">task_alt</span></button>
+            <button class="btn btn-finish" id="btnSubmit" style="display:none;" onclick="cekKelengkapan()">SELESAI <span class="material-icons-round">task_alt</span></button>
         </div>
     </div>
 
@@ -134,9 +131,8 @@
                 <span id="total-tampil" class="txt-total">0</span>
                 <span class="txt-label-skor">SOAL</span>
             </div>
-            <p style="color:#666; font-size:14px; margin-top:20px;">Jawaban Anda telah berhasil terkirim ke server.</p>
         </div>
-        <button class="btn btn-finish" style="padding:18px; max-width:320px; margin-top:15px; font-size:14px;" onclick="sessionStorage.clear(); location.href='index.html'">
+        <button class="btn btn-finish" style="padding:18px; max-width:320px; margin-top:15px;" onclick="sessionStorage.clear(); location.href='index.html'">
             <span class="material-icons-round">logout</span> KEMBALI KE LOGIN
         </button>
     </div>
@@ -146,7 +142,6 @@
     let dataSoal = []; 
     let jawabanUser = JSON.parse(localStorage.getItem('drafJawaban')) || {}; 
     let indexSekarang = 0;
-    
     let timeLeft = 60; 
     let timerRunning = false;
     let timerInterval;
@@ -168,7 +163,7 @@
             const res = await fetch('soal.json'); 
             dataSoal = await res.json(); 
             renderUjian(); 
-        } catch (e) { alert("Gagal memuat soal."); } 
+        } catch (e) { alert("Gagal muat soal."); } 
     }
 
     function renderUjian() {
@@ -206,21 +201,21 @@
         document.getElementById('btnSubmit').style.display = indexSekarang === dataSoal.length - 1 ? 'flex' : 'none';
     }
 
-    // FUNGSI CEK SOAL KOSONG (NOTIFIKASI DIKEMBALIKAN)
-    function cekKelengkapanSebelumSelesai() {
-        let soalKosong = [];
-        dataSoal.forEach((_, i) => {
-            if (jawabanUser[i] === undefined) {
-                soalKosong.push(i + 1);
-            }
-        });
+    // FUNGSI CEK KELENGKAPAN DENGAN MODAL KEREN
+    function cekKelengkapan() {
+        let kosong = [];
+        dataSoal.forEach((_, i) => { if (jawabanUser[i] === undefined) kosong.push(i + 1); });
 
-        if (soalKosong.length > 0) {
-            alert("⚠️ UJIAN BELUM LENGKAP!\n\nNomor soal yang belum dijawab:\n" + soalKosong.join(", ") + "\n\nSilakan lengkapi semua jawaban terlebih dahulu.");
+        if (kosong.length > 0) {
+            const listArea = document.getElementById('daftar-kosong');
+            listArea.innerHTML = kosong.map(num => `<div class="kotak-belum">${num}</div>`).join('');
+            document.getElementById('modalPeringatan').style.display = 'flex';
         } else {
             bukaModalKonfirmasi();
         }
     }
+
+    function tutupPeringatan() { document.getElementById('modalPeringatan').style.display = 'none'; }
 
     function mulaiTimerSistem() {
         if (timerRunning) return;
@@ -248,30 +243,23 @@
 
     function aktifkanTombolKirim() {
         const btn = document.getElementById('btnKirimFinal');
-        const timerDisplay = document.getElementById('timer-box');
         if (btn) {
             btn.disabled = false;
             btn.className = ''; 
             btn.style.background = '#1a237e';
             btn.style.cursor = 'pointer';
             btn.onclick = kirimJawaban;
+            document.getElementById('timer-box').innerText = "SIAP!";
         }
-        if (timerDisplay) timerDisplay.innerText = "SIAP!";
     }
 
     function bukaModalKonfirmasi() {
         document.getElementById('modalConfirm').style.display = 'flex';
         updateTampilanTimer();
-        if (timeLeft <= 0) {
-            aktifkanTombolKirim();
-        } else {
-            mulaiTimerSistem();
-        }
+        if (timeLeft <= 0) aktifkanTombolKirim(); else mulaiTimerSistem();
     }
 
-    function tutupModal() {
-        document.getElementById('modalConfirm').style.display = 'none';
-    }
+    function tutupModal() { document.getElementById('modalConfirm').style.display = 'none'; }
 
     async function kirimJawaban() {
         const btn = document.getElementById('btnKirimFinal');
