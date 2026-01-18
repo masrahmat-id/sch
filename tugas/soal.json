@@ -1,14 +1,242 @@
 [
   {
     "id": 1,
-    "pertanyaan": "Apa ibukota negara Indonesia?",
-    "pilihan": ["Bandung", "Jakarta", "Surabaya", "Nusantara"],
+    "pertanyaan": "Apa pengertian dasar dari komputer?",
+    "pilihan": ["Alat ketik", "Mesin pengolah data", "Kabel listrik", "Layar televisi"],
     "jawaban": 1
   },
   {
     "id": 2,
-    "pertanyaan": "Siapakah presiden pertama Republik Indonesia?",
-    "pilihan": ["Moh. Hatta", "Soeharto", "Soekarno", "B.J. Habibie"],
+    "pertanyaan": "Manakah yang merupakan perangkat keras masukan (input)?",
+    "pilihan": ["Monitor", "Printer", "Keyboard", "Speaker"],
     "jawaban": 2
+  },
+  {
+    "id": 3,
+    "pertanyaan": "Aplikasi Microsoft Office yang digunakan untuk mengolah kata adalah...",
+    "pilihan": ["Excel", "Word", "PowerPoint", "Access"],
+    "jawaban": 1
+  },
+  {
+    "id": 4,
+    "pertanyaan": "Fungsi utama dari Microsoft Excel adalah...",
+    "pilihan": ["Presentasi", "Edit Foto", "Mengolah Angka", "Menonton Video"],
+    "jawaban": 2
+  },
+  {
+    "id": 5,
+    "pertanyaan": "Shortcut Ctrl + C digunakan untuk...",
+    "pilihan": ["Menyalin (Copy)", "Menempel (Paste)", "Memotong (Cut)", "Menyimpan (Save)"],
+    "jawaban": 0
+  },
+  {
+    "id": 6,
+    "pertanyaan": "Jaringan komputer yang mencakup area kantor atau rumah disebut...",
+    "pilihan": ["WAN", "MAN", "LAN", "Internet"],
+    "jawaban": 2
+  },
+  {
+    "id": 7,
+    "pertanyaan": "Otak dari sebuah komputer sering disebut...",
+    "pilihan": ["Harddisk", "RAM", "CPU", "Monitor"],
+    "jawaban": 2
+  },
+  {
+    "id": 8,
+    "pertanyaan": "Perangkat lunak untuk menjelajahi internet disebut...",
+    "pilihan": ["Browser", "Antivirus", "Editor", "Driver"],
+    "jawaban": 0
+  },
+  {
+    "id": 9,
+    "pertanyaan": "Tanda yang digunakan untuk memulai rumus di Excel adalah...",
+    "pilihan": ["+", "-", "=", "*"],
+    "jawaban": 2
+  },
+  {
+    "id": 10,
+    "pertanyaan": "Contoh media penyimpanan data permanen adalah...",
+    "pilihan": ["RAM", "Harddisk", "Mouse", "Keyboard"],
+    "jawaban": 1
+  },
+  {
+    "id": 11,
+    "pertanyaan": "Apa kepanjangan dari WWW?",
+    "pilihan": ["World Wide Web", "World Web Wide", "Web World Wide", "Wide World Web"],
+    "jawaban": 0
+  },
+  {
+    "id": 12,
+    "pertanyaan": "Kumpulan data yang diolah menjadi sesuatu yang berguna disebut...",
+    "pilihan": ["File", "Informasi", "Folder", "Software"],
+    "jawaban": 1
+  },
+  {
+    "id": 13,
+    "pertanyaan": "Satuan terkecil dari data digital adalah...",
+    "pilihan": ["Byte", "Bit", "Kilobyte", "Gigabyte"],
+    "jawaban": 1
+  },
+  {
+    "id": 14,
+    "pertanyaan": "Shortcut untuk menyimpan dokumen (Save) adalah...",
+    "pilihan": ["Ctrl + S", "Ctrl + P", "Ctrl + O", "Ctrl + X"],
+    "jawaban": 0
+  },
+  {
+    "id": 15,
+    "pertanyaan": "Aplikasi untuk membuat slide presentasi adalah...",
+    "pilihan": ["Word", "Excel", "PowerPoint", "Paint"],
+    "jawaban": 2
+  },
+  {
+    "id": 16,
+    "pertanyaan": "Efek gerak saat perpindahan slide di PowerPoint disebut...",
+    "pilihan": ["Animasi", "Transisi", "Desain", "Layout"],
+    "jawaban": 1
+  },
+  {
+    "id": 17,
+    "pertanyaan": "Alat yang menghubungkan komputer ke jaringan internet disebut...",
+    "pilihan": ["Speaker", "Modem/Router", "Joystick", "Scanner"],
+    "jawaban": 1
+  },
+  {
+    "id": 18,
+    "pertanyaan": "Analisis data bertujuan untuk...",
+    "pilihan": ["Menghapus data", "Mencari pola/tren", "Membeli komputer", "Menjual software"],
+    "jawaban": 1
+  },
+  {
+    "id": 19,
+    "pertanyaan": "Format file dokumen Microsoft Word versi terbaru adalah...",
+    "pilihan": [".txt", ".xlsx", ".docx", ".pdf"],
+    "jawaban": 2
+  },
+  {
+    "id": 20,
+    "pertanyaan": "Komponen fisik komputer disebut...",
+    "pilihan": ["Software", "Brainware", "Hardware", "Malware"],
+    "jawaban": 2
+  },
+  {
+    "id": 21,
+    "pertanyaan": "Shortcut Ctrl + V berfungsi untuk...",
+    "pilihan": ["Copy", "Paste", "Print", "New"],
+    "jawaban": 1
+  },
+  {
+    "id": 22,
+    "pertanyaan": "Google Chrome dan Mozilla Firefox adalah contoh...",
+    "pilihan": ["Sistem Operasi", "Browser", "Mesin Pencari", "Sosial Media"],
+    "jawaban": 1
+  },
+  {
+    "id": 23,
+    "pertanyaan": "Data dalam bentuk angka paling mudah dianalisis menggunakan...",
+    "pilihan": ["Grafik/Bagan", "Paragraf panjang", "Suara", "Video"],
+    "jawaban": 0
+  },
+  {
+    "id": 24,
+    "pertanyaan": "Sistem operasi yang paling populer untuk PC adalah...",
+    "pilihan": ["Android", "iOS", "Windows", "ChromeOS"],
+    "jawaban": 2
+  },
+  {
+    "id": 25,
+    "pertanyaan": "Alat keluaran (output) yang menghasilkan cetakan kertas adalah...",
+    "pilihan": ["Monitor", "Scanner", "Printer", "Mouse"],
+    "jawaban": 2
+  },
+  {
+    "id": 26,
+    "pertanyaan": "Bagian komputer yang menyimpan data sementara saat bekerja adalah...",
+    "pilihan": ["RAM", "ROM", "Harddisk", "Flashdisk"],
+    "jawaban": 0
+  },
+  {
+    "id": 27,
+    "pertanyaan": "Ikon 'B' di Microsoft Word berfungsi untuk membuat teks menjadi...",
+    "pilihan": ["Miring", "Tebal", "Garis bawah", "Berwarna"],
+    "jawaban": 1
+  },
+  {
+    "id": 28,
+    "pertanyaan": "Internet adalah singkatan dari...",
+    "pilihan": ["Interconnected Network", "Internal Network", "International Network", "Inter Net"],
+    "jawaban": 0
+  },
+  {
+    "id": 29,
+    "pertanyaan": "Contoh search engine (mesin pencari) adalah...",
+    "pilihan": ["Windows", "Google", "Word", "Excel"],
+    "jawaban": 1
+  },
+  {
+    "id": 30,
+    "pertanyaan": "Perangkat yang digunakan untuk menggerakkan kursor adalah...",
+    "pilihan": ["Keyboard", "Mouse", "Monitor", "CPU"],
+    "jawaban": 1
+  },
+  {
+    "id": 31,
+    "pertanyaan": "Langkah pertama dalam mengolah data adalah...",
+    "pilihan": ["Menghapus data", "Mengumpulkan data", "Mencetak data", "Menjual data"],
+    "jawaban": 1
+  },
+  {
+    "id": 32,
+    "pertanyaan": "Shortcut Ctrl + P digunakan untuk...",
+    "pilihan": ["Paste", "Print", "Power", "Page"],
+    "jawaban": 1
+  },
+  {
+    "id": 33,
+    "pertanyaan": "Software yang gratis untuk digunakan disebut...",
+    "pilihan": ["Payware", "Freeware", "Malware", "Spyware"],
+    "jawaban": 1
+  },
+  {
+    "id": 34,
+    "pertanyaan": "Wi-Fi digunakan untuk koneksi jaringan tanpa...",
+    "pilihan": ["Sinyal", "Kabel", "Listrik", "Udara"],
+    "jawaban": 1
+  },
+  {
+    "id": 35,
+    "pertanyaan": "Ekstensi file untuk Excel adalah...",
+    "pilihan": [".docx", ".xlsx", ".pptx", ".jpg"],
+    "jawaban": 1
+  },
+  {
+    "id": 36,
+    "pertanyaan": "Manakah yang merupakan perangkat penyimpanan portabel?",
+    "pilihan": ["RAM", "Motherboard", "Flashdisk", "Processor"],
+    "jawaban": 2
+  },
+  {
+    "id": 37,
+    "pertanyaan": "Aplikasi Microsoft Office untuk mengelola basis data adalah...",
+    "pilihan": ["Word", "Excel", "Access", "Outlook"],
+    "jawaban": 2
+  },
+  {
+    "id": 38,
+    "pertanyaan": "Menghubungkan dua komputer secara langsung disebut...",
+    "pilihan": ["Peer-to-peer", "Client-Server", "Internet", "Satellite"],
+    "jawaban": 0
+  },
+  {
+    "id": 39,
+    "pertanyaan": "Shortcut Ctrl + Z berfungsi untuk...",
+    "pilihan": ["Copy", "Undo", "Redo", "Save"],
+    "jawaban": 1
+  },
+  {
+    "id": 40,
+    "pertanyaan": "Materi informatika yang mempelajari tentang data adalah...",
+    "pilihan": ["Sistem Komputer", "Analisis Data", "Jaringan", "Algoritma"],
+    "jawaban": 1
   }
 ]
