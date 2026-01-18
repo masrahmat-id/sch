@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lembar Ujian - CBT SMP Azzahro</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #f4f7f9; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background-color: #f4f7f9; user-select: none; }
         .navbar { background: #1a237e; color: white; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .container { max-width: 800px; margin: 20px auto; padding: 20px; }
-        .info-panel { background: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .soal-card { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .opsi-container { margin-top: 15px; }
-        .opsi-item { display: flex; align-items: center; padding: 10px; border: 1px solid #eee; margin-bottom: 8px; border-radius: 5px; cursor: pointer; transition: 0.2s; }
-        .opsi-item:hover { background-color: #f0f2f5; }
-        .opsi-item input { margin-right: 15px; }
-        .btn-submit { background: #1a237e; color: white; border: none; padding: 15px 30px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; font-size: 16px; }
-        #loading { text-align: center; padding: 50px; font-weight: bold; color: #1a237e; }
+        .container { max-width: 800px; margin: 20px auto; padding: 20px; padding-bottom: 100px; }
+        .info-panel { background: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; justify-content: space-between; }
+        .soal-card { background: white; padding: 25px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; }
+        .pertanyaan { font-size: 17px; line-height: 1.6; margin-bottom: 20px; font-weight: 500; color: #333; }
+        .opsi-item { display: flex; align-items: center; padding: 12px 15px; border: 1px solid #ddd; margin-bottom: 10px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .opsi-item:hover { background-color: #f0f4ff; border-color: #1a237e; }
+        .opsi-item input { margin-right: 15px; transform: scale(1.2); cursor: pointer; }
+        .btn-submit { background: #1a237e; color: white; border: none; padding: 18px; border-radius: 10px; cursor: pointer; width: 100%; font-weight: 800; font-size: 16px; text-transform: uppercase; letter-spacing: 1px; margin-top: 20px; }
+        .btn-submit:disabled { background: #cccccc; cursor: not-allowed; }
+        #loading { text-align: center; padding: 50px; font-size: 18px; color: #1a237e; }
+        
+        /* Gaya untuk teks soal agar rapi */
+        .no-soal { font-weight: bold; color: #1a237e; margin-right: 5px; }
     </style>
 </head>
 <body>
@@ -26,51 +30,63 @@
 
 <div class="container">
     <div class="info-panel">
-        <p><strong>Nama:</strong> <span id="userName"></span></p>
-        <p><strong>Kelas:</strong> <span id="userKelas"></span></p>
+        <div>
+            <strong>PESERTA:</strong> <span id="userName">-</span><br>
+            <strong>KELAS:</strong> <span id="userKelas">-</span>
+        </div>
+        <div style="text-align: right;">
+            <strong>STATUS:</strong> <span style="color: green;">Online</span>
+        </div>
     </div>
 
-    <div id="loading">Memuat soal dari database...</div>
+    <div id="loading">Memuat soal dari server...</div>
+
     <div id="examContainer" style="display:none;">
         <form id="quizForm">
             <div id="questionList"></div>
-            <button type="submit" class="btn-submit">KIRIM JAWABAN</button>
+            <button type="submit" class="btn-submit" id="btnKirim">KIRIM JAWABAN SEKARANG</button>
         </form>
     </div>
 </div>
 
 <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwz-rnDqrS6IonuJD3HrMpi_2AmY3-I0T3Tc4zYRBpub7rw4uyM9UkSn-tbJXKWipJ9vQ/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyY528MhAel09tDGjpEeXaGNkzf0BCOc8rUJhoW7-F0c8wQ4alSA1L5KZxLy7uT_OQ6/exec';
     
-    // 1. CEK PERMISSION (Sesuai instruksi khusus Anda)
+    // 1. VALIDASI AKSES (Pengecekan Permission)
     const hasPermission = sessionStorage.getItem('Screen1.Has Permission');
     const userData = JSON.parse(sessionStorage.getItem('userCBT'));
 
     if (hasPermission !== 'true' || !userData) {
-        alert("Akses ditolak! Silakan login terlebih dahulu.");
+        alert("Akses Ditolak! Anda harus login kembali.");
         window.location.href = 'index.html';
     } else {
-        // Tampilkan Identitas
+        // Tampilkan Identitas di UI
         document.getElementById('userName').innerText = userData.nama;
         document.getElementById('userKelas').innerText = userData.kelas;
         document.getElementById('displayMapel').innerText = "UJIAN " + userData.mapel;
         
-        // Mulai muat soal
+        // Mulai muat soal berdasarkan Mapel
         loadQuestions(userData.mapel);
     }
 
+    // 2. FUNGSI AMBIL SOAL
     async function loadQuestions(mapel) {
         try {
-            // Mengambil soal berdasarkan tab Mapel di Google Sheets
-            const response = await fetch(`${SCRIPT_URL}?action=getSoal&mapel=${mapel}`);
+            const response = await fetch(`${SCRIPT_URL}?action=getSoal&mapel=${mapel}&t=${new Date().getTime()}`);
             const questions = await response.json();
+            
+            if (questions.length === 0) {
+                document.getElementById('loading').innerText = "Soal belum tersedia untuk mata pelajaran ini.";
+                return;
+            }
             
             displayQuestions(questions);
         } catch (error) {
-            document.getElementById('loading').innerText = "Gagal memuat soal. Pastikan koneksi internet stabil.";
+            document.getElementById('loading').innerText = "Gagal memuat soal. Periksa koneksi internet Anda.";
         }
     }
 
+    // 3. TAMPILKAN SOAL KE HTML
     function displayQuestions(questions) {
         const list = document.getElementById('questionList');
         document.getElementById('loading').style.display = 'none';
@@ -80,7 +96,9 @@
             const card = document.createElement('div');
             card.className = 'soal-card';
             card.innerHTML = `
-                <p><strong>Soal ${index + 1}:</strong><br>${q.pertanyaan}</p>
+                <div class="pertanyaan">
+                    <span class="no-soal">${index + 1}.</span> ${q.pertanyaan}
+                </div>
                 <div class="opsi-container">
                     <label class="opsi-item"><input type="radio" name="soal_${index}" value="A" required> A. ${q.opsiA}</label>
                     <label class="opsi-item"><input type="radio" name="soal_${index}" value="B"> B. ${q.opsiB}</label>
@@ -92,10 +110,15 @@
         });
     }
 
-    // Prosedur Submit Jawaban
+    // 4. FUNGSI KIRIM JAWABAN (POST KE GOOGLE SCRIPT)
     document.getElementById('quizForm').onsubmit = async function(e) {
         e.preventDefault();
-        if(!confirm("Yakin ingin mengirim jawaban sekarang?")) return;
+        
+        if(!confirm("Yakin ingin menyelesaikan ujian dan mengirim jawaban?")) return;
+
+        const btnKirim = document.getElementById('btnKirim');
+        btnKirim.disabled = true;
+        btnKirim.innerText = "SEDANG MENGIRIM...";
 
         const formData = new FormData(this);
         const jawabanSiswa = {};
@@ -103,11 +126,44 @@
             jawabanSiswa[key] = value;
         });
 
-        // Di sini Anda bisa menambahkan fetch ke SCRIPT_URL action=submitJawaban
-        alert("Jawaban berhasil dikirim!");
-        sessionStorage.clear(); // Bersihkan bekas login setelah selesai
-        window.location.href = 'index.html';
+        const payload = {
+            nama: userData.nama,
+            kelas: userData.kelas,
+            mapel: userData.mapel,
+            jawaban: jawabanSiswa
+        };
+
+        try {
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            });
+            const result = await response.text();
+
+            if (result === "SUCCESS") {
+                alert("Jawaban Berhasil Terkirim!");
+                sessionStorage.clear(); // Bersihkan bekas nama, token, dan login
+                window.location.href = 'index.html'; 
+            } else {
+                throw new Error("Gagal");
+            }
+        } catch (error) {
+            alert("Terjadi kesalahan saat mengirim. Pastikan internet aktif.");
+            btnKirim.disabled = false;
+            btnKirim.innerText = "KIRIM JAWABAN SEKARANG";
+        }
     };
+
+    // 5. FITUR KEAMANAN (ANTI-CONTEK)
+    document.addEventListener('contextmenu', event => event.preventDefault()); // Matikan Klik Kanan
+    
+    // Peringatan jika pindah tab browser
+    document.addEventListener("visibilitychange", function() {
+        if (document.hidden) {
+            console.log("Siswa mencoba mencontek (pindah tab)");
+        }
+    });
 </script>
+
 </body>
 </html>
