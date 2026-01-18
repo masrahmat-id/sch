@@ -16,9 +16,8 @@
         .nav-right-area { display: flex; align-items: center; gap: 12px; }
         .subject-area { text-align: right; border-right: 1px solid #ffffff44; padding-right: 12px; }
         
-        /* Tombol Menu Nomor (Warna Menyatu dengan Tema) */
         #btn-menu-nomor { 
-            background: #283593; /* Biru yang lebih terang sedikit dari header agar menyatu */
+            background: #283593; 
             color: white; 
             border: 1px solid #ffffff44; 
             border-radius: 10px; 
@@ -32,7 +31,6 @@
         }
         #btn-menu-nomor:hover { background: #3949ab; border-color: white; }
 
-        /* Dropdown Nomor Soal */
         .menu-nomor-content { display: none; position: fixed; top: 75px; right: 15px; background: white; width: 280px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); padding: 20px; z-index: 1000; max-height: 70vh; overflow-y: auto; border: 1px solid #ddd; }
         .menu-nomor-content.show { display: block; animation: fadeIn 0.2s; }
         
@@ -47,19 +45,16 @@
         .txt-total { color: #ff9800; font-size: clamp(70px, 15vw, 100px); font-weight: 900; line-height: 0.8; } 
         .txt-label-skor { font-weight: 800; color: #555; font-size: 16px; letter-spacing: 1px; padding-bottom: 5px; text-transform: uppercase; }
 
-        /* Navigasi Kotak */
         .nomor-navigasi { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
         .kotak-nomor { width: 42px; height: 42px; border: 1px solid #ddd; text-align: center; line-height: 42px; cursor: pointer; border-radius: 8px; font-weight: 700; background: white; transition: 0.2s; }
         .kotak-nomor.sudah { background: #1a237e !important; color: white !important; }
         .kotak-nomor.aktif { border: 3px solid #f9a825; transform: scale(1.1); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
-        /* Tombol & Animasi */
         .btn-group { display: flex; justify-content: space-between; margin-top: 30px; gap: 10px; }
         .btn { padding: 12px 18px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center; transition: 0.3s; }
         .btn-back { background: #eceff1; color: #455a64; }
         .btn-next { background: #3949ab; color: white; }
         .btn-finish { background: #1a237e; color: white; }
-        .btn-sending { background: #d32f2f !important; color: white !important; cursor: not-allowed; }
         
         .moving-dots::after { content: '...'; display: inline-block; animation: flowRight 1.5s infinite; letter-spacing: 2px; }
         @keyframes flowRight { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
@@ -100,7 +95,6 @@
             <div id="display-kelas" style="font-size:11px; opacity:0.8;">KELAS</div>
         </div>
     </div>
-    
     <div class="nav-right-area">
         <div class="subject-area">
             <div style="font-size:10px; opacity:0.8;">Mapel</div>
@@ -125,7 +119,7 @@
         <div class="btn-group">
             <button class="btn btn-back" onclick="navigasi(-1)"><span class="material-icons-round">arrow_back</span> KEMBALI</button>
             <button class="btn btn-next" id="btnNext" onclick="navigasi(1)">LANJUT <span class="material-icons-round">arrow_forward</span></button>
-            <button class="btn btn-finish" id="btnSubmit" style="display:none;" onclick="mulaiKonfirmasi()">SELESAI <span class="material-icons-round">task_alt</span></button>
+            <button class="btn btn-finish" id="btnSubmit" style="display:none;" onclick="bukaModalKonfirmasi()">SELESAI <span class="material-icons-round">task_alt</span></button>
         </div>
     </div>
 
@@ -152,7 +146,12 @@
     let dataSoal = []; 
     let jawabanUser = JSON.parse(localStorage.getItem('drafJawaban')) || {}; 
     let indexSekarang = 0;
+    
+    // VARIABEL TIMER PERSISTEN
+    let timeLeft = 60; 
+    let timerRunning = false;
     let timerInterval;
+
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyY528MhAel09tDGjpEeXaGNkzf0BCOc8rUJhoW7-F0c8wQ4alSA1L5KZxLy7uT_OQ6/exec';
     
     const userData = JSON.parse(sessionStorage.getItem('userCBT'));
@@ -170,7 +169,7 @@
             const res = await fetch('soal.json'); 
             dataSoal = await res.json(); 
             renderUjian(); 
-        } catch (e) { alert("Gagal memuat file soal.json"); } 
+        } catch (e) { alert("Gagal memuat soal."); } 
     }
 
     function renderUjian() {
@@ -191,9 +190,10 @@
         renderNav();
     }
 
-    function toggleMenuNomor() {
-        document.getElementById('menu-nomor').classList.toggle('show');
-    }
+    function toggleMenuNomor() { document.getElementById('menu-nomor').classList.toggle('show'); }
+    function keNomor(i) { indexSekarang = i; renderUjian(); document.getElementById('menu-nomor').classList.remove('show'); }
+    function navigasi(n) { let target = indexSekarang + n; if(target >= 0 && target < dataSoal.length){ indexSekarang = target; renderUjian(); } }
+    function pilih(s, p) { jawabanUser[s] = p; localStorage.setItem('drafJawaban', JSON.stringify(jawabanUser)); renderNav(); }
 
     function renderNav() {
         let html = ''; 
@@ -207,59 +207,62 @@
         document.getElementById('btnSubmit').style.display = indexSekarang === dataSoal.length - 1 ? 'flex' : 'none';
     }
 
-    function keNomor(i) {
-        indexSekarang = i;
-        renderUjian();
-        document.getElementById('menu-nomor').classList.remove('show');
-    }
-
-    function navigasi(n) { 
-        let target = indexSekarang + n; 
-        if(target >= 0 && target < dataSoal.length){ indexSekarang = target; renderUjian(); } 
-    }
-
-    function pilih(s, p) { 
-        jawabanUser[s] = p; 
-        localStorage.setItem('drafJawaban', JSON.stringify(jawabanUser)); 
-        renderNav(); 
-    }
-
-    function mulaiKonfirmasi() {
-        if(Object.keys(jawabanUser).length < dataSoal.length) {
-            alert("Harap jawab semua soal sebelum menyelesaikan ujian!");
-            return;
-        }
+    // FITUR TIMER TANPA RESET
+    function mulaiTimerSistem() {
+        if (timerRunning) return;
+        timerRunning = true;
         
-        document.getElementById('modalConfirm').style.display = 'flex';
-        let timeLeft = 60;
-        const btn = document.getElementById('btnKirimFinal');
-        const timerDisplay = document.getElementById('timer-box');
-        
-        btn.disabled = true;
-        btn.className = 'btn-lock';
-        
-        clearInterval(timerInterval);
         timerInterval = setInterval(() => {
-            timeLeft--;
-            let m = Math.floor(timeLeft / 60);
-            let s = timeLeft % 60;
-            timerDisplay.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-            
-            if(timeLeft <= 0) {
+            if (timeLeft > 0) {
+                timeLeft--;
+                updateTampilanTimer();
+            } else {
                 clearInterval(timerInterval);
-                btn.disabled = false;
-                btn.className = ''; 
-                btn.style.background = '#1a237e';
-                btn.style.cursor = 'pointer';
-                timerDisplay.innerText = "SIAP!";
-                btn.onclick = kirimJawaban;
+                timerRunning = false;
+                aktifkanTombolKirim();
             }
         }, 1000);
     }
 
+    function updateTampilanTimer() {
+        const timerDisplay = document.getElementById('timer-box');
+        if (timerDisplay) {
+            let m = Math.floor(timeLeft / 60);
+            let s = timeLeft % 60;
+            timerDisplay.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+    }
+
+    function aktifkanTombolKirim() {
+        const btn = document.getElementById('btnKirimFinal');
+        const timerDisplay = document.getElementById('timer-box');
+        if (btn) {
+            btn.disabled = false;
+            btn.className = ''; 
+            btn.style.background = '#1a237e';
+            btn.style.cursor = 'pointer';
+            btn.onclick = kirimJawaban;
+        }
+        if (timerDisplay) timerDisplay.innerText = "SIAP!";
+    }
+
+    function bukaModalKonfirmasi() {
+        if(Object.keys(jawabanUser).length < dataSoal.length) {
+            alert("Harap jawab semua soal!");
+            return;
+        }
+        document.getElementById('modalConfirm').style.display = 'flex';
+        updateTampilanTimer();
+        if (timeLeft <= 0) {
+            aktifkanTombolKirim();
+        } else {
+            mulaiTimerSistem();
+        }
+    }
+
     function tutupModal() {
-        clearInterval(timerInterval);
         document.getElementById('modalConfirm').style.display = 'none';
+        // Note: Timer tetap berjalan di latar belakang (setInterval tidak di-clear)
     }
 
     async function kirimJawaban() {
@@ -270,7 +273,6 @@
         let benar = 0; 
         let detailJawaban = [];
         const opsiLabel = ["A", "B", "C", "D"];
-
         dataSoal.forEach((s, i) => { 
             if(jawabanUser[i] == s.jawaban) benar++; 
             detailJawaban.push(`No${i+1}:${opsiLabel[jawabanUser[i]] || '-'}`);
@@ -278,22 +280,17 @@
 
         try {
             const finalURL = `${SCRIPT_URL}?nama=${encodeURIComponent(userData.nama)}&kelas=${userData.kelas}&mapel=INFORMATIKA&benar=${benar}&salah=${dataSoal.length - benar}&jawabanUser=${encodeURIComponent(detailJawaban.join(", "))}`;
-            
             await fetch(finalURL, { mode: 'no-cors' });
 
-            // UI BERSIH SETELAH KIRIM
             document.getElementById('modalConfirm').style.display = 'none';
             document.getElementById('konten-ujian').style.display = 'none';
             document.getElementById('btn-menu-nomor').style.display = 'none'; 
-            document.getElementById('menu-nomor').classList.remove('show');
-            
             document.getElementById('hasil-akhir').style.display = 'flex';
             document.getElementById('benar-tampil').innerText = benar;
             document.getElementById('total-tampil').innerText = dataSoal.length;
-            
             localStorage.removeItem('drafJawaban'); 
         } catch (e) {
-            alert("Gagal mengirim jawaban. Coba periksa koneksi internet Anda.");
+            alert("Gagal mengirim.");
             btn.innerHTML = 'COBA LAGI';
             btn.disabled = false;
         }
