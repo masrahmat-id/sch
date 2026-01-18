@@ -52,23 +52,29 @@
     <div class="login-content">
         <h2>Selamat Datang</h2>
         <p class="subtitle">Silakan login untuk memulai ujian.</p>
-        <div class="input-group"><div class="field-container">
-            <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
-            <input type="text" id="nama" placeholder="NAMA LENGKAP (KAPITAL)">
-        </div></div>
-        <div class="input-group"><div class="field-container">
-            <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>
-            <select id="kelas">
-                <option value="" disabled selected hidden>PILIH KELAS</option>
-                <option value="VII">KELAS VII</option>
-                <option value="VIII">KELAS VIII</option>
-                <option value="IX">KELAS IX</option>
-            </select>
-        </div></div>
-        <div class="input-group"><div class="field-container">
-            <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
-            <input type="text" id="tokenInput" placeholder="TOKEN UJIAN">
-        </div></div>
+        <div class="input-group">
+            <div class="field-container">
+                <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
+                <input type="text" id="nama" placeholder="NAMA LENGKAP (KAPITAL)" autocomplete="off" autocorrect="off" autocapitalize="characters">
+            </div>
+        </div>
+        <div class="input-group">
+            <div class="field-container">
+                <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>
+                <select id="kelas">
+                    <option value="" disabled selected hidden>PILIH KELAS</option>
+                    <option value="VII">KELAS VII</option>
+                    <option value="VIII">KELAS VIII</option>
+                    <option value="IX">KELAS IX</option>
+                </select>
+            </div>
+        </div>
+        <div class="input-group">
+            <div class="field-container">
+                <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+                <input type="text" id="tokenInput" placeholder="TOKEN UJIAN" autocomplete="off" autocorrect="off">
+            </div>
+        </div>
         <button class="btn-login" id="btnLogin" onclick="validasiLogin()">MASUK SEKARANG</button>
     </div>
     <div class="login-footer">&copy; 2026 SMP Azzahro - CBT System</div>
@@ -81,9 +87,12 @@
     
     async function validasiLogin() {
         const btn = document.getElementById('btnLogin');
-        const nama = document.getElementById('nama').value.trim().toUpperCase();
+        const namaInput = document.getElementById('nama');
+        const tokenInputElem = document.getElementById('tokenInput');
         const kelas = document.getElementById('kelas').value;
-        const tokenInput = document.getElementById('tokenInput').value.trim();
+
+        const nama = namaInput.value.trim().toUpperCase();
+        const tokenInput = tokenInputElem.value.trim();
 
         if(!nama || !kelas || !tokenInput) return showNotif("Lengkapi data login!");
         
@@ -91,30 +100,37 @@
         btn.innerHTML = 'MEMVALIDASI DATA<span class="dots"></span>';
         
         try {
-            // PERBAIKAN: Mengambil token dari Google Script (action=getToken) bukan dari token.json
             const resToken = await fetch(`${SCRIPT_URL}?action=getToken&t=${new Date().getTime()}`);
             const dataToken = await resToken.json();
             
-            // Validasi Token
             if(tokenInput !== dataToken.token_aktif) {
                 btn.disabled = false; 
                 btn.innerHTML = 'MASUK SEKARANG';
+                // Kosongkan token jika salah agar tidak berbekas
+                tokenInputElem.value = "";
                 return showNotif("Token Salah! Gunakan token terbaru dari pengawas.");
             }
             
-            // Cek Status Absensi
             const cekRes = await fetch(`${SCRIPT_URL}?action=checkStatus&nama=${nama}&kelas=${kelas}&t=${new Date().getTime()}`);
             const status = await cekRes.text(); 
             
             if (status === "SUDAH_ADA") {
                 btn.disabled = false; 
                 btn.innerHTML = 'MASUK SEKARANG';
+                // Kosongkan input untuk privasi
+                namaInput.value = "";
+                tokenInputElem.value = "";
                 return showNotif("Nama tersebut sudah mengerjakan ujian!");
             }
             
             // Simpan Session dan Login
             sessionStorage.setItem('Screen1.Has Permission', 'true');
             sessionStorage.setItem('userCBT', JSON.stringify({ nama, kelas, isAuth: true }));
+
+            // Hapus teks di input sebelum pindah halaman agar tidak tersimpan di cache form browser
+            namaInput.value = "";
+            tokenInputElem.value = "";
+
             window.location.href = 'ujian.html';
 
         } catch (e) { 
