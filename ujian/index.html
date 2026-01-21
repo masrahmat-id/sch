@@ -2,93 +2,17 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login CBT SMP Azzahro</title>
-
-<style>
-body{
-  font-family:'Segoe UI',Tahoma,sans-serif;
-  background:#f0f2f5;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  margin:0;
-}
-.box{
-  background:#fff;
-  padding:30px;
-  width:100%;
-  max-width:350px;
-  border-radius:12px;
-  box-shadow:0 10px 25px rgba(0,0,0,.15);
-}
-h2{text-align:center;color:#1a237e}
-input{
-  width:100%;
-  padding:14px;
-  margin:12px 0;
-  border-radius:8px;
-  border:1px solid #ccc;
-  font-size:15px;
-}
-button{
-  width:100%;
-  padding:14px;
-  background:#1a237e;
-  color:#fff;
-  border:none;
-  border-radius:8px;
-  font-weight:bold;
-  cursor:pointer;
-}
-button:disabled{background:#aaa}
-</style>
+<title>Login Ujian SMP</title>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <div class="container">
+    <h1>Login Ujian SMP</h1>
+    <input type="text" id="nisn" placeholder="Masukkan NISN">
+    <button onclick="login()">Login</button>
+    <p id="pesan" style="color:red"></p>
+  </div>
 
-<div class="box">
-<h2>LOGIN CBT</h2>
-
-<input type="text" id="nisn" placeholder="NISN" autocomplete="off">
-<input type="text" id="token" placeholder="TOKEN UJIAN" autocomplete="off">
-
-<button onclick="login()">MASUK</button>
-</div>
-
-<script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxIgGG3NyduXTPmk845YQnXwKaDXICUCDGfyGfqdyrCzXfUOdhkPnQGTChprugQhI_QHQ/exec";
-
-async function login(){
-  const nisn = document.getElementById("nisn").value.trim();
-  const token = document.getElementById("token").value.trim();
-  if(!nisn||!token) return alert("Lengkapi NISN dan Token");
-
-  try{
-    const r = await fetch(
-      `${SCRIPT_URL}?action=login&nisn=${nisn}&token=${token}`
-    );
-    const res = await r.text();
-
-    if(res==="TOKEN_SALAH") return alert("Token salah");
-    if(res==="NISN_TIDAK_ADA") return alert("NISN tidak ditemukan");
-
-    const data = JSON.parse(res);
-    sessionStorage.setItem("userCBT",JSON.stringify({
-      nisn:data.nisn,
-      nama:data.nama,
-      kelas:data.kelas,
-      isAuth:true
-    }));
-
-    location.href="ujian.html";
-
-  }catch{
-    alert("Gagal koneksi server");
-  }
-}
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
