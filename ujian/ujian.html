@@ -2,110 +2,24 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lembar Ujian - CBT SMP Azzahro</title>
-
-<style>
-body{font-family:'Segoe UI',Tahoma,sans-serif;margin:0;background:#f4f7f9;user-select:none}
-.navbar{background:#1a237e;color:#fff;padding:15px;text-align:center;position:sticky;top:0;z-index:100}
-.container{max-width:800px;margin:20px auto;padding:20px}
-.info-panel{background:#fff;padding:15px;border-radius:10px;margin-bottom:20px;display:flex;justify-content:space-between}
-.soal-card{background:#fff;padding:25px;border-radius:12px;box-shadow:0 4px 6px rgba(0,0,0,0.05)}
-.pertanyaan{font-size:17px;margin-bottom:20px}
-.opsi-item{display:flex;align-items:center;padding:12px;border:1px solid #ddd;margin-bottom:10px;border-radius:8px;cursor:pointer}
-.opsi-item:hover{background:#f0f4ff;border-color:#1a237e}
-.opsi-item input{margin-right:15px;transform:scale(1.2)}
-.nav-btn{display:flex;justify-content:space-between;margin-top:20px}
-button{background:#1a237e;color:#fff;border:none;padding:12px 18px;border-radius:8px;font-weight:bold;cursor:pointer}
-button:disabled{background:#aaa}
-.no-soal{font-weight:bold;color:#1a237e}
-</style>
+<title>Ujian SMP</title>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <div class="container">
+    <h1>Ujian</h1>
+    <p id="infoSiswa"></p>
 
-<div class="navbar">
-<h3 id="displayMapel">UJIAN</h3>
-</div>
+    <label for="mapel">Pilih Mata Pelajaran:</label>
+    <select id="mapel" onchange="loadSoal()">
+      <option value="">--Pilih Mapel--</option>
+    </select>
 
-<div class="container">
-<div class="info-panel">
-<div>
-<strong>PESERTA:</strong> <span id="userName"></span><br>
-<strong>KELAS:</strong> <span id="userKelas"></span>
-</div>
-<div>
-<strong>SOAL:</strong> <span id="counter"></span>
-</div>
-</div>
+    <div id="soalContainer"></div>
+    <button onclick="submitUjian()">Submit</button>
+    <p id="nilai"></p>
+  </div>
 
-<div class="soal-card">
-<div class="pertanyaan" id="soal"></div>
-
-<div id="opsi"></div>
-
-<div class="nav-btn">
-<button onclick="prev()">⬅ Sebelumnya</button>
-<button onclick="next()">Selanjutnya ➡</button>
-</div>
-</div>
-</div>
-
-<script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyY528MhAel09tDGjpEeXaGNkzf0BCOc8rUJhoW7-F0c8wQ4alSA1L5KZxLy7uT_OQ6/exec";
-
-const izin = sessionStorage.getItem("Screen1.Has Permission");
-const user = JSON.parse(sessionStorage.getItem("userCBT"));
-if(izin!=="true"||!user){
- alert("Akses ditolak");location.href="index.html";
-}
-
-document.getElementById("userName").innerText=user.nama;
-document.getElementById("userKelas").innerText=user.kelas;
-document.getElementById("displayMapel").innerText="UJIAN "+user.mapel;
-
-let soal=[],index=0,jawaban={};
-
-async function load(){
- const r=await fetch(`${SCRIPT_URL}?action=getSoal&kelas=${user.kelas}&mapel=${user.mapel}`);
- soal=await r.json();soal.shift();
- tampil();
-}
-load();
-
-function tampil(){
- const s=soal[index];
- document.getElementById("counter").innerText=(index+1)+" / "+soal.length;
- document.getElementById("soal").innerHTML=`<span class="no-soal">${index+1}.</span> ${s[1]}`;
- document.getElementById("opsi").innerHTML="";
- ["A","B","C","D"].forEach((o,i)=>{
-   document.getElementById("opsi").innerHTML+=`
-   <label class="opsi-item">
-     <input type="radio" name="jawab" value="${o}" ${jawaban[s[0]]===o?"checked":""}
-     onclick="jawaban['${s[0]}']='${o}'">
-     ${o}. ${s[i+2]}
-   </label>`;
- });
-}
-
-function next(){
- if(index<soal.length-1){index++;tampil()}
- else if(confirm("Kirim jawaban sekarang?")) submit();
-}
-function prev(){if(index>0){index--;tampil()}}
-
-function submit(){
- let benar=0;
- soal.forEach(s=>{if(jawaban[s[0]]===s[6]) benar++});
- let nilai=Math.round(benar/soal.length*100);
- fetch(`${SCRIPT_URL}?action=submit&nisn=${user.nisn}&nama=${user.nama}&kelas=${user.kelas}&mapel=${user.mapel}&nilai=${nilai}`);
- alert("Ujian selesai. Nilai: "+nilai);
- sessionStorage.clear();
- location.href="index.html";
-}
-
-document.addEventListener("contextmenu",e=>e.preventDefault());
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
