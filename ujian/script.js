@@ -1,4 +1,4 @@
-const API_URL = "ISI_URL_APPS_SCRIPT"; // URL Web App
+const API_URL = "https://script.google.com/macros/s/AKfycbxMZJNCGYeDiCphTRQKvbiXdtSzkUfZlhAJnprN2z10En0yVpkfwkjqxzNL_BrEgRejYQ/exec"; // URL Web App
 
 let siswa = null;
 let soalData = [];
