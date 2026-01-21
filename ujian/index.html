@@ -73,4 +73,100 @@ input,select{border:none;outline:none;width:100%;padding:14px 10px 14px 0;font-s
 <option value="B_INDO">BAHASA INDONESIA</option>
 <option value="B_INGGRIS">BAHASA INGGRIS</option>
 </select>
-</di
+</div>
+</div>
+
+<div class="input-group">
+<div class="field-container">
+<span class="field-icon">🔑</span>
+<input type="text" id="tokenInput" placeholder="TOKEN UJIAN">
+</div>
+</div>
+
+<button class="btn-login" id="btnLogin" onclick="validasiLogin()">MASUK SEKARANG</button>
+</div>
+
+<div class="login-footer">© 2026 SMP Azzahro</div>
+</div>
+
+<script>
+/* ================= KONFIGURASI FINAL ================= */
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJCdVGFueOOFXKtqVeayB2UZYXx1BlG-MY06Y-l3eYFfNbBxGBRxciKWSnLPrbaz2-/exec';
+const DATA_SISWA_ID = '1Hd4j205xpjEnPOXatLkT2umYXz3-3s7Hhwe5gVMLQt8';
+const SHEETS = ['KELAS_VII','KELAS_VIII','KELAS_IX'];
+
+/* ================= MODAL ================= */
+function showNotif(msg){
+  document.getElementById('modalMessage').innerText = msg;
+  document.getElementById('customModal').style.display='flex';
+}
+function closeModal(){
+  document.getElementById('customModal').style.display='none';
+}
+
+/* ================= CARI SISWA ================= */
+async function cariSiswaByNISN(nisn){
+  for(const sheet of SHEETS){
+    const url = `https://opensheet.elk.sh/${DATA_SISWA_ID}/${sheet}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const siswa = data.find(d => d.NISN === nisn);
+    if(siswa){
+      siswa.KELAS = sheet.replace('KELAS_','');
+      return siswa;
+    }
+  }
+  return null;
+}
+
+/* ================= LOGIN ================= */
+async function validasiLogin(){
+  const nisn = document.getElementById('nisn').value.trim();
+  const mapel = document.getElementById('mapel').value;
+  const token = document.getElementById('tokenInput').value.trim();
+  const btn = document.getElementById('btnLogin');
+
+  if(!nisn || !mapel || !token){
+    return showNotif('Lengkapi semua data!');
+  }
+
+  btn.disabled=true;
+  btn.innerText='MEMVALIDASI...';
+
+  try{
+    const siswa = await cariSiswaByNISN(nisn);
+    if(!siswa){
+      btn.disabled=false;
+      btn.innerText='MASUK SEKARANG';
+      return showNotif('NISN tidak terdaftar');
+    }
+
+    const resToken = await fetch(`${SCRIPT_URL}?action=getToken`);
+    const tokenData = await resToken.json();
+
+    if(token !== tokenData.token_aktif){
+      btn.disabled=false;
+      btn.innerText='MASUK SEKARANG';
+      return showNotif('Token salah');
+    }
+
+    sessionStorage.setItem('userCBT', JSON.stringify({
+      nisn: siswa.NISN,
+      nama: siswa.NAMA,
+      kelas: siswa.KELAS,
+      mapel: mapel,
+      isAuth: true
+    }));
+
+    window.location.href='ujian.html';
+
+  }catch(e){
+    btn.disabled=false;
+    btn.innerText='MASUK SEKARANG';
+    showNotif('Gagal koneksi');
+  }
+}
+</script>
+
+</body>
+</html>
