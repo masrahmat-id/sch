@@ -6,164 +6,86 @@
 <title>Login CBT SMP Azzahro</title>
 
 <style>
-body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;margin:0;background:#f0f2f5;display:flex;flex-direction:column;min-height:100vh}
-.top-banner{background:#1a237e;height:250px;width:100%;display:flex;justify-content:center;align-items:center;color:#fff;position:absolute;top:0;z-index:1}
-.header-content{display:flex;align-items:center;gap:15px;margin-bottom:50px}
-.logo-puspendik{width:70px}
-.header-text h1{margin:0;font-size:26px;font-weight:900;letter-spacing:2px}
-.header-text p{margin:0;font-size:14px;opacity:.8}
-.container{position:relative;z-index:2;margin-top:150px;width:90%;max-width:400px;background:#fff;border-radius:15px;box-shadow:0 20px 40px rgba(0,0,0,.15);align-self:center;overflow:hidden}
-.login-content{padding:40px 30px}
-.login-content h2{text-align:center;color:#1a237e;font-weight:800}
-.subtitle{text-align:center;font-size:13px;color:#666;margin-bottom:30px}
-.input-group{margin-bottom:20px}
-.field-container{display:flex;align-items:center;border:1.5px solid #dee2e6;border-radius:10px;background:#fff}
-.field-icon{width:45px;display:flex;justify-content:center;color:#1a237e}
-input,select{border:none;outline:none;width:100%;padding:14px 10px 14px 0;font-size:15px;background:transparent}
-.btn-login{background:#1a237e;color:#fff;width:100%;border:none;padding:15px;border-radius:10px;font-weight:800;cursor:pointer}
-.btn-login:disabled{opacity:.7}
-.login-footer{background:#f8f9fa;padding:15px;text-align:center;font-size:11px;color:#999;border-top:1px solid #eee}
-.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);display:none;justify-content:center;align-items:center;z-index:1000}
-.modal-box{background:#fff;padding:30px;border-radius:12px;max-width:320px;text-align:center}
+body{
+  font-family:'Segoe UI',Tahoma,sans-serif;
+  background:#f0f2f5;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  margin:0;
+}
+.box{
+  background:#fff;
+  padding:30px;
+  width:100%;
+  max-width:350px;
+  border-radius:12px;
+  box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+h2{text-align:center;color:#1a237e}
+input{
+  width:100%;
+  padding:14px;
+  margin:12px 0;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:15px;
+}
+button{
+  width:100%;
+  padding:14px;
+  background:#1a237e;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:disabled{background:#aaa}
 </style>
 </head>
 
 <body>
 
-<!-- MODAL -->
-<div id="customModal" class="modal-overlay">
-  <div class="modal-box">
-    <h3>Informasi</h3>
-    <p id="modalMessage"></p>
-    <button onclick="closeModal()">OKE</button>
-  </div>
-</div>
+<div class="box">
+<h2>LOGIN CBT</h2>
 
-<!-- HEADER -->
-<div class="top-banner">
-  <div class="header-content">
-    <img src="https://github.com/masrahmat-id/absensi-barcode-online-smp-smk-azzahro/raw/main/logo-smp-azzahro.png" class="logo-puspendik">
-    <div class="header-text">
-      <h1>PUSPENDIK</h1>
-      <p>CBT Azzahro Application</p>
-    </div>
-  </div>
-</div>
+<input type="text" id="nisn" placeholder="NISN" autocomplete="off">
+<input type="text" id="token" placeholder="TOKEN UJIAN" autocomplete="off">
 
-<!-- LOGIN -->
-<div class="container">
-<div class="login-content">
-<h2>Selamat Datang</h2>
-<p class="subtitle">Silakan login untuk memulai ujian</p>
-
-<div class="input-group">
-<div class="field-container">
-<span class="field-icon">👤</span>
-<input type="text" id="nisn" placeholder="MASUKKAN NISN">
-</div>
-</div>
-
-<div class="input-group">
-<div class="field-container">
-<span class="field-icon">📘</span>
-<select id="mapel">
-<option value="" hidden>PILIH MATA PELAJARAN</option>
-<option value="MATEMATIKA">MATEMATIKA</option>
-<option value="IPA">IPA</option>
-<option value="B_INDO">BAHASA INDONESIA</option>
-<option value="B_INGGRIS">BAHASA INGGRIS</option>
-</select>
-</div>
-</div>
-
-<div class="input-group">
-<div class="field-container">
-<span class="field-icon">🔑</span>
-<input type="text" id="tokenInput" placeholder="TOKEN UJIAN">
-</div>
-</div>
-
-<button class="btn-login" id="btnLogin" onclick="validasiLogin()">MASUK SEKARANG</button>
-</div>
-
-<div class="login-footer">© 2026 SMP Azzahro</div>
+<button onclick="login()">MASUK</button>
 </div>
 
 <script>
-/* ================= KONFIGURASI FINAL ================= */
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJCdVGFueOOFXKtqVeayB2UZYXx1BlG-MY06Y-l3eYFfNbBxGBRxciKWSnLPrbaz2-/exec';
-const DATA_SISWA_ID = '1Hd4j205xpjEnPOXatLkT2umYXz3-3s7Hhwe5gVMLQt8';
-const SHEETS = ['KELAS_VII','KELAS_VIII','KELAS_IX'];
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxIgGG3NyduXTPmk845YQnXwKaDXICUCDGfyGfqdyrCzXfUOdhkPnQGTChprugQhI_QHQ/exec";
 
-/* ================= MODAL ================= */
-function showNotif(msg){
-  document.getElementById('modalMessage').innerText = msg;
-  document.getElementById('customModal').style.display='flex';
-}
-function closeModal(){
-  document.getElementById('customModal').style.display='none';
-}
-
-/* ================= CARI SISWA ================= */
-async function cariSiswaByNISN(nisn){
-  for(const sheet of SHEETS){
-    const url = `https://opensheet.elk.sh/${DATA_SISWA_ID}/${sheet}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    const siswa = data.find(d => d.NISN === nisn);
-    if(siswa){
-      siswa.KELAS = sheet.replace('KELAS_','');
-      return siswa;
-    }
-  }
-  return null;
-}
-
-/* ================= LOGIN ================= */
-async function validasiLogin(){
-  const nisn = document.getElementById('nisn').value.trim();
-  const mapel = document.getElementById('mapel').value;
-  const token = document.getElementById('tokenInput').value.trim();
-  const btn = document.getElementById('btnLogin');
-
-  if(!nisn || !mapel || !token){
-    return showNotif('Lengkapi semua data!');
-  }
-
-  btn.disabled=true;
-  btn.innerText='MEMVALIDASI...';
+async function login(){
+  const nisn = document.getElementById("nisn").value.trim();
+  const token = document.getElementById("token").value.trim();
+  if(!nisn||!token) return alert("Lengkapi NISN dan Token");
 
   try{
-    const siswa = await cariSiswaByNISN(nisn);
-    if(!siswa){
-      btn.disabled=false;
-      btn.innerText='MASUK SEKARANG';
-      return showNotif('NISN tidak terdaftar');
-    }
+    const r = await fetch(
+      `${SCRIPT_URL}?action=login&nisn=${nisn}&token=${token}`
+    );
+    const res = await r.text();
 
-    const resToken = await fetch(`${SCRIPT_URL}?action=getToken`);
-    const tokenData = await resToken.json();
+    if(res==="TOKEN_SALAH") return alert("Token salah");
+    if(res==="NISN_TIDAK_ADA") return alert("NISN tidak ditemukan");
 
-    if(token !== tokenData.token_aktif){
-      btn.disabled=false;
-      btn.innerText='MASUK SEKARANG';
-      return showNotif('Token salah');
-    }
-
-    sessionStorage.setItem('userCBT', JSON.stringify({
-      nisn: siswa.NISN,
-      nama: siswa.NAMA,
-      kelas: siswa.KELAS,
-      mapel: mapel,
-      isAuth: true
+    const data = JSON.parse(res);
+    sessionStorage.setItem("userCBT",JSON.stringify({
+      nisn:data.nisn,
+      nama:data.nama,
+      kelas:data.kelas,
+      isAuth:true
     }));
 
-    window.location.href='ujian.html';
+    location.href="ujian.html";
 
-  }catch(e){
-    btn.disabled=false;
-    btn.innerText='MASUK SEKARANG';
-    showNotif('Gagal koneksi');
+  }catch{
+    alert("Gagal koneksi server");
   }
 }
 </script>
