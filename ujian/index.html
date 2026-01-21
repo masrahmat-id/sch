@@ -1,160 +1,76 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - CBT SMP Azzahro</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f0f2f5; display: flex; flex-direction: column; min-height: 100vh; }
-        .top-banner { background: #1a237e; height: 250px; width: 100%; display: flex; justify-content: center; align-items: center; color: white; position: absolute; top: 0; z-index: 1; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .header-content { display: flex; align-items: center; gap: 15px; margin-bottom: 50px; }
-        .logo-puspendik { width: 70px; height: auto; }
-        .header-text h1 { margin: 0; font-size: 26px; letter-spacing: 2px; font-weight: 900; }
-        .header-text p { margin: 0; font-size: 14px; opacity: 0.8; }
-        .container { position: relative; z-index: 2; margin-top: 150px; width: 90%; max-width: 400px; background: white; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); align-self: center; overflow: hidden; }
-        .login-content { padding: 40px 30px; }
-        .login-content h2 { margin-top: 0; color: #1a237e; font-size: 22px; text-align: center; font-weight: 800; }
-        .subtitle { color: #666; font-size: 13px; text-align: center; margin-bottom: 30px; }
-        .input-group { margin-bottom: 20px; }
-        .field-container { display: flex; align-items: center; border: 1.5px solid #dee2e6; border-radius: 10px; background: #fff; transition: 0.3s; }
-        .field-container:focus-within { border-color: #3949ab; }
-        .field-icon { width: 45px; display: flex; justify-content: center; color: #1a237e; opacity: 0.7; }
-        input, select { border: none; outline: none; width: 100%; padding: 14px 10px 14px 0; font-size: 15px; background: transparent; }
-        .btn-login { background: #1a237e; color: white; width: 100%; border: none; padding: 15px; border-radius: 10px; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-login:hover { background: #0d124a; transform: translateY(-2px); }
-        .dots::after { content: '.'; animation: loading 1.5s steps(5, end) infinite; }
-        @keyframes loading { 0%, 20% { content: '.'; } 40% { content: '..'; } 60% { content: '...'; } 80%, 100% { content: ''; } }
-        .login-footer { background-color: #f8f9fa; padding: 20px; text-align: center; font-size: 11px; color: #999; border-top: 1px solid #eee; }
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
-        .modal-box { background: white; padding: 35px; border-radius: 15px; max-width: 320px; width: 85%; text-align: center; }
-        .icon-circle { width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; border: 3px solid currentColor; color: #c62828; }
-        .cross-mark { position: relative; width: 30px; height: 30px; }
-        .cross-mark::before, .cross-mark::after { content: ''; position: absolute; top: 13px; left: 0; width: 30px; height: 4px; background: currentColor; border-radius: 2px; }
-        .cross-mark::before { transform: rotate(45deg); } .cross-mark::after { transform: rotate(-45deg); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login CBT SMP Azzahro</title>
+
+<style>
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;margin:0;background:#f0f2f5;display:flex;flex-direction:column;min-height:100vh}
+.top-banner{background:#1a237e;height:250px;width:100%;display:flex;justify-content:center;align-items:center;color:#fff;position:absolute;top:0;z-index:1}
+.header-content{display:flex;align-items:center;gap:15px;margin-bottom:50px}
+.logo-puspendik{width:70px}
+.header-text h1{margin:0;font-size:26px;font-weight:900;letter-spacing:2px}
+.header-text p{margin:0;font-size:14px;opacity:.8}
+.container{position:relative;z-index:2;margin-top:150px;width:90%;max-width:400px;background:#fff;border-radius:15px;box-shadow:0 20px 40px rgba(0,0,0,.15);align-self:center;overflow:hidden}
+.login-content{padding:40px 30px}
+.login-content h2{text-align:center;color:#1a237e;font-weight:800}
+.subtitle{text-align:center;font-size:13px;color:#666;margin-bottom:30px}
+.input-group{margin-bottom:20px}
+.field-container{display:flex;align-items:center;border:1.5px solid #dee2e6;border-radius:10px;background:#fff}
+.field-icon{width:45px;display:flex;justify-content:center;color:#1a237e}
+input,select{border:none;outline:none;width:100%;padding:14px 10px 14px 0;font-size:15px;background:transparent}
+.btn-login{background:#1a237e;color:#fff;width:100%;border:none;padding:15px;border-radius:10px;font-weight:800;cursor:pointer}
+.btn-login:disabled{opacity:.7}
+.login-footer{background:#f8f9fa;padding:15px;text-align:center;font-size:11px;color:#999;border-top:1px solid #eee}
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);display:none;justify-content:center;align-items:center;z-index:1000}
+.modal-box{background:#fff;padding:30px;border-radius:12px;max-width:320px;text-align:center}
+</style>
 </head>
+
 <body>
+
+<!-- MODAL -->
 <div id="customModal" class="modal-overlay">
-    <div class="modal-box">
-        <div class="icon-circle"><div class="cross-mark"></div></div>
-        <h3 id="modalTitle">Login Gagal</h3>
-        <p id="modalMessage"></p>
-        <button onclick="closeModal()" style="background:#1a237e; color:white; border:none; padding:10px 25px; border-radius:6px; cursor:pointer;">OKE</button>
-    </div>
+  <div class="modal-box">
+    <h3>Informasi</h3>
+    <p id="modalMessage"></p>
+    <button onclick="closeModal()">OKE</button>
+  </div>
 </div>
+
+<!-- HEADER -->
 <div class="top-banner">
-    <div class="header-content">
-        <img src="https://github.com/masrahmat-id/absensi-barcode-online-smp-smk-azzahro/raw/main/logo-smp-azzahro.png" class="logo-puspendik">
-        <div class="header-text"><h1>PUSPENDIK</h1><p>CBT Azzahro Application</p></div>
+  <div class="header-content">
+    <img src="https://github.com/masrahmat-id/absensi-barcode-online-smp-smk-azzahro/raw/main/logo-smp-azzahro.png" class="logo-puspendik">
+    <div class="header-text">
+      <h1>PUSPENDIK</h1>
+      <p>CBT Azzahro Application</p>
     </div>
+  </div>
 </div>
+
+<!-- LOGIN -->
 <div class="container">
-    <div class="login-content">
-        <h2>Selamat Datang</h2>
-        <p class="subtitle">Silakan login untuk memulai ujian.</p>
-        
-        <div class="input-group"><div class="field-container">
-            <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
-            <input type="text" id="nama" placeholder="NAMA LENGKAP (KAPITAL)" autocomplete="off" autocorrect="off" autocapitalize="characters">
-        </div></div>
+<div class="login-content">
+<h2>Selamat Datang</h2>
+<p class="subtitle">Silakan login untuk memulai ujian</p>
 
-        <div class="input-group"><div class="field-container">
-            <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>
-            <select id="kelas">
-                <option value="" disabled selected hidden>PILIH KELAS</option>
-                <option value="VII">KELAS VII</option>
-                <option value="VIII">KELAS VIII</option>
-                <option value="IX">KELAS IX</option>
-            </select>
-        </div></div>
-
-        <div class="input-group"><div class="field-container">
-            <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
-            <select id="mapel">
-                <option value="" disabled selected hidden>PILIH MATA PELAJARAN</option>
-                <option value="MATEMATIKA">MATEMATIKA</option>
-                <option value="IPA">IPA</option>
-                <option value="B_INDO">BAHASA INDONESIA</option>
-                <option value="B_INGGRIS">BAHASA INGGRIS</option>
-            </select>
-        </div></div>
-
-        <div class="input-group"><div class="field-container">
-            <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
-            <input type="text" id="tokenInput" placeholder="TOKEN UJIAN" autocomplete="off" autocorrect="off">
-        </div></div>
-
-        <button class="btn-login" id="btnLogin" onclick="validasiLogin()">MASUK SEKARANG</button>
-    </div>
-    <div class="login-footer">&copy; 2026 SMP Azzahro - CBT System</div>
+<div class="input-group">
+<div class="field-container">
+<span class="field-icon">👤</span>
+<input type="text" id="nisn" placeholder="MASUKKAN NISN">
+</div>
 </div>
 
-<script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwz-rnDqrS6IonuJD3HrMpi_2AmY3-I0T3Tc4zYRBpub7rw4uyM9UkSn-tbJXKWipJ9vQ/exec';
-    
-    function showNotif(msg) { document.getElementById('modalMessage').innerText = msg; document.getElementById('customModal').style.display = 'flex'; }
-    function closeModal() { document.getElementById('customModal').style.display = 'none'; }
-    
-    async function validasiLogin() {
-        const btn = document.getElementById('btnLogin');
-        const namaInput = document.getElementById('nama');
-        const tokenInputElem = document.getElementById('tokenInput');
-        const kelas = document.getElementById('kelas').value;
-        const mapel = document.getElementById('mapel').value;
-
-        const nama = namaInput.value.trim().toUpperCase();
-        const tokenInput = tokenInputElem.value.trim();
-
-        if(!nama || !kelas || !mapel || !tokenInput) return showNotif("Lengkapi semua data login!");
-        
-        btn.disabled = true; 
-        btn.innerHTML = 'MEMVALIDASI DATA<span class="dots"></span>';
-        
-        try {
-            // Validasi Token dari Apps Script
-            const resToken = await fetch(`${SCRIPT_URL}?action=getToken&t=${new Date().getTime()}`);
-            const dataToken = await resToken.json();
-            
-            if(tokenInput !== dataToken.token_aktif) {
-                btn.disabled = false; 
-                btn.innerHTML = 'MASUK SEKARANG';
-                tokenInputElem.value = ""; // Bersihkan token jika salah
-                return showNotif("Token Salah! Gunakan token terbaru.");
-            }
-            
-            // Cek Status Absensi
-            const cekRes = await fetch(`${SCRIPT_URL}?action=checkStatus&nama=${nama}&kelas=${kelas}&t=${new Date().getTime()}`);
-            const status = await cekRes.text(); 
-            
-            if (status === "SUDAH_ADA") {
-                btn.disabled = false; 
-                btn.innerHTML = 'MASUK SEKARANG';
-                namaInput.value = ""; // Bersihkan nama jika sudah ada
-                tokenInputElem.value = "";
-                return showNotif("Nama tersebut sudah mengerjakan ujian!");
-            }
-            
-            // Simpan Session Data (Ditambahkan Mapel)
-            sessionStorage.setItem('Screen1.Has Permission', 'true');
-            sessionStorage.setItem('userCBT', JSON.stringify({ 
-                nama: nama, 
-                kelas: kelas, 
-                mapel: mapel, 
-                isAuth: true 
-            }));
-
-            // Hapus input secara fisik sebelum pindah halaman (Keamanan)
-            namaInput.value = "";
-            tokenInputElem.value = "";
-
-            window.location.href = 'ujian.html';
-
-        } catch (e) { 
-            btn.disabled = false; 
-            btn.innerHTML = 'MASUK SEKARANG'; 
-            showNotif("Gagal koneksi database. Periksa internet Anda."); 
-        }
-    }
-</script>
-</body>
-</html>
+<div class="input-group">
+<div class="field-container">
+<span class="field-icon">📘</span>
+<select id="mapel">
+<option value="" hidden>PILIH MATA PELAJARAN</option>
+<option value="MATEMATIKA">MATEMATIKA</option>
+<option value="IPA">IPA</option>
+<option value="B_INDO">BAHASA INDONESIA</option>
+<option value="B_INGGRIS">BAHASA INGGRIS</option>
+</select>
+</di
