@@ -12,7 +12,7 @@ function login() {
       if(data.status === "success") {
         siswa = data;
         localStorage.setItem("siswa", JSON.stringify(siswa));
-        window.location.href = "ujian.html";
+        window.location.href = "https://masrahmat-id.github.io/sch/ujian/ujian.html";
       } else {
         document.getElementById("pesan").innerText = "NISN tidak ditemukan!";
       }
@@ -23,7 +23,7 @@ function login() {
 window.onload = function() {
   if(document.getElementById("infoSiswa")) {
     siswa = JSON.parse(localStorage.getItem("siswa"));
-    if(!siswa) { window.location.href = "index.html"; return; }
+    if(!siswa) { window.location.href = "https://masrahmat-id.github.io/sch/ujian/index.html"; return; }
 
     document.getElementById("infoSiswa").innerText = `${siswa.nama} - Kelas ${siswa.kelas}`;
 
