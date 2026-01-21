@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbxMZJNCGYeDiCphTRQKvbiXdtSzkUfZlhAJnprN2z10En0yVpkfwkjqxzNL_BrEgRejYQ/exec"; // URL Web App
+const API_URL = "https://script.google.com/macros/s/AKfycbxMZJNCGYeDiCphTRQKvbiXdtSzkUfZlhAJnprN2z10En0yVpkfwkjqxzNL_BrEgRejYQ/exec"; // URL Web Apps
 
 let siswa = null;
 let soalData = [];
