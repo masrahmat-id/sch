@@ -1,0 +1,20 @@
+/* Menghapus jarak bawaan browser di semua halaman */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Mengatur agar HTML dan Body selalu memenuhi layar */
+html, body {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Jika kamu punya pembungkus utama (container) */
+.container {
+    width: 100%;
+    min-height: 100vh;
+}
