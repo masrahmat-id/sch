@@ -237,6 +237,14 @@ function mulaiUjianSekarang() {
     muatSoal();
 }
 
+   // Opsional: Peringatan jika keluar dari Full Screen
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+        alert("Peringatan: Jangan keluar dari mode layar penuh selama ujian berlangsung!");
+        // Anda bisa menambahkan logika pengurangan poin atau kunci ujian di sini
+    }
+});
+    
     async function muatSoal() { 
         try { 
             const res = await fetch('soal.json'); 
