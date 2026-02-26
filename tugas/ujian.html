@@ -216,13 +216,26 @@
         document.getElementById('user-initial').innerText = userData.nama[0].toUpperCase();
     };
 
-    // FUNGSI MULAI (SETELAH KLIK TOMBOL DI HALAMAN VALIDASI)
-    function mulaiUjianSekarang() {
-        document.getElementById('halaman-validasi').style.display = 'none';
-        document.querySelector('.header-ujian').style.display = 'flex';
-        document.querySelector('.container').style.display = 'block';
-        muatSoal();
+    
+    // FUNGSI MULAI (DENGAN PEMICU FULL SCREEN)
+function mulaiUjianSekarang() {
+    // Bagian pemicu Full Screen
+    let elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { // Untuk Safari
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { // Untuk Internet Explorer/Edge lama
+        elem.msRequestFullscreen();
     }
+
+    // FUNGSI MULAI (SETELAH KLIK TOMBOL DI HALAMAN VALIDASI)
+    // Bagian transisi tampilan halaman
+    document.getElementById('halaman-validasi').style.display = 'none';
+    document.querySelector('.header-ujian').style.display = 'flex';
+    document.querySelector('.container').style.display = 'block';
+    muatSoal();
+}
 
     async function muatSoal() { 
         try { 
