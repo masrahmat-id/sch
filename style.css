@@ -3,3 +3,24 @@ body { font-family: Arial, sans-serif; background: #f0f0f0; }
 input, select, button { width: 100%; padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; }
 button { background: #4CAF50; color: white; cursor: pointer; border: none; }
 button:hover { background: #45a049; }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Memastikan padding tidak merusak ukuran layar */
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden; /* Mencegah scroll ke samping jika konten berlebih */
+}
+
+.container-full {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0; /* Contoh warna latar */
+}
