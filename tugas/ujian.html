@@ -180,9 +180,9 @@
             </div>
             <p style="color:#666; font-size:14px; margin-top:20px;">"Ujian telah selesai! Terima kasih telah mengikuti ujian online."</p>
         </div>
-        <button class="btn btn-finish" style="padding:8px; max-width:320px; margin-top:15px;" onclick="location.reload()">
-            <span class="material-icons-round">refresh</span> KEMBALI KE AWAL
-        </button>
+        <button class="btn btn-finish" style="padding:8px; max-width:320px; margin-top:15px;" onclick="kembaliKeLogin()">
+    <span class="material-icons-round">logout</span> KEMBALI KE HALAMAN LOGIN
+</button>
     </div>
 </div>
 
@@ -370,6 +370,15 @@
     });
 
     document.addEventListener('contextmenu', e => e.preventDefault());
+
+    function kembaliKeLogin() {
+    // Menghapus draf jawaban agar bersih untuk peserta berikutnya
+    localStorage.removeItem('drafJawaban');
+    // Menghapus sesi user saat ini
+    sessionStorage.removeItem('userCBT');
+    // Arahkan ke file login Anda (ganti 'index.html' dengan nama file login Anda)
+    window.location.href = 'index.html'; 
+}
 </script>
 </body>
 </html>
