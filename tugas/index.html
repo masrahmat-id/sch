@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - CBT SMP Azzahro</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
-        .top-banner { background: #1a237e; height: 100vh; width: 100%; display: flex; justify-content: center; align-items: flex-start; color: white; position: absolute; top: 0; z-index: 1; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .header-content { display: flex; align-items: center; gap: 15px; margin-top: 50px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f0f2f5; display: flex; flex-direction: column; min-height: 100vh; }
+        .top-banner { background: #1a237e; height: 250px; width: 100%; display: flex; justify-content: center; align-items: center; color: white; position: absolute; top: 0; z-index: 1; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .header-content { display: flex; align-items: center; gap: 15px; margin-bottom: 50px; }
         .logo-puspendik { width: 70px; height: auto; }
         .header-text h1 { margin: 0; font-size: 26px; letter-spacing: 2px; font-weight: 900; }
         .header-text p { margin: 0; font-size: 14px; opacity: 0.8; }
-        .container { position: relative; z-index: 2; width: 90%; max-width: 400px; background: white; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); overflow: hidden; }
+        .container { position: relative; z-index: 2; margin-top: 150px; width: 90%; max-width: 400px; background: white; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); align-self: center; overflow: hidden; }
         .login-content { padding: 40px 30px; }
         .login-content h2 { margin-top: 0; color: #1a237e; font-size: 22px; text-align: center; font-weight: 800; }
         .subtitle { color: #666; font-size: 13px; text-align: center; margin-bottom: 30px; }
@@ -31,9 +31,36 @@
         .cross-mark { position: relative; width: 30px; height: 30px; }
         .cross-mark::before, .cross-mark::after { content: ''; position: absolute; top: 13px; left: 0; width: 30px; height: 4px; background: currentColor; border-radius: 2px; }
         .cross-mark::before { transform: rotate(45deg); } .cross-mark::after { transform: rotate(-45deg); }
+
+        /* Style Tambahan Tombol Fullscreen */
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
+        }
+        .fullscreen-btn:hover { background: rgba(255, 255, 255, 0.4); }
     </style>
 </head>
 <body>
+
+<button class="fullscreen-btn" onclick="toggleFullScreen()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+    FULL SCREEN
+</button>
+
 <div id="customModal" class="modal-overlay">
     <div class="modal-box">
         <div class="icon-circle"><div class="cross-mark"></div></div>
@@ -84,23 +111,21 @@
     
     function showNotif(msg) { document.getElementById('modalMessage').innerText = msg; document.getElementById('customModal').style.display = 'flex'; }
     function closeModal() { document.getElementById('customModal').style.display = 'none'; }
-    
-    // Fungsi untuk memicu Fullscreen
-    function bukaFullscreen() {
-        let elem = document.documentElement;
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari */
-            elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE11 */
-            elem.msRequestFullscreen();
+
+    // Fungsi Fullscreen
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                alert(`Error: ${err.message}`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
         }
     }
-
+    
     async function validasiLogin() {
-        // Panggil fungsi fullscreen saat tombol diklik
-        bukaFullscreen();
-
         const btn = document.getElementById('btnLogin');
         const namaInput = document.getElementById('nama');
         const tokenInputElem = document.getElementById('tokenInput');
