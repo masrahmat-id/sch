@@ -1,20 +1,36 @@
-[
-  {
-    "id": 1,
-    "pertanyaan": "Apa pengertian dasar dari komputer?",
-    "pilihan": ["Alat ketik", "Mesin pengolah data", "Kabel listrik", "Layar televisi"],
-    "jawaban": 1
-  },
-  {
-    "id": 2,
-    "pertanyaan": "Manakah yang merupakan perangkat keras masukan (input)?",
-    "pilihan": ["Monitor", "Printer", "Keyboard", "Speaker"],
-    "jawaban": 2
-  },
-  {
-    "id": 3,
-    "pertanyaan": "Aplikasi Microsoft Office yang digunakan untuk mengolah kata adalah...",
-    "pilihan": ["Excel", "Word", "PowerPoint", "Access"],
-    "jawaban": 1
-  }
-]
+{
+  "test_title": "Evaluasi Pengetahuan GitHub",
+  "total_questions": 5,
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Konsep Dasar",
+      "question": "Jelaskan perbedaan mendasar antara Git dan GitHub, serta mengapa GitHub dianggap krusial dalam pengembangan perangkat lunak modern.",
+      "max_score": 20
+    },
+    {
+      "id": 2,
+      "topic": "Workflow - Branching",
+      "question": "Apa fungsi utama dari fitur 'Branching' di GitHub? Jelaskan skenario di mana seorang developer harus membuat branch baru dibandingkan melakukan commit langsung ke branch utama (main/master).",
+      "max_score": 20
+    },
+    {
+      "id": 3,
+      "topic": "Kolaborasi - Pull Request",
+      "question": "Uraikan alur kerja (workflow) pembuatan Pull Request, mulai dari fork repository hingga proses code review oleh maintainer.",
+      "max_score": 20
+    },
+    {
+      "id": 4,
+      "topic": "Manajemen Konflik",
+      "question": "Apa yang dimaksud dengan 'Merge Conflict' dan langkah-langkah apa yang harus dilakukan oleh seorang developer untuk menyelesaikannya secara aman?",
+      "max_score": 20
+    },
+    {
+      "id": 5,
+      "topic": "Fitur GitHub Actions",
+      "question": "Jelaskan konsep CI/CD (Continuous Integration/Continuous Deployment) dalam konteks GitHub Actions dan bagaimana fitur ini membantu meningkatkan kualitas kode.",
+      "max_score": 20
+    }
+  ]
+}
