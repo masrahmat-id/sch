@@ -1,36 +1,242 @@
-{
-  "test_title": "Evaluasi Pengetahuan GitHub",
-  "total_questions": 5,
-  "questions": [
-    {
-      "id": 1,
-      "topic": "Konsep Dasar",
-      "question": "Jelaskan perbedaan mendasar antara Git dan GitHub, serta mengapa GitHub dianggap krusial dalam pengembangan perangkat lunak modern.",
-      "max_score": 20
-    },
-    {
-      "id": 2,
-      "topic": "Workflow - Branching",
-      "question": "Apa fungsi utama dari fitur 'Branching' di GitHub? Jelaskan skenario di mana seorang developer harus membuat branch baru dibandingkan melakukan commit langsung ke branch utama (main/master).",
-      "max_score": 20
-    },
-    {
-      "id": 3,
-      "topic": "Kolaborasi - Pull Request",
-      "question": "Uraikan alur kerja (workflow) pembuatan Pull Request, mulai dari fork repository hingga proses code review oleh maintainer.",
-      "max_score": 20
-    },
-    {
-      "id": 4,
-      "topic": "Manajemen Konflik",
-      "question": "Apa yang dimaksud dengan 'Merge Conflict' dan langkah-langkah apa yang harus dilakukan oleh seorang developer untuk menyelesaikannya secara aman?",
-      "max_score": 20
-    },
-    {
-      "id": 5,
-      "topic": "Fitur GitHub Actions",
-      "question": "Jelaskan konsep CI/CD (Continuous Integration/Continuous Deployment) dalam konteks GitHub Actions dan bagaimana fitur ini membantu meningkatkan kualitas kode.",
-      "max_score": 20
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "pertanyaan": "Data berasal dari bahasa Latin, yaitu 'datum' yang berarti sesuatu yang diberikan. Dalam bentuk jamak, istilah ini menjadi...",
+    "pilihan": ["Data", "Dataset", "Database", "Datun"],
+    "jawaban": 0
+  },
+  {
+    "id": 2,
+    "pertanyaan": "Satuan penyimpanan data terkecil dalam sistem komputer adalah...",
+    "pilihan": ["Byte", "Megabyte", "Bit", "Kilobyte"],
+    "jawaban": 2
+  },
+  {
+    "id": 3,
+    "pertanyaan": "Satu Byte terdiri atas kumpulan bit sebanyak...",
+    "pilihan": ["4 bit", "8 bit", "16 bit", "32 bit"],
+    "jawaban": 1
+  },
+  {
+    "id": 4,
+    "pertanyaan": "Berapakah nilai 1 Kilobyte jika dikonversi ke dalam satuan Byte?",
+    "pilihan": ["1.000 Byte", "1.024 Byte", "1.100 Byte", "1.200 Byte"],
+    "jawaban": 1
+  },
+  {
+    "id": 5,
+    "pertanyaan": "Satuan penyimpanan yang setara dengan 1.024 Kilobyte (KB) adalah...",
+    "pilihan": ["1 Megabyte", "1 Gigabyte", "1 Terabyte", "1 Petabyte"],
+    "jawaban": 0
+  },
+  {
+    "id": 6,
+    "pertanyaan": "Urutan satuan penyimpanan data dari yang terkecil hingga terbesar yang benar adalah...",
+    "pilihan": ["KB - MB - TB - GB", "Bit - Byte - KB - MB", "MB - KB - GB - TB", "TB - GB - MB - KB"],
+    "jawaban": 1
+  },
+  {
+    "id": 7,
+    "pertanyaan": "Satuan penyimpanan data yang biasanya digunakan untuk kapasitas harddisk modern atau mainframe adalah...",
+    "pilihan": ["Megabyte", "Gigabyte", "Terabyte", "Kilobyte"],
+    "jawaban": 2
+  },
+  {
+    "id": 8,
+    "pertanyaan": "Apa yang dimaksud dengan analisis data menurut materi tersebut?",
+    "pilihan": ["Proses mengetik data", "Pengolahan data untuk mengambil keputusan", "Cara menghapus data", "Penyimpanan data ke cloud"],
+    "jawaban": 1
+  },
+  {
+    "id": 9,
+    "pertanyaan": "Proses pemilahan data berdasarkan persamaan atau perbedaan yang dikandungnya disebut...",
+    "pilihan": ["Deskripsi", "Klasifikasi", "Transformasi", "Koleksi"],
+    "jawaban": 1
+  },
+  {
+    "id": 10,
+    "pertanyaan": "Untuk membuka Excel melalui fitur 'Run', perintah yang harus diketikkan adalah...",
+    "pilihan": ["MS-Excel", "Excel", "Office", "Sheet"],
+    "jawaban": 1
+  },
+  {
+    "id": 11,
+    "pertanyaan": "Bagian Excel yang menampilkan nama file yang sedang dikerjakan adalah...",
+    "pilihan": ["Status Bar", "Formula Bar", "Title Bar", "Menu Bar"],
+    "jawaban": 2
+  },
+  {
+    "id": 12,
+    "pertanyaan": "Ikon yang digunakan untuk memperkecil jendela hingga hanya muncul di taskbar adalah...",
+    "pilihan": ["Maximize", "Restore Down", "Minimize", "Close"],
+    "jawaban": 2
+  },
+  {
+    "id": 13,
+    "pertanyaan": "Quick Access Toolbar secara default berisi ikon-ikon berikut, kecuali...",
+    "pilihan": ["Save", "Undo", "Redo", "Delete"],
+    "jawaban": 3
+  },
+  {
+    "id": 14,
+    "pertanyaan": "Tempat untuk melihat alamat sel yang sedang aktif (misal: A1) disebut...",
+    "pilihan": ["Name Box", "Formula Bar", "Taskpane", "Status Bar"],
+    "jawaban": 0
+  },
+  {
+    "id": 15,
+    "pertanyaan": "Tab Menu dalam Excel 2010 terdiri atas...",
+    "pilihan": ["Home, Insert, Page Layout", "File, Edit, View", "Start, Run, Settings", "Save, Open, Print"],
+    "jawaban": 0
+  },
+  {
+    "id": 16,
+    "pertanyaan": "Bagian yang berisi kumpulan ikon yang memiliki fungsi saling berhubungan disebut...",
+    "pilihan": ["Grup", "Menu", "Section", "Baris"],
+    "jawaban": 0
+  },
+  {
+    "id": 17,
+    "pertanyaan": "Fitur Font, Border, dan Fill dapat diakses langsung melalui tab...",
+    "pilihan": ["Insert", "Page Layout", "Data", "Home"],
+    "jawaban": 3
+  },
+  {
+    "id": 18,
+    "pertanyaan": "Fitur yang digunakan untuk memberikan warna pada latar belakang cell adalah...",
+    "pilihan": ["Font Color", "Border", "Fill", "Protection"],
+    "jawaban": 2
+  },
+  {
+    "id": 19,
+    "pertanyaan": "Apa fungsi utama dari fitur 'Protection' pada cell?",
+    "pilihan": ["Mewarnai cell", "Mengunci atau menyembunyikan cell", "Menghapus cell", "Menggabungkan cell"],
+    "jawaban": 1
+  },
+  {
+    "id": 20,
+    "pertanyaan": "Pertemuan antara kolom (column) dan baris (row) disebut...",
+    "pilihan": ["Range", "Grid", "Cell", "Sheet"],
+    "jawaban": 2
+  },
+  {
+    "id": 21,
+    "pertanyaan": "Tempat untuk menuliskan dan mengedit rumus di Excel disebut...",
+    "pilihan": ["Formula Bar", "Name Box", "Title Bar", "Scroll Bar"],
+    "jawaban": 0
+  },
+  {
+    "id": 22,
+    "pertanyaan": "Berapakah jumlah total baris dalam Microsoft Excel 2010?",
+    "pilihan": ["16.384", "1.000.000", "1.048.576", "65.536"],
+    "jawaban": 2
+  },
+  {
+    "id": 23,
+    "pertanyaan": "Kolom dalam Excel disimbolkan dengan...",
+    "pilihan": ["Angka", "Huruf", "Simbol", "Warna"],
+    "jawaban": 1
+  },
+  {
+    "id": 24,
+    "pertanyaan": "Berapakah jumlah total kolom pada Microsoft Excel 2010?",
+    "pilihan": ["1.048.576", "16.384", "256", "1.024"],
+    "jawaban": 1
+  },
+  {
+    "id": 25,
+    "pertanyaan": "Batas terakhir kolom pada Excel 2010 disimbolkan dengan huruf...",
+    "pilihan": ["XFD", "ZZZ", "ABC", "XXX"],
+    "jawaban": 0
+  },
+  {
+    "id": 26,
+    "pertanyaan": "Lembar kerja elektronik di Excel disebut dengan istilah...",
+    "pilihan": ["Workbook", "Worksheet", "Wordpad", "Workgroup"],
+    "jawaban": 1
+  },
+  {
+    "id": 27,
+    "pertanyaan": "Alat untuk menggulung layar secara vertikal atau horizontal adalah...",
+    "pilihan": ["Zoom Tool", "Scroll Bar", "Taskpane", "Pointer"],
+    "jawaban": 1
+  },
+  {
+    "id": 28,
+    "pertanyaan": "Nama-nama default untuk sheet di Excel 2010 adalah...",
+    "pilihan": ["Data1, Data2", "Page1, Page2", "Sheet1, Sheet2, Sheet3", "File1, File2"],
+    "jawaban": 2
+  },
+  {
+    "id": 29,
+    "pertanyaan": "Gabungan dari beberapa sel, misalnya dari sel A4 sampai B7, disebut...",
+    "pilihan": ["Group", "Union", "Range", "Cluster"],
+    "jawaban": 2
+  },
+  {
+    "id": 30,
+    "pertanyaan": "Fungsi dari 'Zoom Tool' adalah untuk...",
+    "pilihan": ["Mencetak", "Menghapus sel", "Memperbesar/memperkecil tampilan", "Mencari data"],
+    "jawaban": 2
+  },
+  {
+    "id": 31,
+    "pertanyaan": "Penunjuk sel yang sedang dipilih atau aktif disebut...",
+    "pilihan": ["Pointer", "Cursor", "Marker", "Selector"],
+    "jawaban": 0
+  },
+  {
+    "id": 32,
+    "pertanyaan": "Satu file Excel yang terdiri atas beberapa worksheet disebut...",
+    "pilihan": ["Worksheet", "Workbook", "Workgroup", "Workarea"],
+    "jawaban": 1
+  },
+  {
+    "id": 33,
+    "pertanyaan": "Fitur untuk membekukan baris atau kolom agar tidak ikut bergeser saat scrolling adalah...",
+    "pilihan": ["Lock Cells", "Freeze Panes", "Hold Row", "Static View"],
+    "jawaban": 1
+  },
+  {
+    "id": 34,
+    "pertanyaan": "Di manakah letak menu Freeze Panes?",
+    "pilihan": ["Tab Home", "Tab Insert", "Tab View", "Tab Data"],
+    "jawaban": 2
+  },
+  {
+    "id": 35,
+    "pertanyaan": "Ikon yang berfungsi memperkecil jendela menjadi setengah layar (ukuran sebelumnya) adalah...",
+    "pilihan": ["Minimize", "Restore Down", "Maximize", "Close"],
+    "jawaban": 1
+  },
+  {
+    "id": 36,
+    "pertanyaan": "ASCII merupakan singkatan dari American Standard Code for...",
+    "pilihan": ["Information Interchange", "Internet Information", "Instruction Interchange", "Integration Info"],
+    "jawaban": 0
+  },
+  {
+    "id": 37,
+    "pertanyaan": "Untuk berpindah antar file atau lembar kerja yang aktif, kita bisa menggunakan...",
+    "pilihan": ["Taskpane", "Title Bar", "Formula Bar", "Name Box"],
+    "jawaban": 0
+  },
+  {
+    "id": 38,
+    "pertanyaan": "Satuan 1 Petabyte (PB) setara dengan...",
+    "pilihan": ["1.024 GB", "1.024 TB", "1.024 MB", "1.024 KB"],
+    "jawaban": 1
+  },
+  {
+    "id": 39,
+    "pertanyaan": "Preview Mode digunakan untuk...",
+    "pilihan": ["Mencetak data", "Mengatur tampilan area kerja", "Menyimpan file", "Menghapus kolom"],
+    "jawaban": 1
+  },
+  {
+    "id": 40,
+    "pertanyaan": "Jika kamu menekan tombol END diikuti tanda panah bawah, kamu akan melihat...",
+    "pilihan": ["Kolom terakhir", "Baris terakhir", "Sel pertama", "Sheet baru"],
+    "jawaban": 1
+  }
+]
